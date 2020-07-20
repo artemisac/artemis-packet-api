@@ -10,6 +10,17 @@ However, as our tests percevered, we noticed a pattern: Packets were always an i
 always subject to a variety of issues related to packets and reflections. So we engineered a new packet api which would not require a single reflection
 call in the handling process. This would noticeably improve performance and would extremely facilitate the process.
 
+### Status
+Near completed. The following needs to be done: 
+- Finish all NMS injectors
+- Finish all packet wrappers, especially outbound
+- Handle SetProtocol packet properly
+- Add API to add external calls, similar to bukkit
+- Document everything
+- Finish ChannelInjector hook to make sure it hooks before the correct pipeline handler
+- Add some protection and timeout packet exploits
+- Add some useful commands
+
 ### Credits
 I'd like to credit 2-3 authors which's work made this possible. 
 
