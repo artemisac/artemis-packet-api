@@ -23,7 +23,7 @@ public class VarIntConverter extends BufConverter<Integer> {
     }
 
     @Override
-    public Integer read(ByteBuf buffer) {
+    public Integer read(ByteBuf buffer, Object... args) {
         int i = 0;
         int j = 0;
 

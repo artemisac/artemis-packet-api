@@ -23,7 +23,7 @@ public class VarLongConverter extends BufConverter<Long> {
     }
 
     @Override
-    public Long read(ByteBuf buffer) {
+    public Long read(ByteBuf buffer, Object... args) {
         long i = 0L;
         int j = 0;
 

@@ -15,7 +15,7 @@ public class UUIDConverter extends BufConverter<UUID> {
     }
 
     @Override
-    public UUID read(ByteBuf buffer) {
+    public UUID read(ByteBuf buffer, Object... args) {
         return new UUID(buffer.readLong(), buffer.readLong());
     }
 }

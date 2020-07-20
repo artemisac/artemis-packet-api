@@ -30,7 +30,7 @@ public class ItemConverter extends BufConverter<WrappedItem> {
     }
 
     @Override
-    public WrappedItem read(ByteBuf buffer) throws IOException {
+    public WrappedItem read(ByteBuf buffer, Object... args) throws IOException {
         short id = buffer.readShort();
         byte amount = buffer.readByte();
         CompoundTag tag = Converters.NBT.read(buffer);

@@ -19,7 +19,7 @@ public class IntegerConverter extends BufConverter<Integer> {
     }
 
     @Override
-    public Integer read(ByteBuf buffer) {
+    public Integer read(ByteBuf buffer, Object... args) {
         return buffer.readInt();
     }
 }

@@ -19,7 +19,7 @@ public class LongConverter extends BufConverter<Long> {
     }
 
     @Override
-    public Long read(ByteBuf buffer) {
+    public Long read(ByteBuf buffer, Object... args) {
         return buffer.readLong();
     }
 }

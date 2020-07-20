@@ -19,7 +19,7 @@ public class DoubleConverter extends BufConverter<Double> {
     }
 
     @Override
-    public Double read(ByteBuf buffer) {
+    public Double read(ByteBuf buffer, Object... args) {
         return buffer.readDouble();
     }
 }

@@ -21,7 +21,7 @@ public class LongLocationConverter extends BufConverter<BlockPosition> {
     }
 
     @Override
-    public BlockPosition read(ByteBuf buffer) {
+    public BlockPosition read(ByteBuf buffer, Object... args) {
         long i = buffer.readLong();
         int j = (int) (i << 64 - BlockPosition.g - BlockPosition.c >> 64 - BlockPosition.c);
         int k = (int) (i << 64 - BlockPosition.f - BlockPosition.e >> 64 - BlockPosition.e);

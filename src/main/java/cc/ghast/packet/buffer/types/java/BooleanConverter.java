@@ -19,7 +19,7 @@ public class BooleanConverter extends BufConverter<Boolean> {
     }
 
     @Override
-    public Boolean read(ByteBuf buffer) {
+    public Boolean read(ByteBuf buffer, Object... args) {
         return buffer.readBoolean();
     }
 }

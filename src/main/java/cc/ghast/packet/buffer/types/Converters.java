@@ -1,5 +1,7 @@
 package cc.ghast.packet.buffer.types;
 
+import cc.ghast.packet.buffer.types.exclusive.BytePoolConverter;
+import cc.ghast.packet.buffer.types.exclusive.StringPoolConverter;
 import cc.ghast.packet.buffer.types.exclusive.VarIntConverter;
 import cc.ghast.packet.buffer.types.exclusive.VarLongConverter;
 import cc.ghast.packet.buffer.types.java.*;
@@ -24,6 +26,8 @@ public class Converters {
 
     public static final VarIntConverter VAR_INT = new VarIntConverter();
     public static final VarLongConverter VAR_LONG = new VarLongConverter();
+    public static final BytePoolConverter BYTE_POOL = new BytePoolConverter();
+    public static final StringPoolConverter STRING_POOL = new StringPoolConverter();
 
     public static final UUIDConverter UUID = new UUIDConverter();
 

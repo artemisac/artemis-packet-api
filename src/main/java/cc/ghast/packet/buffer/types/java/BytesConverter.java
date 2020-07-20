@@ -19,7 +19,7 @@ public class BytesConverter extends BufConverter<ByteBuf> {
     }
 
     @Override
-    public ByteBuf read(ByteBuf buffer) {
+    public ByteBuf read(ByteBuf buffer, Object... args) {
         return buffer.readBytes(buffer.readableBytes());
     }
 }

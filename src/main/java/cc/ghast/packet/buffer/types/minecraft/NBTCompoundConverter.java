@@ -32,7 +32,7 @@ public class NBTCompoundConverter extends BufConverter<CompoundTag> {
     }
 
     @Override
-    public CompoundTag read(ByteBuf buffer) throws IOException {
+    public CompoundTag read(ByteBuf buffer, Object... args) throws IOException {
         Preconditions.checkArgument(buffer.readableBytes() <= 2097152,
                 "Cannot read NBT (got %s bytes)", buffer.readableBytes());
         int readerIndex = buffer.readerIndex();

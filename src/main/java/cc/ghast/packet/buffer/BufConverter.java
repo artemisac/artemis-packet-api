@@ -34,5 +34,5 @@ public abstract class BufConverter<T> {
 
     public abstract void write(ByteBuf buffer, T value) throws IOException;
 
-    public abstract T read(ByteBuf buffer) throws IOException;
+    public abstract T read(ByteBuf buffer, Object... args) throws IOException;
 }

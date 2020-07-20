@@ -19,7 +19,7 @@ public class ShortConverter extends BufConverter<Short> {
     }
 
     @Override
-    public Short read(ByteBuf buffer) {
+    public Short read(ByteBuf buffer, Object... args) {
         return buffer.readShort();
     }
 }

@@ -3,10 +3,15 @@ package cc.ghast.packet.buffer;
 import cc.ghast.packet.exceptions.InvalidByteBufStructureException;
 import cc.ghast.packet.buffer.types.Converters;
 import cc.ghast.packet.wrapper.bukkit.BlockPosition;
+import cc.ghast.packet.wrapper.codec.StringPool;
 import cc.ghast.packet.wrapper.nbt.WrappedItem;
+import com.google.common.base.Charsets;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
+import io.netty.handler.codec.DecoderException;
+import io.netty.handler.codec.EncoderException;
 import io.netty.util.ByteProcessor;
+import net.minecraft.server.v1_8_R3.PacketDataSerializer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -79,6 +84,14 @@ public class ProtocolByteBuf extends ByteBuf {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String readStringBuf(int i) {
+        return Converters.STRING_POOL.read(byteBuf, i).getData();
+    }
+
+    public void writeStringBuf(String s, int size) {
+        Converters.STRING_POOL.write(byteBuf, new StringPool(s, size));
     }
 
     public int capacity() {

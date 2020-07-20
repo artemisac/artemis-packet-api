@@ -19,7 +19,7 @@ public class FloatConverter extends BufConverter<Float> {
     }
 
     @Override
-    public Float read(ByteBuf buffer) {
+    public Float read(ByteBuf buffer, Object... args) {
         return buffer.readFloat();
     }
 }

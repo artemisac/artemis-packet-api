@@ -31,7 +31,7 @@ public class StringConverter extends BufConverter<String> {
     }
 
     @Override
-    public String read(ByteBuf buffer) {
+    public String read(ByteBuf buffer, Object... args) {
         int len = Converters.VAR_INT.read(buffer);
 
         Preconditions.checkArgument(len <= Short.MAX_VALUE * maxJavaCharUtf8Length,
