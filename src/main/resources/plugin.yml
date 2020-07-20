@@ -1,0 +1,3 @@
+main: cc.ghast.packet.PacketManager
+name: PacketTest
+version: 1.0-SNAPSHOT
