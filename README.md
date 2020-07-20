@@ -12,6 +12,7 @@ call in the handling process. This would noticeably improve performance and woul
 
 ### Credits
 I'd like to credit 2-3 authors which's work made this possible. 
+
 **[FormallyMyles](https://github.com/FormallyMyles)** - I'd like to thank you for open sourcing ViaVersion and making an extremely clear and well though system. 
 My way of handling the structure of ByteBuf is extremely similar to yours. It's really clean in my opinion. Thank you
 
