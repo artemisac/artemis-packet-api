@@ -1,7 +1,7 @@
 package cc.ghast.packet.wrapper.packet;
 
 import cc.ghast.packet.nms.ProtocolVersion;
-import cc.ghast.packet.wrapper.buffer.ProtocolByteBuf;
+import cc.ghast.packet.buffer.ProtocolByteBuf;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

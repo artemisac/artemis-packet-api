@@ -2,8 +2,8 @@ package cc.ghast.packet.wrapper.packet.play.client;
 
 import cc.ghast.packet.nms.EnumDirection;
 import cc.ghast.packet.nms.ProtocolVersion;
-import cc.ghast.packet.wrapper.buffer.ProtocolByteBuf;
-import cc.ghast.packet.wrapper.buffer.types.Converters;
+import cc.ghast.packet.buffer.ProtocolByteBuf;
+import cc.ghast.packet.buffer.types.Converters;
 import cc.ghast.packet.wrapper.bukkit.BlockPosition;
 import cc.ghast.packet.wrapper.bukkit.Vector3D;
 import cc.ghast.packet.wrapper.nbt.WrappedItem;

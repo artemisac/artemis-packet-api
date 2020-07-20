@@ -1,8 +1,8 @@
 package cc.ghast.packet;
 
 import cc.ghast.packet.listener.ChannelListener;
-import cc.ghast.packet.wrapper.codec.ArtemisDecoder;
-import cc.ghast.packet.wrapper.codec.ArtemisEncoder;
+import cc.ghast.packet.codec.ArtemisDecoder;
+import cc.ghast.packet.codec.ArtemisEncoder;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 

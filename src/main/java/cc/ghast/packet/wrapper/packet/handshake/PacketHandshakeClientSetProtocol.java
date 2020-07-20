@@ -1,7 +1,7 @@
 package cc.ghast.packet.wrapper.packet.handshake;
 
 import cc.ghast.packet.nms.ProtocolVersion;
-import cc.ghast.packet.wrapper.buffer.ProtocolByteBuf;
+import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.wrapper.packet.Packet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

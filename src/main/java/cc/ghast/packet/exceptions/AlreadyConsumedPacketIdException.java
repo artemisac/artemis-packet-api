@@ -1,7 +1,7 @@
 package cc.ghast.packet.exceptions;
 
 import cc.ghast.packet.wrapper.packet.Packet;
-import cc.ghast.packet.wrapper.protocol.EnumProtocolDirection;
+import cc.ghast.packet.protocol.EnumProtocolDirection;
 
 public class AlreadyConsumedPacketIdException extends RuntimeException {
 
