@@ -75,7 +75,11 @@ public class ArtemisEnumProtocol_1_8 {
             ANIMATION(0x0B, PacketPlayServerAnimation.class),
             NAMED_ENTITY_SPAWN(0x0C, PacketPlayServerNamedEntitySpawn.class),
             COLLECT_ITEM(0x0D, PacketPlayServerCollect.class),
+
+            // Not sure what's supposed to go here mhm
             ENTITY_SPAWN(0x0E, PacketPlayServerNamedEntitySpawn.class),
+
+            
             ENTITY_LIVING_SPAWN(0x0F, PacketPlayServerSpawnEntityLiving.class),
             ENTITY_PAINTING_SPAWN(0x10, PacketPlayServerSpawnEntityPainting.class),
             ENTITY_EXPERIENCE_SPAWN(0x11, PacketPlayServerSpawnEntityExperienceOrb.class),
