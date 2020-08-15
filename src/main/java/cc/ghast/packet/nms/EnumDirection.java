@@ -35,9 +35,7 @@ public enum EnumDirection {
         EnumDirection[] aenumdirection = values();
         int i = aenumdirection.length;
 
-        for (int j = 0; j < i; ++j) {
-            EnumDirection enumdirection = aenumdirection[j];
-
+        for (EnumDirection enumdirection : aenumdirection) {
             EnumDirection.n[enumdirection.g] = enumdirection;
             if (enumdirection.k().c()) {
                 EnumDirection.o[enumdirection.i] = enumdirection;

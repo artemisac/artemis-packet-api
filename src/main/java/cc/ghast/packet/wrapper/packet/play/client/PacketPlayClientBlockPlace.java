@@ -7,6 +7,7 @@ import cc.ghast.packet.buffer.types.Converters;
 import cc.ghast.packet.wrapper.bukkit.BlockPosition;
 import cc.ghast.packet.wrapper.bukkit.Vector3D;
 import cc.ghast.packet.wrapper.nbt.WrappedItem;
+import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.Packet;
 import lombok.Getter;
 
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Getter
-public class PacketPlayClientBlockPlace extends Packet {
+public class PacketPlayClientBlockPlace extends Packet<ClientPacket> {
     public PacketPlayClientBlockPlace(UUID player, ProtocolVersion version) {
         super(player, version);
     }

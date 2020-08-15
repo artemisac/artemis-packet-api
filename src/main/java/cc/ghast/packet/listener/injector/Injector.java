@@ -2,6 +2,7 @@ package cc.ghast.packet.listener.injector;
 
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.codec.ArtemisDecoder;
+import cc.ghast.packet.profile.Profile;
 import cc.ghast.packet.protocol.EnumProtocolDirection;
 import io.netty.channel.Channel;
 import lombok.SneakyThrows;
@@ -22,7 +23,7 @@ public interface Injector {
 
     default void inject(Channel channel, UUID uuid, InetAddress inetAddress) {
         channel.pipeline().addBefore("protocol_lib_finish", "artemis_test",
-                new ArtemisDecoder(EnumProtocolDirection.IN, inetAddress, uuid, ProtocolVersion.getGameVersion()));
+                new ArtemisDecoder(EnumProtocolDirection.IN, new Profile(uuid, inetAddress, ProtocolVersion.getGameVersion(), channel)));
     }
 
     default String parseAddress(SocketAddress address) {

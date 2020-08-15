@@ -11,7 +11,8 @@ public class UUIDConverter extends BufConverter<UUID> {
 
     @Override
     public void write(ByteBuf buffer, UUID value) {
-
+        buffer.writeLong(value.getMostSignificantBits());
+        buffer.writeLong(value.getLeastSignificantBits());
     }
 
     @Override

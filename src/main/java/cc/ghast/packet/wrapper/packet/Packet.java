@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 @Getter
-public abstract class Packet {
+public abstract class Packet<D> {
     protected final UUID uuid;
     protected final ProtocolVersion version;
     protected final long timestamp;

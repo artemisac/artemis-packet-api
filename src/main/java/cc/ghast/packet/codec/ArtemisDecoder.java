@@ -4,9 +4,12 @@ import cc.ghast.packet.exceptions.IncompatiblePipelineException;
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.buffer.types.Converters;
+import cc.ghast.packet.profile.Profile;
+import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.Packet;
 import cc.ghast.packet.protocol.EnumProtocol;
 import cc.ghast.packet.protocol.EnumProtocolDirection;
+import cc.ghast.packet.wrapper.packet.handshake.PacketHandshakeClientSetProtocol;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelDuplexHandler;
@@ -29,17 +32,15 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
     private static final boolean debug = false;
 
     private final EnumProtocolDirection direction;
-    private final InetAddress address;
-    private final UUID uuid;
-    private final ProtocolVersion version;
+    private final Profile profile;
     private final Inflater inflater;
+    private EnumProtocol protocol;
 
-    public ArtemisDecoder(EnumProtocolDirection direction, InetAddress address, UUID uuid, ProtocolVersion version) {
+    public ArtemisDecoder(EnumProtocolDirection direction, Profile profile) {
         this.direction = direction;
-        this.address = address;
-        this.uuid = uuid;
-        this.version = version;
+        this.profile = profile;
         this.inflater = new Inflater();
+        this.protocol = EnumProtocol.HANDSHAKE;
     }
 
 
@@ -86,8 +87,14 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
             }
 
             // Collect the packet from the enum map. This needs to be rewritten for better accuracy tho
-            Packet packet = EnumProtocol.PLAY.getPacket(direction, id, uuid, version);
+            Packet<ClientPacket> packet = protocol.getPacket(direction, id, profile.getUuid(), profile.getVersion());
             packet.handle(new ProtocolByteBuf(in));
+
+            // Handle and collect the handshake
+            if (packet instanceof PacketHandshakeClientSetProtocol){
+                handleHandshake((PacketHandshakeClientSetProtocol) packet);
+            }
+
             // Reset the reader index to prevent following pipelines to have a sort of issue. Normally it doesn't, I'm
             // Still new to Netty. I'll need to investigate. More can be seen @ https://netty.io/4.0/api/io/netty/buffer/ByteBuf.html
             in.resetReaderIndex();
@@ -131,5 +138,10 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
         }
         return byteBuf;
+    }
+
+    private void handleHandshake(PacketHandshakeClientSetProtocol handshake){
+        profile.setVersion(ProtocolVersion.getVersion(handshake.getProtocolVersion()));
+        protocol = EnumProtocol.PLAY;
     }
 }
