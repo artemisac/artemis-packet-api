@@ -15,9 +15,9 @@ Near completed. The following needs to be done:
 - Finish all NMS injectors
 - Finish all packet wrappers, especially outbound
 - ~~Handle SetProtocol packet properly~~
-- Add API to add external calls, similar to bukkit
+- ~~Add API to add external calls, similar to bukkit~~
 - Document everything
-- Finish ChannelInjector hook to make sure it hooks before the correct pipeline handler
+- ~~Finish ChannelInjector hook to make sure it hooks before the correct pipeline handler~~
 - Add some protection and timeout packet exploits
 - Add some useful commands
 
