@@ -1,5 +1,6 @@
 package cc.ghast.packet.codec;
 
+import cc.ghast.packet.PacketManager;
 import cc.ghast.packet.exceptions.IncompatiblePipelineException;
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
@@ -31,13 +32,11 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
     private static final boolean debug = false;
 
-    private final EnumProtocolDirection direction;
     private final Profile profile;
     private final Inflater inflater;
     private EnumProtocol protocol;
 
-    public ArtemisDecoder(EnumProtocolDirection direction, Profile profile) {
-        this.direction = direction;
+    public ArtemisDecoder(Profile profile) {
         this.profile = profile;
         this.inflater = new Inflater();
         this.protocol = EnumProtocol.HANDSHAKE;
@@ -56,7 +55,13 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
         // Make sure we're receiving a ByteBuf. If a protocol is placed before such, it may screw with the decompression
         if (msg instanceof ByteBuf) {
             // Decode the message and send it off
-            decode(((ByteBuf) msg).copy());
+            final boolean cancelled = decode(((ByteBuf) msg).copy());
+
+            // Nullify if the packet was cancelled
+            if (cancelled) {
+                msg = null;
+            }
+
         } else {
             // If the message is not a ByteBuf, there's obviously an issue with the pipeline, so disinject and throw error
             ctx.pipeline().remove(this);
@@ -66,12 +71,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
     }
 
-    @Override
-    public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-        super.write(ctx, msg, promise);
-    }
-
-    protected void decode(ByteBuf in) throws Exception {
+    protected boolean decode(ByteBuf in) throws Exception {
 
         // If there's no readable bytes, the packet is empty. Don't worry, such can happen
         in = decompress(in);
@@ -87,12 +87,18 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
             }
 
             // Collect the packet from the enum map. This needs to be rewritten for better accuracy tho
-            Packet<ClientPacket> packet = protocol.getPacket(direction, id, profile.getUuid(), profile.getVersion());
+            Packet<ClientPacket> packet = protocol.getPacket(EnumProtocolDirection.IN, id, profile.getUuid(), profile.getVersion());
             packet.handle(new ProtocolByteBuf(in));
 
             // Handle and collect the handshake
             if (packet instanceof PacketHandshakeClientSetProtocol){
                 handleHandshake((PacketHandshakeClientSetProtocol) packet);
+            }
+
+            PacketManager.INSTANCE.getManager().callPacket(profile, packet);
+
+            if (packet.isCancelled()) {
+                return true;
             }
 
             // Reset the reader index to prevent following pipelines to have a sort of issue. Normally it doesn't, I'm
@@ -106,6 +112,8 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
         } else {
             if (debug) System.out.println("NO READABLE BYTES BRUH");
         }
+
+        return false;
     }
 
     private ByteBuf decompress(ByteBuf byteBuf) throws DataFormatException {

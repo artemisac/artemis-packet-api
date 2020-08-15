@@ -1,9 +1,11 @@
 package cc.ghast.packet;
 
+import cc.ghast.packet.chain.ChainManager;
 import cc.ghast.packet.listener.ChannelListener;
 import cc.ghast.packet.codec.ArtemisDecoder;
 import cc.ghast.packet.codec.ArtemisEncoder;
 import lombok.Getter;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
@@ -14,22 +16,22 @@ import java.util.Arrays;
  */
 
 @Getter
-public class PacketManager extends JavaPlugin {
+public enum PacketManager {
 
-    private ArtemisDecoder inbound;
-    private ArtemisEncoder outbound;
+    INSTANCE;
 
-    @Override
-    public void onEnable() {
+    private Plugin plugin;
+    private ChainManager manager;
+    private ChannelListener listener;
+
+    public void init() {
         //this.inbound = new ArtemisDecoder(EnumProtocolDirection.IN);
         //new ServerConnectionInjector().inject();
-        new ChannelListener(this);
+        listener = new ChannelListener(this);
         System.out.println("[Artemis Test] Enabled Test Decoder");
-        System.out.println("[Artemis Test] Version: " + this.getDescription().getVersion());
-        System.out.println("[Artemis Test] Authors: " + Arrays.toString(this.getDescription().getAuthors().toArray()));
+;
     }
 
-    @Override
     public void onDisable() {
 
     }
