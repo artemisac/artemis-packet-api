@@ -12,8 +12,8 @@ public class ArtemisEnumProtocol_1_8 {
     @RequiredArgsConstructor
     @Getter
     public enum Handshake {
-        HANDSHAKING(0x00, EnumProtocolDirection.IN);
-        private final int id;
+        HANDSHAKING("PacketHandshakingInSetProtocol", EnumProtocolDirection.IN);
+        private final String id;
         private final EnumProtocolDirection direction;
     }
 
@@ -22,15 +22,15 @@ public class ArtemisEnumProtocol_1_8 {
 
         @Getter
         public enum Client {
-            KEEP_ALIVE(0x00, PacketPlayClientKeepAlive.class),
-            CHAT_MESSAGE(0x01, PacketPlayClientChat.class),
-            USE_ENTITY(0x02, PacketPlayClientUseEntity.class),
-            FLYING(0x03, PacketPlayClientFlying.class),
-            POSITION(0x04, PacketPlayClientFlying.PacketPlayClientPosition.class),
-            LOOK(0x05, PacketPlayClientFlying.PacketPlayClientLook.class),
-            POSITION_LOOK(0x06, PacketPlayClientFlying.PacketPlayClientPositionLook.class),
-            BLOCK_DIG(0x07, PacketPlayClientBlockDig.class),
-            BLOCK_PLACE(0x08, PacketPlayClientBlockPlace.class),
+            KEEP_ALIVE("PacketPlayInKeepAlive", PacketPlayClientKeepAlive.class),
+            CHAT_MESSAGE("PacketPlayInChat", PacketPlayClientChat.class),
+            USE_ENTITY("PacketPlayInUseEntity", PacketPlayClientUseEntity.class),
+            FLYING("PacketPlayInFlying", PacketPlayClientFlying.class),
+            POSITION("PacketPlayInFlying$PacketPlayInPosition", PacketPlayClientFlying.PacketPlayClientPosition.class),
+            LOOK("PacketPlayInFlying$PacketPlayInLook", PacketPlayClientFlying.PacketPlayClientLook.class),
+            POSITION_LOOK("PacketPlayInFlying$PacketPlayInPositionLook", PacketPlayClientFlying.PacketPlayClientPositionLook.class),
+            BLOCK_DIG("PacketPlayInBlockDig", PacketPlayClientBlockDig.class),
+            BLOCK_PLACE("PacketPlayInBlockPlace", PacketPlayClientBlockPlace.class),
             HELD_ITEM(0x09, PacketPlayClientHeldItemSlot.class),
             ANIMATION(0x0A, PacketPlayClientArmAnimation.class),
             ENTITY_ACTION(0x0B, PacketPlayClientEntityAction.class),
@@ -48,11 +48,11 @@ public class ArtemisEnumProtocol_1_8 {
             CUSTOM_PAYLOAD(0x17, PacketPlayClientCustomPayload.class),
             SPECTATE(0x18, PacketPlayClientSpectate.class),
             RESOURCE_PACK(0x19, PacketPlayClientResourcePackStatus.class);
-            private final int id;
+            private final String id;
             private final EnumProtocolDirection direction;
             private final Class<? extends Packet> clazz;
 
-            Client(int id, Class<? extends Packet> clazz) {
+            Client(String id, Class<? extends Packet> clazz) {
                 this.id = id;
                 this.direction = EnumProtocolDirection.IN;
                 this.clazz = clazz;

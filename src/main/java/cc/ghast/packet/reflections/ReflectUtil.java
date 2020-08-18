@@ -1,10 +1,11 @@
 package cc.ghast.packet.reflections;
 
+import cc.ghast.packet.protocol.EnumProtocolDirection;
+import cc.ghast.packet.wrapper.packet.Packet;
 import org.bukkit.Bukkit;
 
 import java.net.SocketAddress;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Ghast
@@ -40,6 +41,23 @@ public class ReflectUtil {
      */
     public static final FieldAccessor<SocketAddress> ADDRESS_FIELD = Reflection.getField(NETWORK_MANAGER_CLAZZ, SocketAddress.class, 0);
 
+
+    /*
+        Enum Protocol Class
+     */
+    public static final Class<?> ENUM_PROTOCOL_CLAZZ = Reflection.getMinecraftClass("EnumProtocol");
+    public static final Object[] ENUM_PROTOCOLS = ENUM_PROTOCOL_CLAZZ.getEnumConstants();
+    public static final FieldAccessor<Map> PACKET_MAP_FIELD = Reflection.getField(ENUM_PROTOCOL_CLAZZ, Map.class, 1);
+
+    /*
+        Enum Direction Class
+     */
+    public static final Class<?> ENUM_DIRECTION_CLAZZ = Reflection.getMinecraftClass("EnumProtocolDirection");
+
+    // ServerBound = [0] -> To server
+    // ClientBound = [1] -> To client
+    public static final Object[] DIRECTIONS = ENUM_DIRECTION_CLAZZ.getEnumConstants();
+
     public static Object getChannel(UUID uuid, String address){
         List futures = NETWORK_MANAGERS_FIELD.get(SERVER_CONNECTION);
 
@@ -53,5 +71,23 @@ public class ReflectUtil {
 
     private static String parseAddress(SocketAddress address) {
         return address.toString().split("/")[1].split(":")[0];
+    }
+
+    public static Map<EnumProtocolDirection, Map<Integer, Class<? extends Packet<?>>>> getPacketMap(int id) {
+        Map<EnumProtocolDirection, Map<Integer, Class<? extends Packet<?>>>> map = new HashMap<>();
+
+        Object enumProtocol = ENUM_PROTOCOLS[id];
+        for (int i = 0; i < EnumProtocolDirection.values().length; i++) {
+            Map<Integer, Class<? extends Packet<?>>> packetMap = new HashMap<>();
+
+            Map map1 = PACKET_MAP_FIELD.get(enumProtocol);
+
+            map1.forEach((enumDirection, biMap) -> {
+                Object enumVar = enumDirection;
+
+                //enumVar.
+            });
+
+        }
     }
 }
