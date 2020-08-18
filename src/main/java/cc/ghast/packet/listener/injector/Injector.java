@@ -1,11 +1,7 @@
 package cc.ghast.packet.listener.injector;
 
 import cc.ghast.packet.nms.ProtocolVersion;
-import cc.ghast.packet.codec.ArtemisDecoder;
 import cc.ghast.packet.profile.Profile;
-import cc.ghast.packet.protocol.EnumProtocolDirection;
-import cc.ghast.packet.utils.HookUtil;
-import io.netty.channel.Channel;
 import lombok.SneakyThrows;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -18,6 +14,11 @@ import java.util.WeakHashMap;
 
 public interface Injector {
 
+    static Injector build() {
+        return ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)
+                ? new InjectorModern() : new InjectorLegacy();
+    }
+
     @SneakyThrows
     void inject(AsyncPlayerPreLoginEvent event);
 
@@ -26,11 +27,7 @@ public interface Injector {
 
     Map<UUID, Profile> profiles = new WeakHashMap<>();
 
-    default void inject(Channel channel, UUID uuid, InetAddress inetAddress) {
-        Profile profile = new Profile(uuid, inetAddress, ProtocolVersion.getGameVersion(), channel);
-        channel.pipeline().addBefore(HookUtil.getHookBehind(), "artemis_client", new ArtemisDecoder(profile));
-        profiles.put(uuid, profile);
-    }
+    void inject(Object channel, UUID uuid, InetAddress inetAddress);
 
     default Profile getProfile(UUID uuid) {
         return profiles.get(uuid);

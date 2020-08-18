@@ -1,6 +1,7 @@
 package cc.ghast.packet.buffer.types.java;
 
 import cc.ghast.packet.buffer.BufConverter;
+import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -14,12 +15,12 @@ public class ByteConverter extends BufConverter<Byte> {
     }
 
     @Override
-    public void write(ByteBuf buffer, Byte value) {
+    public void write(MutableByteBuf buffer, Byte value) {
         buffer.writeByte(value);
     }
 
     @Override
-    public Byte read(ByteBuf buffer, Object... args) {
+    public Byte read(MutableByteBuf buffer, Object... args) {
         return buffer.readByte();
     }
 }

@@ -2,8 +2,6 @@ package cc.ghast.packet.listener;
 
 import cc.ghast.packet.PacketManager;
 import cc.ghast.packet.listener.injector.Injector;
-import cc.ghast.packet.listener.injector.v1_8_R3.Injector_v1_8_R3;
-import cc.ghast.packet.nms.ProtocolVersion;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -25,7 +23,7 @@ public class ChannelListener implements Listener {
     public ChannelListener(PacketManager packetManager) {
         this.packetManager = packetManager;
         Bukkit.getPluginManager().registerEvents(this, packetManager.getPlugin());
-        this.injector = findInjector();
+        this.injector = Injector.build();
     }
 
     @EventHandler
@@ -37,13 +35,5 @@ public class ChannelListener implements Listener {
     public void onLeave(PlayerQuitEvent e) {
         injector.uninject(e);
     }
-
-    private Injector findInjector() {
-        switch (ProtocolVersion.getGameVersion()) {
-            case V1_8_9: return new Injector_v1_8_R3();
-            default: return null;
-        }
-    }
-
 
 }

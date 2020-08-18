@@ -1,5 +1,6 @@
 package cc.ghast.packet.buffer;
 
+import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ public abstract class BufConverter<T> {
         return name;
     }
 
-    public abstract void write(ByteBuf buffer, T value) throws IOException;
+    public abstract void write(MutableByteBuf buffer, T value) throws IOException;
 
-    public abstract T read(ByteBuf buffer, Object... args) throws IOException;
+    public abstract T read(MutableByteBuf buffer, Object... args) throws IOException;
 }

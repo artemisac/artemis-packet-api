@@ -1,6 +1,7 @@
 package cc.ghast.packet.buffer.types.exclusive;
 
 import cc.ghast.packet.buffer.BufConverter;
+import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -13,7 +14,7 @@ public class VarLongConverter extends BufConverter<Long> {
     }
 
     @Override
-    public void write(ByteBuf buffer, Long value) {
+    public void write(MutableByteBuf buffer, Long value) {
         while ((value & -128L) != 0L) {
             buffer.writeByte((int) (value & 127L) | 128);
             value >>>= 7;
@@ -23,7 +24,7 @@ public class VarLongConverter extends BufConverter<Long> {
     }
 
     @Override
-    public Long read(ByteBuf buffer, Object... args) {
+    public Long read(MutableByteBuf buffer, Object... args) {
         long i = 0L;
         int j = 0;
 

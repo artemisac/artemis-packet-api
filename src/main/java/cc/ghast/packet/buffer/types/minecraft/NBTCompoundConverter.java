@@ -1,6 +1,7 @@
 package cc.ghast.packet.buffer.types.minecraft;
 
 import cc.ghast.packet.buffer.BufConverter;
+import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import com.github.steveice10.opennbt.NBTIO;
 import com.github.steveice10.opennbt.tag.builtin.CompoundTag;
 import com.google.common.base.Preconditions;
@@ -22,17 +23,17 @@ public class NBTCompoundConverter extends BufConverter<CompoundTag> {
     }
 
     @Override
-    public void write(ByteBuf buffer, CompoundTag value) throws IOException {
+    public void write(MutableByteBuf buffer, CompoundTag value) throws IOException {
         if (value == null) {
             buffer.writeByte(0);
         } else {
-            ByteBufOutputStream bytebufStream = new ByteBufOutputStream(buffer);
+            ByteBufOutputStream bytebufStream = new ByteBufOutputStream((ByteBuf) buffer.getParent());
             NBTIO.writeTag((DataOutput) bytebufStream, value);
         }
     }
 
     @Override
-    public CompoundTag read(ByteBuf buffer, Object... args) throws IOException {
+    public CompoundTag read(MutableByteBuf buffer, Object... args) throws IOException {
         Preconditions.checkArgument(buffer.readableBytes() <= 2097152,
                 "Cannot read NBT (got %s bytes)", buffer.readableBytes());
         int readerIndex = buffer.readerIndex();
@@ -41,7 +42,7 @@ public class NBTCompoundConverter extends BufConverter<CompoundTag> {
             return null;
         } else {
             buffer.readerIndex(readerIndex);
-            return (CompoundTag) NBTIO.readTag((DataInput) new ByteBufInputStream(buffer));
+            return (CompoundTag) NBTIO.readTag((DataInput) new ByteBufInputStream((ByteBuf) buffer.getParent()));
         }
     }
 }

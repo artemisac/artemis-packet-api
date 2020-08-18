@@ -1,6 +1,7 @@
 package cc.ghast.packet.buffer.types.java;
 
 import cc.ghast.packet.buffer.BufConverter;
+import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -14,12 +15,12 @@ public class LongConverter extends BufConverter<Long> {
     }
 
     @Override
-    public void write(ByteBuf buffer, Long value) {
+    public void write(MutableByteBuf buffer, Long value) {
         buffer.writeLong(value);
     }
 
     @Override
-    public Long read(ByteBuf buffer, Object... args) {
+    public Long read(MutableByteBuf buffer, Object... args) {
         return buffer.readLong();
     }
 }

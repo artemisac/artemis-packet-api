@@ -2,6 +2,7 @@ package cc.ghast.packet.buffer.types.minecraft;
 
 import cc.ghast.packet.buffer.BufConverter;
 import cc.ghast.packet.wrapper.bukkit.BlockPosition;
+import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import io.netty.buffer.ByteBuf;
 
 public class LongLocationConverter extends BufConverter<BlockPosition> {
@@ -12,7 +13,7 @@ public class LongLocationConverter extends BufConverter<BlockPosition> {
     }
 
     @Override
-    public void write(ByteBuf buffer, BlockPosition value) {
+    public void write(MutableByteBuf buffer, BlockPosition value) {
         long var = ((long) value.getX() & BlockPosition.h) << BlockPosition.g
                 | ((long) value.getY() & BlockPosition.i) << BlockPosition.f
                 | ((long) value.getZ() & BlockPosition.j) << 0;
@@ -21,7 +22,7 @@ public class LongLocationConverter extends BufConverter<BlockPosition> {
     }
 
     @Override
-    public BlockPosition read(ByteBuf buffer, Object... args) {
+    public BlockPosition read(MutableByteBuf buffer, Object... args) {
         long i = buffer.readLong();
         int j = (int) (i << 64 - BlockPosition.g - BlockPosition.c >> 64 - BlockPosition.c);
         int k = (int) (i << 64 - BlockPosition.f - BlockPosition.e >> 64 - BlockPosition.e);

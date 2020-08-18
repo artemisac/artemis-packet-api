@@ -1,26 +1,24 @@
 package cc.ghast.packet.codec;
 
 import cc.ghast.packet.PacketManager;
-import cc.ghast.packet.exceptions.IncompatiblePipelineException;
-import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.buffer.types.Converters;
+import cc.ghast.packet.exceptions.IncompatiblePipelineException;
+import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.profile.Profile;
+import cc.ghast.packet.protocol.EnumProtocol;
+import cc.ghast.packet.protocol.EnumProtocolDirection;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.Packet;
-import cc.ghast.packet.protocol.EnumProtocol;
-import cc.ghast.packet.protocol.EnumProtocolDirection;
 import cc.ghast.packet.wrapper.packet.handshake.PacketHandshakeClientSetProtocol;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelDuplexHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.DecoderException;
+import net.minecraft.util.io.netty.buffer.ByteBuf;
+import net.minecraft.util.io.netty.buffer.Unpooled;
+import net.minecraft.util.io.netty.channel.ChannelDuplexHandler;
+import net.minecraft.util.io.netty.channel.ChannelHandlerContext;
+import net.minecraft.util.io.netty.handler.codec.DecoderException;
 
-import java.net.InetAddress;
 import java.util.Arrays;
-import java.util.UUID;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
@@ -28,7 +26,7 @@ import java.util.zip.Inflater;
  * @author Ghast
  * @since 24-Apr-20
  */
-public class ArtemisDecoder extends ChannelDuplexHandler {
+public class ArtemisDecoderLegacy extends ChannelDuplexHandler {
 
     private static final boolean debug = false;
 
@@ -36,7 +34,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
     private final Inflater inflater;
     private EnumProtocol protocol;
 
-    public ArtemisDecoder(Profile profile) {
+    public ArtemisDecoderLegacy(Profile profile) {
         this.profile = profile;
         this.inflater = new Inflater();
         this.protocol = EnumProtocol.HANDSHAKE;

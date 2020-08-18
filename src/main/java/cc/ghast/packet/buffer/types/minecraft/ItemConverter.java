@@ -3,6 +3,7 @@ package cc.ghast.packet.buffer.types.minecraft;
 import cc.ghast.packet.buffer.BufConverter;
 import cc.ghast.packet.buffer.types.Converters;
 import cc.ghast.packet.wrapper.nbt.WrappedItem;
+import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import com.github.steveice10.opennbt.tag.builtin.CompoundTag;
 import io.netty.buffer.ByteBuf;
 
@@ -19,7 +20,7 @@ public class ItemConverter extends BufConverter<WrappedItem> {
     }
 
     @Override
-    public void write(ByteBuf buffer, WrappedItem value) throws IOException {
+    public void write(MutableByteBuf buffer, WrappedItem value) throws IOException {
         if (value == null || value.getId() == -1) {
             buffer.writeShort(-1);
         } else {
@@ -30,7 +31,7 @@ public class ItemConverter extends BufConverter<WrappedItem> {
     }
 
     @Override
-    public WrappedItem read(ByteBuf buffer, Object... args) throws IOException {
+    public WrappedItem read(MutableByteBuf buffer, Object... args) throws IOException {
         short id = buffer.readShort();
         byte amount = buffer.readByte();
         CompoundTag tag = Converters.NBT.read(buffer);

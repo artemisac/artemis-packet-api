@@ -2,6 +2,7 @@ package cc.ghast.packet.buffer.types.java;
 
 import cc.ghast.packet.buffer.BufConverter;
 import cc.ghast.packet.buffer.types.Converters;
+import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import com.google.common.base.Preconditions;
 import io.netty.buffer.ByteBuf;
 
@@ -21,7 +22,7 @@ public class StringConverter extends BufConverter<String> {
             .getBytes(StandardCharsets.UTF_8).length;
 
     @Override
-    public void write(ByteBuf buffer, String value) {
+    public void write(MutableByteBuf buffer, String value) {
         Preconditions.checkArgument(value.length() <= Short.MAX_VALUE,
                 "Cannot send string longer than Short.MAX_VALUE (got %s characters)", value.length());
 
@@ -31,7 +32,7 @@ public class StringConverter extends BufConverter<String> {
     }
 
     @Override
-    public String read(ByteBuf buffer, Object... args) {
+    public String read(MutableByteBuf buffer, Object... args) {
         int len = Converters.VAR_INT.read(buffer);
 
         Preconditions.checkArgument(len <= Short.MAX_VALUE * maxJavaCharUtf8Length,
