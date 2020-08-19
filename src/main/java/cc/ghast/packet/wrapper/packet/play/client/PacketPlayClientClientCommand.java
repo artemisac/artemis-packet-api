@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 public class PacketPlayClientClientCommand extends Packet<ClientPacket> {
     public PacketPlayClientClientCommand(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayInClientCommand", player, version);
     }
 
     private ClientCommand command;

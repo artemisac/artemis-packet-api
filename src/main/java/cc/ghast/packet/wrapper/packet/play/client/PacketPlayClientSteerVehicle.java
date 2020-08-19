@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 public class PacketPlayClientSteerVehicle extends Packet<ClientPacket> {
     public PacketPlayClientSteerVehicle(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayInSteerVehicle", player, version);
     }
 
     private float moveForward;

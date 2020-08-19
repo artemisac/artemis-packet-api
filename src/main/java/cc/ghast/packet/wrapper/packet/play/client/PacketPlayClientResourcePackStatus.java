@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 public class PacketPlayClientResourcePackStatus extends Packet<ClientPacket> {
     public PacketPlayClientResourcePackStatus(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayInResourcePackStatus", player, version);
     }
 
     private String url;

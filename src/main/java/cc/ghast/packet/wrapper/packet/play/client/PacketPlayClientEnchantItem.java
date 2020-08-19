@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class PacketPlayClientEnchantItem extends Packet<ClientPacket> {
     public PacketPlayClientEnchantItem(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayInEnchantItem", player, version);
     }
 
     @Override

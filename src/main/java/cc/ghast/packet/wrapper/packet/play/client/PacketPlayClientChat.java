@@ -13,7 +13,7 @@ import java.util.UUID;
 public class PacketPlayClientChat extends Packet<ClientPacket> {
 
     public PacketPlayClientChat(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayInChat", player, version);
     }
 
     private String message;

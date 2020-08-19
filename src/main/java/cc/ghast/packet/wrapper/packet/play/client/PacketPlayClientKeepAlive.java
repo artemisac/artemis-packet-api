@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 public class PacketPlayClientKeepAlive extends Packet<ClientPacket> {
     public PacketPlayClientKeepAlive(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayInKeepAlive", player, version);
     }
 
     private int id;

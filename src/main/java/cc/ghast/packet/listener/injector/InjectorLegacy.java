@@ -27,7 +27,10 @@ public class InjectorLegacy implements Injector {
 
     @Override
     public void uninject(PlayerQuitEvent event) {
-
+        Channel channel = (Channel) profiles.get(event.getPlayer().getUniqueId()).getChannel();
+        if (channel.pipeline().get("artemis_client") != null) {
+            channel.pipeline().remove("artemis_client");
+        }
     }
 
     @Override

@@ -16,7 +16,7 @@ import java.util.UUID;
 @Getter
 public class PacketPlayClientCustomPayload extends Packet<ClientPacket> {
     public PacketPlayClientCustomPayload(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayInCustomPayload", player, version);
     }
 
     private String header;

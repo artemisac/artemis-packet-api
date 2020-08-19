@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 public class PacketPlayClientSettings extends Packet<ClientPacket> {
     public PacketPlayClientSettings(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayInSettings", player, version);
     }
 
     private String locale;

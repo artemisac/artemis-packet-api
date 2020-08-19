@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 public class PacketPlayClientHeldItemSlot extends Packet<ClientPacket> {
     public PacketPlayClientHeldItemSlot(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayInHeldItemSlot", player, version);
     }
 
     private short slot;

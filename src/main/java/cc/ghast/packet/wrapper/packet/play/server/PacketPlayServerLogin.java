@@ -5,6 +5,7 @@ import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.wrapper.bukkit.Dimension;
 import cc.ghast.packet.wrapper.bukkit.GameMode;
 import cc.ghast.packet.wrapper.packet.Packet;
+import cc.ghast.packet.wrapper.packet.ServerPacket;
 import lombok.Getter;
 import org.bukkit.Difficulty;
 import org.bukkit.WorldType;
@@ -12,9 +13,9 @@ import org.bukkit.WorldType;
 import java.util.UUID;
 
 @Getter
-public class PacketPlayServerLogin extends Packet {
+public class PacketPlayServerLogin extends Packet<ServerPacket> {
     public PacketPlayServerLogin(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayOutLogin", player, version);
     }
 
     private int entityId;

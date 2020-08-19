@@ -12,7 +12,7 @@ import java.util.UUID;
 @Getter
 public class PacketPlayClientTabComplete extends Packet<ClientPacket> {
     public PacketPlayClientTabComplete(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayInTabComplete", player, version);
     }
 
     private String value;

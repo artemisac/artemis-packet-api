@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 public class PacketPlayClientCloseWindow extends Packet<ClientPacket> {
     public PacketPlayClientCloseWindow(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayInCloseWindow", player, version);
     }
 
     private int windowId;

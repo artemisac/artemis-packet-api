@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 public class PacketPlayClientWindowClick extends Packet<ClientPacket> {
     public PacketPlayClientWindowClick(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayInWindowClick", player, version);
     }
 
     private byte windowId;

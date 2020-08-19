@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class PacketPlayClientArmAnimation extends Packet<ClientPacket> {
     public PacketPlayClientArmAnimation(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayInArmAnimation", player, version);
     }
 
     @Override

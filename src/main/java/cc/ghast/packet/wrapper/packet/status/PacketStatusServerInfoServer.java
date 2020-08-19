@@ -3,13 +3,14 @@ package cc.ghast.packet.wrapper.packet.status;
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.wrapper.packet.Packet;
+import cc.ghast.packet.wrapper.packet.ServerPacket;
 
 import java.util.UUID;
 
-public class PacketStatusServerInfoServer extends Packet {
+public class PacketStatusServerInfoServer extends Packet<ServerPacket> {
 
     public PacketStatusServerInfoServer(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketStatusOutInfoServer", player, version);
     }
 
 

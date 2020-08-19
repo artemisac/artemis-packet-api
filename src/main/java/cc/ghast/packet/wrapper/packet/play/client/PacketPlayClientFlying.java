@@ -13,7 +13,12 @@ public class PacketPlayClientFlying extends Packet<ClientPacket> {
 
 
     public PacketPlayClientFlying(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayInFlying", player, version);
+    }
+
+    public PacketPlayClientFlying(String sub, UUID player, ProtocolVersion version) {
+        super((ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8) ? "" : "PacketPlayInFlying$")
+                + "PacketPlayIn" + sub, player, version);
     }
 
     private double x;
@@ -35,7 +40,7 @@ public class PacketPlayClientFlying extends Packet<ClientPacket> {
     public static class PacketPlayClientPosition extends PacketPlayClientFlying {
 
         public PacketPlayClientPosition(UUID player, ProtocolVersion version) {
-            super(player, version);
+            super("Position", player, version);
         }
 
         @Override
@@ -54,7 +59,7 @@ public class PacketPlayClientFlying extends Packet<ClientPacket> {
 
 
         public PacketPlayClientLook(UUID player, ProtocolVersion version) {
-            super(player, version);
+            super("Look", player, version);
         }
 
         @Override
@@ -71,7 +76,7 @@ public class PacketPlayClientFlying extends Packet<ClientPacket> {
     public static class PacketPlayClientPositionLook extends PacketPlayClientFlying {
 
         public PacketPlayClientPositionLook(UUID player, ProtocolVersion version) {
-            super(player, version);
+            super("PositionLook", player, version);
         }
 
         @Override

@@ -8,7 +8,7 @@ import cc.ghast.packet.buffer.types.java.*;
 import cc.ghast.packet.buffer.types.minecraft.ItemConverter;
 import cc.ghast.packet.buffer.types.minecraft.LongLocationConverter;
 import cc.ghast.packet.buffer.types.minecraft.NBTCompoundConverter;
-import cc.ghast.packet.protocol.EnumProtocol;
+import cc.ghast.packet.protocol.DeprecatedEnumProtocol;
 import io.netty.util.AttributeKey;
 
 /**
@@ -16,7 +16,7 @@ import io.netty.util.AttributeKey;
  * @since 09-May-20
  */
 public class Converters {
-    public static final AttributeKey<EnumProtocol> PROTOCOL_ATTRIBUTE = AttributeKey.valueOf("artemis_protocol");
+    public static final AttributeKey<DeprecatedEnumProtocol> PROTOCOL_ATTRIBUTE = AttributeKey.valueOf("artemis_protocol");
     public static final ByteConverter BYTE = new ByteConverter();
     public static final BytesConverter BYTES = new BytesConverter();
     public static final DoubleConverter DOUBLE = new DoubleConverter();

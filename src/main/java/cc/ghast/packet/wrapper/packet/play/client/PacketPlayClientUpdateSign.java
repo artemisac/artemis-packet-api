@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class PacketPlayClientUpdateSign extends Packet<ClientPacket> {
     public PacketPlayClientUpdateSign(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayInUpdateSign", player, version);
     }
 
     @Override

@@ -6,7 +6,7 @@ import cc.ghast.packet.buffer.types.Converters;
 import cc.ghast.packet.exceptions.IncompatiblePipelineException;
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.profile.Profile;
-import cc.ghast.packet.protocol.EnumProtocol;
+import cc.ghast.packet.protocol.DeprecatedEnumProtocol;
 import cc.ghast.packet.protocol.EnumProtocolDirection;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
@@ -32,12 +32,12 @@ public class ArtemisDecoderLegacy extends ChannelDuplexHandler {
 
     private final Profile profile;
     private final Inflater inflater;
-    private EnumProtocol protocol;
+    private DeprecatedEnumProtocol protocol;
 
     public ArtemisDecoderLegacy(Profile profile) {
         this.profile = profile;
         this.inflater = new Inflater();
-        this.protocol = EnumProtocol.HANDSHAKE;
+        this.protocol = DeprecatedEnumProtocol.HANDSHAKE;
     }
 
 
@@ -148,6 +148,6 @@ public class ArtemisDecoderLegacy extends ChannelDuplexHandler {
 
     private void handleHandshake(PacketHandshakeClientSetProtocol handshake){
         profile.setVersion(ProtocolVersion.getVersion(handshake.getProtocolVersion()));
-        protocol = EnumProtocol.PLAY;
+        protocol = DeprecatedEnumProtocol.PLAY;
     }
 }

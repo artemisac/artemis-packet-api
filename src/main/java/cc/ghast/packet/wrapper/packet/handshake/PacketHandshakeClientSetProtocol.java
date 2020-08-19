@@ -9,9 +9,9 @@ import lombok.Getter;
 import java.util.UUID;
 
 @Getter
-public class PacketHandshakeClientSetProtocol extends Packet {
+public class PacketHandshakeClientSetProtocol extends Packet<ServerPacket> {
     public PacketHandshakeClientSetProtocol(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketHandshakingInSetProtocol", player, version);
     }
 
     private int protocolVersion;

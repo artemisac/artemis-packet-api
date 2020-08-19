@@ -13,7 +13,7 @@ import java.util.UUID;
 @Getter
 public class PacketPlayClientSetCreativeSlot extends Packet<ClientPacket> {
     public PacketPlayClientSetCreativeSlot(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayInSetCreativeSlot", player, version);
     }
 
     private int slot;

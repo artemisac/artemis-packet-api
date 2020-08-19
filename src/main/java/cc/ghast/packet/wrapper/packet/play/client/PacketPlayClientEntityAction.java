@@ -10,7 +10,7 @@ import java.util.UUID;
 @Getter
 public class PacketPlayClientEntityAction extends Packet<ClientPacket> {
     public PacketPlayClientEntityAction(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayInEntityAction", player, version);
     }
 
     private int entityId;

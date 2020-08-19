@@ -17,7 +17,7 @@ import java.util.UUID;
 @Getter
 public class PacketPlayClientBlockPlace extends Packet<ClientPacket> {
     public PacketPlayClientBlockPlace(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayInBlockPlace", player, version);
     }
 
     private EnumDirection direction;
@@ -47,14 +47,14 @@ public class PacketPlayClientBlockPlace extends Packet<ClientPacket> {
             // 1.8 - 1.8.8 version range
 
             // Position
-            this.position = Converters.LOCATION_LONG.read(byteBuf);
+            this.position = Converters.LOCATION_LONG.read(byteBuf.getByteBuf());
 
             // Direction
             this.direction = EnumDirection.values()[byteBuf.readUnsignedByte()];
 
             // Item
             try {
-                this.itemNMS = Converters.ITEM.read(byteBuf);
+                this.itemNMS = Converters.ITEM.read(byteBuf.getByteBuf());
             } catch (IOException e){
                 e.printStackTrace();
             }

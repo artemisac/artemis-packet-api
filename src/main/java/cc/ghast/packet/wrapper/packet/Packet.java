@@ -16,8 +16,10 @@ public abstract class Packet<D> {
     protected final ProtocolVersion version;
     protected final long timestamp;
     protected boolean cancelled;
+    protected final String realName;
 
-    public Packet(UUID player, ProtocolVersion version) {
+    public Packet(String realName, UUID player, ProtocolVersion version) {
+        this.realName = realName;
         this.uuid = player;
         this.version = version;
         this.timestamp = System.currentTimeMillis();

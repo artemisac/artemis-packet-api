@@ -14,7 +14,7 @@ import java.util.UUID;
 @Getter
 public class PacketPlayClientBlockDig extends Packet<ClientPacket> {
     public PacketPlayClientBlockDig(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayInBlockDig", player, version);
     }
 
     private DigType type;

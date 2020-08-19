@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 public class PacketPlayClientAbilities extends Packet<ClientPacket> {
     public PacketPlayClientAbilities(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPLayInAbilities", player, version);
     }
 
     private boolean invulnerable;

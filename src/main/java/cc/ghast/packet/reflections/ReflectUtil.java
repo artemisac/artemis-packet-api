@@ -1,5 +1,6 @@
 package cc.ghast.packet.reflections;
 
+import cc.ghast.packet.protocol.ArtemisEnumProtocol;
 import cc.ghast.packet.protocol.EnumProtocolDirection;
 import cc.ghast.packet.wrapper.packet.Packet;
 import org.bukkit.Bukkit;
@@ -45,7 +46,7 @@ public class ReflectUtil {
     /*
         Enum Protocol Class
      */
-    public static final Class<?> ENUM_PROTOCOL_CLAZZ = Reflection.getMinecraftClass("EnumProtocol");
+    public static final Class<?> ENUM_PROTOCOL_CLAZZ = Reflection.getMinecraftClass("DeprecatedEnumProtocol");
     public static final Object[] ENUM_PROTOCOLS = ENUM_PROTOCOL_CLAZZ.getEnumConstants();
     public static final FieldAccessor<Map> PACKET_MAP_FIELD = Reflection.getField(ENUM_PROTOCOL_CLAZZ, Map.class, 1);
 
@@ -57,6 +58,8 @@ public class ReflectUtil {
     // ServerBound = [0] -> To server
     // ClientBound = [1] -> To client
     public static final Object[] DIRECTIONS = ENUM_DIRECTION_CLAZZ.getEnumConstants();
+
+    public static final FieldAccessor<Integer> ENUM_DIRECTION_ORDINAL_FIELD = Reflection.getField(ENUM_DIRECTION_CLAZZ, "ordinal", int.class);
 
     public static Object getChannel(UUID uuid, String address){
         List futures = NETWORK_MANAGERS_FIELD.get(SERVER_CONNECTION);
@@ -73,21 +76,46 @@ public class ReflectUtil {
         return address.toString().split("/")[1].split(":")[0];
     }
 
-    public static Map<EnumProtocolDirection, Map<Integer, Class<? extends Packet<?>>>> getPacketMap(int id) {
+    public static Map<EnumProtocolDirection, Map<Integer, Class<? extends Packet<?>>>> getPacketMap(ArtemisEnumProtocol id) {
+        // Create the map
         Map<EnumProtocolDirection, Map<Integer, Class<? extends Packet<?>>>> map = new HashMap<>();
 
-        Object enumProtocol = ENUM_PROTOCOLS[id];
+        // Get the map from the id to match the Spigot enum protocol
+        Object enumProtocol = ENUM_PROTOCOLS[id.ordinal()];
+
+        // For every direction, we'll seek to getting all the values from it's map
         for (int i = 0; i < EnumProtocolDirection.values().length; i++) {
+
+            EnumProtocolDirection direction = EnumProtocolDirection.values()[i];
+
+            // Create a new map where we'll store the values
             Map<Integer, Class<? extends Packet<?>>> packetMap = new HashMap<>();
 
+            // Get the map from the packet map
             Map map1 = PACKET_MAP_FIELD.get(enumProtocol);
 
-            map1.forEach((enumDirection, biMap) -> {
-                Object enumVar = enumDirection;
+            // For every value iterated, get the integer and the clazz and match the name
+            map1.forEach((packetId, clazz) -> {
+                // Grab the packet ID
+                int packet = (int) packetId;
 
-                //enumVar.
+                // Grab the class
+                Class claz = (Class) clazz;
+
+                // Convert name to string. This won't unfortunately work with obfuscated spigots. If
+                // You do obfuscate your spigots and rename the packets, it isn't my problem anymore.
+                // This API already supports for itself to be obfuscated. Don't be too needy >:(
+                String packetName = claz.getSimpleName();
+
+                // Add it to the map
+                packetMap.put(packet, id.getPacketClass(direction, packetName));
             });
 
+            // Put the packet map in itself
+            map.put(direction, packetMap);
         }
+
+        // Return the map
+        return map;
     }
 }

@@ -3,12 +3,13 @@ package cc.ghast.packet.wrapper.packet.play.server;
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.wrapper.packet.Packet;
+import cc.ghast.packet.wrapper.packet.ServerPacket;
 
 import java.util.UUID;
 
-public class PacketPlayServerPosition extends Packet {
+public class PacketPlayServerPosition extends Packet<ServerPacket> {
     public PacketPlayServerPosition(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayOutPosition", player, version);
     }
 
     @Override

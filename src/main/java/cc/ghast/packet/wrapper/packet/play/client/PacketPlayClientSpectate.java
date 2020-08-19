@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 public class PacketPlayClientSpectate extends Packet<ClientPacket> {
     public PacketPlayClientSpectate(UUID player, ProtocolVersion version) {
-        super(player, version);
+        super("PacketPlayInSpectate", player, version);
     }
 
     private UUID entityId;
