@@ -1,5 +1,5 @@
 package cc.ghast.packet.protocol;
 
-public enum EnumProtocolDirection {
+public enum ProtocolDirection {
     IN, OUT;
 }

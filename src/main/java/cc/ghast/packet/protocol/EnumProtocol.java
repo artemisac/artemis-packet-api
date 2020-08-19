@@ -6,5 +6,5 @@ import cc.ghast.packet.wrapper.packet.Packet;
 import java.util.UUID;
 
 public interface EnumProtocol {
-    Packet<?> getPacket(EnumProtocolDirection direction, int id, UUID playerId, ProtocolVersion version);
+    Packet<?> getPacket(ProtocolDirection direction, int id, UUID playerId, ProtocolVersion version);
 }

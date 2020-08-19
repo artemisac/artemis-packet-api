@@ -25,7 +25,7 @@ public enum PacketManager {
     private ChannelListener listener;
 
     public void init() {
-        //this.inbound = new ArtemisDecoder(EnumProtocolDirection.IN);
+        //this.inbound = new ArtemisDecoder(ProtocolDirection.IN);
         //new ServerConnectionInjector().inject();
         listener = new ChannelListener(this);
         System.out.println("[Artemis Test] Enabled Test Decoder");

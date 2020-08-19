@@ -6,11 +6,11 @@ import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.buffer.types.Converters;
 import cc.ghast.packet.profile.Profile;
-import cc.ghast.packet.protocol.DeprecatedEnumProtocol;
+import cc.ghast.packet.protocol.EnumProtocolLegacy;
+import cc.ghast.packet.protocol.ProtocolDirection;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.Packet;
-import cc.ghast.packet.protocol.EnumProtocolDirection;
 import cc.ghast.packet.wrapper.packet.handshake.PacketHandshakeClientSetProtocol;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -32,12 +32,12 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
     private final Profile profile;
     private final Inflater inflater;
-    private DeprecatedEnumProtocol protocol;
+    private EnumProtocolLegacy protocol;
 
     public ArtemisDecoder(Profile profile) {
         this.profile = profile;
         this.inflater = new Inflater();
-        this.protocol = DeprecatedEnumProtocol.HANDSHAKE;
+        this.protocol = EnumProtocolLegacy.HANDSHAKE;
     }
 
 
@@ -84,7 +84,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
             }
 
             // Collect the packet from the enum map. This needs to be rewritten for better accuracy tho
-            Packet<ClientPacket> packet = protocol.getPacket(EnumProtocolDirection.IN, id, profile.getUuid(), profile.getVersion());
+            Packet<?> packet = protocol.getPacket(ProtocolDirection.IN, id, profile.getUuid(), profile.getVersion());
             packet.handle(new ProtocolByteBuf(in));
 
             // Handle and collect the handshake
@@ -147,6 +147,6 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
     private void handleHandshake(PacketHandshakeClientSetProtocol handshake){
         profile.setVersion(ProtocolVersion.getVersion(handshake.getProtocolVersion()));
-        protocol = DeprecatedEnumProtocol.PLAY;
+        protocol = EnumProtocolLegacy.PLAY;
     }
 }

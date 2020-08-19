@@ -1,7 +1,7 @@
 package cc.ghast.packet.reflections;
 
-import cc.ghast.packet.protocol.ArtemisEnumProtocol;
-import cc.ghast.packet.protocol.EnumProtocolDirection;
+import cc.ghast.packet.protocol.EnumProtocolCurrent;
+import cc.ghast.packet.protocol.ProtocolDirection;
 import cc.ghast.packet.wrapper.packet.Packet;
 import org.bukkit.Bukkit;
 
@@ -46,14 +46,14 @@ public class ReflectUtil {
     /*
         Enum Protocol Class
      */
-    public static final Class<?> ENUM_PROTOCOL_CLAZZ = Reflection.getMinecraftClass("DeprecatedEnumProtocol");
+    public static final Class<?> ENUM_PROTOCOL_CLAZZ = Reflection.getMinecraftClass("EnumProtocolLegacy");
     public static final Object[] ENUM_PROTOCOLS = ENUM_PROTOCOL_CLAZZ.getEnumConstants();
     public static final FieldAccessor<Map> PACKET_MAP_FIELD = Reflection.getField(ENUM_PROTOCOL_CLAZZ, Map.class, 1);
 
     /*
         Enum Direction Class
      */
-    public static final Class<?> ENUM_DIRECTION_CLAZZ = Reflection.getMinecraftClass("EnumProtocolDirection");
+    public static final Class<?> ENUM_DIRECTION_CLAZZ = Reflection.getMinecraftClass("ProtocolDirection");
 
     // ServerBound = [0] -> To server
     // ClientBound = [1] -> To client
@@ -76,17 +76,17 @@ public class ReflectUtil {
         return address.toString().split("/")[1].split(":")[0];
     }
 
-    public static Map<EnumProtocolDirection, Map<Integer, Class<? extends Packet<?>>>> getPacketMap(ArtemisEnumProtocol id) {
+    public static Map<ProtocolDirection, Map<Integer, Class<? extends Packet<?>>>> getPacketMap(EnumProtocolCurrent id) {
         // Create the map
-        Map<EnumProtocolDirection, Map<Integer, Class<? extends Packet<?>>>> map = new HashMap<>();
+        Map<ProtocolDirection, Map<Integer, Class<? extends Packet<?>>>> map = new HashMap<>();
 
         // Get the map from the id to match the Spigot enum protocol
         Object enumProtocol = ENUM_PROTOCOLS[id.ordinal()];
 
         // For every direction, we'll seek to getting all the values from it's map
-        for (int i = 0; i < EnumProtocolDirection.values().length; i++) {
+        for (int i = 0; i < ProtocolDirection.values().length; i++) {
 
-            EnumProtocolDirection direction = EnumProtocolDirection.values()[i];
+            ProtocolDirection direction = ProtocolDirection.values()[i];
 
             // Create a new map where we'll store the values
             Map<Integer, Class<? extends Packet<?>>> packetMap = new HashMap<>();

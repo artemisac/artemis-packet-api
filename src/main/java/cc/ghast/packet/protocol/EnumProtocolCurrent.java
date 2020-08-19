@@ -25,7 +25,7 @@ import java.util.UUID;
  */
 
 @Getter
-public enum ArtemisEnumProtocol implements EnumProtocol {
+public enum EnumProtocolCurrent implements EnumProtocol {
     HANDSHAKE(-1, new Pair[][]{
             // Client
             {
@@ -175,21 +175,21 @@ public enum ArtemisEnumProtocol implements EnumProtocol {
     // Direction = Ordinal so 0 = IN and 1 = OUT
     // Second bit is just the id lol
     private final Pair<Class<? extends Packet<?>>, String>[][] packets;
-    private final Map<EnumProtocolDirection, Map<Integer, Class<? extends Packet<?>>>> packetMap = ReflectUtil.getPacketMap(this);
+    private final Map<ProtocolDirection, Map<Integer, Class<? extends Packet<?>>>> packetMap = ReflectUtil.getPacketMap(this);
 
-    ArtemisEnumProtocol(int id, Pair<Class<? extends Packet<?>>, String>[][] packets) {
+    EnumProtocolCurrent(int id, Pair<Class<? extends Packet<?>>, String>[][] packets) {
         this.id = id;
         this.packets = packets;
     }
 
     @Override
     @SneakyThrows
-    public Packet<?> getPacket(EnumProtocolDirection direction, int id, UUID playerId, ProtocolVersion version) {
+    public Packet<?> getPacket(ProtocolDirection direction, int id, UUID playerId, ProtocolVersion version) {
         Class<? extends Packet<?>> clazz = packetMap.get(direction).get(id);
         return clazz.getConstructor(UUID.class, ProtocolVersion.class).newInstance(playerId, version);
     }
     
-    public Class<? extends Packet<?>> getPacketClass(EnumProtocolDirection direction, String name){
+    public Class<? extends Packet<?>> getPacketClass(ProtocolDirection direction, String name){
         for (Pair<Class<? extends Packet<?>>, String> pair : packets[direction.ordinal()]) {
             if (pair.getV().equalsIgnoreCase(name)) {
                 return pair.getK();
