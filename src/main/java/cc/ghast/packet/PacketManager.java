@@ -24,10 +24,10 @@ public enum PacketManager {
     private ChainManager manager;
     private ChannelListener listener;
 
-    public void init() {
-        //this.inbound = new ArtemisDecoder(ProtocolDirection.IN);
-        //new ServerConnectionInjector().inject();
-        listener = new ChannelListener(this);
+    public void init(Plugin plugin) {
+        this.plugin = plugin;
+        this.manager = new ChainManager();
+        this.listener = new ChannelListener(this);
         System.out.println("[Artemis Test] Enabled Test Decoder");
 ;
     }

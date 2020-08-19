@@ -20,7 +20,7 @@ import java.util.UUID;
 public class InjectorModern implements Injector {
     @Override
     public void inject(AsyncPlayerPreLoginEvent event) {
-        Channel channel = (Channel) ReflectUtil.getChannel(event.getUniqueId(), event.getAddress().toString());
+        Channel channel = (Channel) ReflectUtil.getChannel(event.getUniqueId(), event.getAddress().getHostAddress());
         inject(channel, event.getUniqueId(), event.getAddress());
     }
 

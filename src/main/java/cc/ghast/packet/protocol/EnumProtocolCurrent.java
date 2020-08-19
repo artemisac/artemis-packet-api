@@ -15,6 +15,7 @@ import cc.ghast.packet.wrapper.packet.status.PacketStatusServerPing;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
 
@@ -28,17 +29,17 @@ import java.util.UUID;
 public enum EnumProtocolCurrent implements EnumProtocol {
     HANDSHAKE(-1, new Pair[][]{
             // Client
-            {
+            new Pair[]{
                 new Pair<>(PacketHandshakeClientSetProtocol.class, "PacketHandshakeInSetProtocol")
             },
 
             // Server
-            {}
+            new Pair[]{}
 
     }),
     PLAY(0, new Pair[][]{
             // Client
-            {
+            new Pair[]{
                 new Pair<>(PacketPlayClientKeepAlive.class, "PacketPlayInKeepAlive"),
                 new Pair<>(PacketPlayClientChat.class, "PacketPlayInChat"),
                 new Pair<>(PacketPlayClientUseEntity.class, "PacketPlayInUseEntity"),
@@ -158,25 +159,26 @@ public enum EnumProtocolCurrent implements EnumProtocol {
     }),
     STATUS(1, new Pair[][]{
             // Client
-            {
+            new Pair[]{
                 new Pair<>(PacketStatusClientStart.class, "PacketStatusInStart"),
                 new Pair<>(PacketStatusClientPing.class, "PacketStatusInPing")
             },
 
             // Server
-            {
+            new Pair[]{
                 new Pair<>(PacketStatusServerInfoServer.class, "PacketStatusOutInfoServer"),
-                new Pair<>(PacketStatusServerPing.class, "PacketStatusOutPing")}
+                new Pair<>(PacketStatusServerPing.class, "PacketStatusOutPing")
+            }
     }),
     LOGIN(2, new Pair[][]{
             // Client
-            {
+            new Pair[]{
                 new Pair<>(PacketLoginClientStart.class, "PacketLoginInStart"),
                 new Pair<>(PacketLoginClientEncryptionBegin.class, "PacketLoginInEncryptionBegin")
             },
 
             // Server
-            {
+            new Pair[]{
                 new Pair<>(PacketLoginServerDisconnect.class, "PacketLoginOutDisconnect"),
                 new Pair<>(PacketLoginServerEncryptionBegin.class, "PacketLoginOutEncryptionBegin"),
                 new Pair<>(PacketLoginServerSuccess.class, "PacketLoginOutSuccess"),
@@ -189,11 +191,12 @@ public enum EnumProtocolCurrent implements EnumProtocol {
     // Direction = Ordinal so 0 = IN and 1 = OUT
     // Second bit is just the id lol
     private final Pair<Class<? extends Packet<?>>, String>[][] packets;
-    private final Map<ProtocolDirection, Map<Integer, Class<? extends Packet<?>>>> packetMap = ReflectUtil.getPacketMap(this);
+    private final Map<ProtocolDirection, Map<Integer, Class<? extends Packet<?>>>> packetMap;
 
     EnumProtocolCurrent(int id, Pair<Class<? extends Packet<?>>, String>[][] packets) {
         this.id = id;
         this.packets = packets;
+        this.packetMap = ReflectUtil.getPacketMap(this);
     }
 
     @Override
@@ -202,7 +205,13 @@ public enum EnumProtocolCurrent implements EnumProtocol {
         Class<? extends Packet<?>> clazz = packetMap.get(direction).get(id);
         return clazz.getConstructor(UUID.class, ProtocolVersion.class).newInstance(playerId, version);
     }
-    
+
+    @Override
+    public int getOrdinal() {
+        return ordinal();
+    }
+
+    @Override
     public Class<? extends Packet<?>> getPacketClass(ProtocolDirection direction, String name){
         for (Pair<Class<? extends Packet<?>>, String> pair : packets[direction.ordinal()]) {
             if (pair.getV().equalsIgnoreCase(name)) {
