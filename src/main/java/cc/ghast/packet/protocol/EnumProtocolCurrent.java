@@ -67,106 +67,120 @@ public enum EnumProtocolCurrent implements EnumProtocol {
                 new Pair<>(PacketPlayClientAbilities.class, "PacketPlayInAbilities"),
                 new Pair<>(PacketPlayClientTabComplete.class, "PacketPlayInTabComplete"),
                 new Pair<>(PacketPlayClientSettings.class, "PacketPlayInSettings"),
-                new Pair<>(PacketPlayClientClientCommand.class, ""),
-                new Pair<>(PacketPlayClientCustomPayload.class, ""),
-                new Pair<>(PacketPlayClientSpectate.class, ""),
-                new Pair<>(PacketPlayClientResourcePackStatus.class, ""),
+                new Pair<>(PacketPlayClientClientCommand.class, "PacketPlayInClientCommand"),
+                new Pair<>(PacketPlayClientCustomPayload.class, "PacketPlayInCustomPayload"),
+                new Pair<>(PacketPlayClientSpectate.class, "PacketPlayInSpectate"),
+                new Pair<>(PacketPlayClientResourcePackStatus.class, "PacketPlayInResourcePackStatus"),
             },
 
             // Server
             new Pair[]{
-                new Pair<>(PacketPlayServerKeepAlive.class, ""), // 0
-                new Pair<>(PacketPlayServerLogin .class, ""), // 1
-                new Pair<>(PacketPlayServerChat .class, ""), // 2
-                new Pair<>(PacketPlayServerUpdateTime .class, ""), // 3
-                new Pair<>(PacketPlayServerEntityEquipment .class, ""), // 4
-                new Pair<>(PacketPlayServerSpawnPosition.class, ""), // 5
-                new Pair<>(PacketPlayServerUpdateHealth.class, ""), // 6
-                new Pair<>(PacketPlayServerRespawn.class, ""), // 7
-                new Pair<>(PacketPlayServerPosition.class, ""), // 8
-                new Pair<>(PacketPlayServerHeldItemSlot.class, ""), // 9
-                new Pair<>(PacketPlayServerBed.class, ""), // 10
-                new Pair<>(PacketPlayServerAnimation.class, ""),
-                new Pair<>(PacketPlayServerNamedEntitySpawn.class, ""),
-                new Pair<>(PacketPlayServerCollect.class, ""),
-                new Pair<>(PacketPlayServerSpawnEntity.class, ""),
-                new Pair<>(PacketPlayServerSpawnEntityLiving.class, ""),
-                new Pair<>(PacketPlayServerSpawnEntityPainting.class, ""),
-                new Pair<>(PacketPlayServerSpawnEntityExperienceOrb.class, ""),
-                new Pair<>(PacketPlayServerEntityVelocity.class, ""),
-                new Pair<>(PacketPlayServerEntityDestroy.class, ""),
-                new Pair<>(PacketPlayServerEntity.class, ""),
-                new Pair<>(PacketPlayServerEntity.PacketPlayServerRelEntityMove.class, ""),
-                new Pair<>(PacketPlayServerEntity.PacketPlayServerEntityLook.class, ""),
-                new Pair<>(PacketPlayServerEntity.PacketPlayServerRelEntityMoveLook.class, ""),
-                new Pair<>(PacketPlayServerEntityTeleport.class, ""),
-                new Pair<>(PacketPlayServerEntityHeadRotation.class, ""),
-                new Pair<>(PacketPlayServerEntityStatus.class, ""),
-                new Pair<>(PacketPlayServerAttachEntity.class, ""),
-                new Pair<>(PacketPlayServerEntityMetadata.class, ""),
-                new Pair<>(PacketPlayServerEntityEffect.class, ""),
-                new Pair<>(PacketPlayServerExperience.class, ""),
-                new Pair<>(PacketPlayServerUpdateAttributes.class, ""),
-                new Pair<>(PacketPlayServerMapChunk.class, ""),
-                new Pair<>(PacketPlayServerMultiBlockChange.class, ""),
-                new Pair<>(PacketPlayServerBlockChange.class, ""),
-                new Pair<>(PacketPlayServerBlockBreakAnimation.class, ""),
-                new Pair<>(PacketPlayServerMapChunkBulk.class, ""),
-                new Pair<>(PacketPlayServerExplosion.class, ""),
-                new Pair<>(PacketPlayServerWorldEvent.class, ""),
-                new Pair<>(PacketPlayServerNamedSoundEffect.class, ""),
-                new Pair<>(PacketPlayServerWorldParticles.class, ""),
-                new Pair<>(PacketPlayServerGameStateChange.class, ""),
-                new Pair<>(PacketPlayServerSpawnEntityWeather.class, ""),
-                new Pair<>(PacketPlayServerOpenWindow.class, ""),
-                new Pair<>(PacketPlayServerCloseWindow.class, ""),
-                new Pair<>(PacketPlayServerSetSlot.class, ""),
-                new Pair<>(PacketPlayServerWindowItems.class, ""),
-                new Pair<>(PacketPlayServerWindowData.class, ""),
-                new Pair<>(PacketPlayServerTransaction.class, ""),
-                new Pair<>(PacketPlayServerUpdateSign.class, ""),
-                new Pair<>(PacketPlayServerMap.class, ""),
-                new Pair<>(PacketPlayServerTileEntityData.class, ""),
-                new Pair<>(PacketPlayServerOpenSignEditor.class, ""),
-                new Pair<>(PacketPlayServerStatistic.class, ""),
-                new Pair<>(PacketPlayServerPlayerInfo.class, ""),
-                new Pair<>(PacketPlayServerAbilities.class, ""),
-                new Pair<>(PacketPlayServerTabComplete.class, ""),
-                new Pair<>(PacketPlayServerScoreboardObjective.class, ""),
-                new Pair<>(PacketPlayServerScoreboardScore.class, ""),
-                new Pair<>(PacketPlayServerScoreboardDisplayObjective.class, ""),
-                new Pair<>(PacketPlayServerScoreboardTeam.class, ""),
-                new Pair<>(PacketPlayServerCustomPayload.class, ""),
-                new Pair<>(PacketPlayServerKickDisconnect.class, ""),
-                new Pair<>(PacketPlayServerServerDifficulty.class, ""),
-                new Pair<>(PacketPlayServerCombatEvent.class, ""),
-                new Pair<>(PacketPlayServerCamera.class, ""),
-                new Pair<>(PacketPlayServerWorldBorder.class, ""),
-                new Pair<>(PacketPlayServerTitle.class, ""),
-                new Pair<>(PacketPlayServerSetCompression.class, ""),
-                new Pair<>(PacketPlayServerPlayerListHeaderFooter.class, ""),
-                new Pair<>(PacketPlayServerResourcePackSend.class, ""),
-                new Pair<>(PacketPlayServerUpdateEntityNBT.class, ""),
+                new Pair<>(PacketPlayServerKeepAlive.class, "PacketPlayOutKeepAlive"), // 0
+                new Pair<>(PacketPlayServerLogin.class, "PacketPlayOutLogin"), // 1
+                new Pair<>(PacketPlayServerChat.class, "PacketPlayOutChat"), // 2
+                new Pair<>(PacketPlayServerUpdateTime.class, "PacketPlayOutUpdateTime"), // 3
+                new Pair<>(PacketPlayServerEntityEquipment.class, "PacketPlayOutEntityEquipment"), // 4
+                new Pair<>(PacketPlayServerSpawnPosition.class, "PacketPlayOutSpawnPosition"), // 5
+                new Pair<>(PacketPlayServerUpdateHealth.class, "PacketPlayOutUpdateHealth"), // 6
+                new Pair<>(PacketPlayServerRespawn.class, "PacketPlayOutRespawn"), // 7
+                new Pair<>(PacketPlayServerPosition.class, "PacketPlayOutPosition"), // 8
+                new Pair<>(PacketPlayServerHeldItemSlot.class, "PacketPlayOutHeldItemSlot"), // 9
+                new Pair<>(PacketPlayServerBed.class, "PacketPlayOutBed"), // 10
+                new Pair<>(PacketPlayServerAnimation.class, "PacketPlayOutAnimation"),
+                new Pair<>(PacketPlayServerNamedEntitySpawn.class, "PacketPlayOutNamedEntitySpawn"),
+                new Pair<>(PacketPlayServerCollect.class, "PacketPlayOutCollect"),
+                new Pair<>(PacketPlayServerSpawnEntity.class, "PacketPlayOutSpawnEntity"),
+                new Pair<>(PacketPlayServerSpawnEntityLiving.class, "PacketPlayOutSpawnEntityLiving"),
+                new Pair<>(PacketPlayServerSpawnEntityPainting.class, "PacketPlayOutSpawnEntityPainting"),
+                new Pair<>(PacketPlayServerSpawnEntityExperienceOrb.class, "PacketPlayOutSpawnEntityExperienceOrb"),
+                new Pair<>(PacketPlayServerEntityVelocity.class, "PacketPlayOutEntityVelocity"),
+                new Pair<>(PacketPlayServerEntityDestroy.class, "PacketPlayOutEntityDestroy"),
+                new Pair<>(PacketPlayServerEntity.class, "PacketPlayOutEntity"),
+                new Pair<>(PacketPlayServerEntity.PacketPlayServerRelEntityMove.class,
+                        ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8)
+                        ? "PacketPlayOutEntity$PacketPlayOutRelEntityMove" : "PacketPlayOutRelEntityMove"),
+                new Pair<>(PacketPlayServerEntity.PacketPlayServerEntityLook.class,
+                        ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8)
+                                ? "PacketPlayOutEntity$PacketPlayOutEntityLook" : "PacketPlayOutEntityLook"),
+                new Pair<>(PacketPlayServerEntity.PacketPlayServerRelEntityMoveLook.class,
+                        ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8)
+                                ? "PacketPlayOutEntity$PacketPlayOutRelEntityMove" : "PacketPlayOutRelEntityMoveLook"),
+                new Pair<>(PacketPlayServerEntityTeleport.class, "PacketPlayOutEntityTeleport"),
+                new Pair<>(PacketPlayServerEntityHeadRotation.class, "PacketPlayOutEntityHeadRotation"),
+                new Pair<>(PacketPlayServerEntityStatus.class, "PacketPlayOutEntityStatus"),
+                new Pair<>(PacketPlayServerAttachEntity.class, "PacketPlayOutAttachEntity"),
+                new Pair<>(PacketPlayServerEntityMetadata.class, "PacketPlayOutEntityMetadata"),
+                new Pair<>(PacketPlayServerEntityEffect.class, "PacketPlayOutEntityEffect"),
+                new Pair<>(PacketPlayServerExperience.class, "PacketPlayOutExperience"),
+                new Pair<>(PacketPlayServerUpdateAttributes.class, "PacketPlayOutUpdateAttributes"),
+                new Pair<>(PacketPlayServerMapChunk.class, "PacketPlayOutMapChunk"),
+                new Pair<>(PacketPlayServerMultiBlockChange.class, "PacketPlayOutMultiBlockChange"),
+                new Pair<>(PacketPlayServerBlockChange.class, "PacketPlayOutBlockChange"),
+                new Pair<>(PacketPlayServerBlockBreakAnimation.class, "PacketPlayOutBlockBreakAnimation"),
+                new Pair<>(PacketPlayServerMapChunkBulk.class, "PacketPlayOutMapChunkBulk"),
+                new Pair<>(PacketPlayServerExplosion.class, "PacketPlayOutExplosion"),
+                new Pair<>(PacketPlayServerWorldEvent.class, "PacketPlayOutWorldEvent"),
+                new Pair<>(PacketPlayServerNamedSoundEffect.class, "PacketPlayOutNamedSoundEffect"),
+                new Pair<>(PacketPlayServerWorldParticles.class, "PacketPlayOutWorldParticles"),
+                new Pair<>(PacketPlayServerGameStateChange.class, "PacketPlayOutGameStateChange"),
+                new Pair<>(PacketPlayServerSpawnEntityWeather.class, "PacketPlayOutSpawnEntityWeather"),
+                new Pair<>(PacketPlayServerOpenWindow.class, "PacketPlayOutOpenWindow"),
+                new Pair<>(PacketPlayServerCloseWindow.class, "PacketPlayOutCloseWindow"),
+                new Pair<>(PacketPlayServerSetSlot.class, "PacketPlayOutSetSlot"),
+                new Pair<>(PacketPlayServerWindowItems.class, "PacketPlayOutWindowItems"),
+                new Pair<>(PacketPlayServerWindowData.class, "PacketPlayOutWindowData"),
+                new Pair<>(PacketPlayServerTransaction.class, "PacketPlayOutTransaction"),
+                new Pair<>(PacketPlayServerUpdateSign.class, "PacketPlayOutUpdateSign"),
+                new Pair<>(PacketPlayServerMap.class, "PacketPlayOutMap"),
+                new Pair<>(PacketPlayServerTileEntityData.class, "PacketPlayOutTileEntityData"),
+                new Pair<>(PacketPlayServerOpenSignEditor.class, "PacketPlayOutOpenSignEditor"),
+                new Pair<>(PacketPlayServerStatistic.class, "PacketPlayOutStatistic"),
+                new Pair<>(PacketPlayServerPlayerInfo.class, "PacketPlayOutPlayerInfo"),
+                new Pair<>(PacketPlayServerAbilities.class, "PacketPlayOutAbilities"),
+                new Pair<>(PacketPlayServerTabComplete.class, "PacketPlayOutTabComplete"),
+                new Pair<>(PacketPlayServerScoreboardObjective.class, "PacketPlayOutScoreboardObjective"),
+                new Pair<>(PacketPlayServerScoreboardScore.class, "PacketPlayOutScoreboardScore"),
+                new Pair<>(PacketPlayServerScoreboardDisplayObjective.class, "PacketPlayOutScoreboardDisplayObjective"),
+                new Pair<>(PacketPlayServerScoreboardTeam.class, "PacketPlayOutScoreboardTeam"),
+                new Pair<>(PacketPlayServerCustomPayload.class, "PacketPlayOutCustomPayload"),
+                new Pair<>(PacketPlayServerKickDisconnect.class, "PacketPlayOutKickDisconnect"),
+                new Pair<>(PacketPlayServerServerDifficulty.class, "PacketPlayOutServerDifficulty"),
+                new Pair<>(PacketPlayServerCombatEvent.class, "PacketPlayOutCombatEvent"),
+                new Pair<>(PacketPlayServerCamera.class, "PacketPlayOutCamera"),
+                new Pair<>(PacketPlayServerWorldBorder.class, "PacketPlayOutWorldBoarder"),
+                new Pair<>(PacketPlayServerTitle.class, "PacketPlayOutTitle"),
+                new Pair<>(PacketPlayServerSetCompression.class, "PacketPlayOutSetCompression"),
+                new Pair<>(PacketPlayServerPlayerListHeaderFooter.class, "PacketPlayOutPlayerListHeaderFooter"),
+                new Pair<>(PacketPlayServerResourcePackSend.class, "PacketPlayOutResourcePackSend"),
+                new Pair<>(PacketPlayServerUpdateEntityNBT.class, "PacketPlayOutUpdateEntityNBT"),
             }
 
     }),
     STATUS(1, new Pair[][]{
             // Client
-            {new Pair<>(PacketStatusClientStart.class, ""), new Pair<>(PacketStatusClientPing.class, "")},
-
-            // Server
-            {new Pair<>(PacketStatusServerInfoServer.class, ""), new Pair<>(PacketStatusServerPing.class, "")}
-    }),
-    LOGIN(2, new Pair[][]{
-            // Client
-            {new Pair<>(PacketLoginClientStart.class, ""), new Pair<>(PacketLoginClientEncryptionBegin.class, "")},
+            {
+                new Pair<>(PacketStatusClientStart.class, "PacketStatusInStart"),
+                new Pair<>(PacketStatusClientPing.class, "PacketStatusInPing")
+            },
 
             // Server
             {
-                new Pair<>(PacketLoginServerDisconnect.class, ""),
-                new Pair<>(PacketLoginServerEncryptionBegin.class, ""),
-                new Pair<>(PacketLoginServerSuccess.class, ""),
-                new Pair<>(PacketLoginServerSetCompression.class, ""),
+                new Pair<>(PacketStatusServerInfoServer.class, "PacketStatusOutInfoServer"),
+                new Pair<>(PacketStatusServerPing.class, "PacketStatusOutPing")}
+    }),
+    LOGIN(2, new Pair[][]{
+            // Client
+            {
+                new Pair<>(PacketLoginClientStart.class, "PacketLoginInStart"),
+                new Pair<>(PacketLoginClientEncryptionBegin.class, "PacketLoginInEncryptionBegin")
+            },
+
+            // Server
+            {
+                new Pair<>(PacketLoginServerDisconnect.class, "PacketLoginOutDisconnect"),
+                new Pair<>(PacketLoginServerEncryptionBegin.class, "PacketLoginOutEncryptionBegin"),
+                new Pair<>(PacketLoginServerSuccess.class, "PacketLoginOutSuccess"),
+                new Pair<>(PacketLoginServerSetCompression.class, "PacketLoginOutSetCompression"),
             }
     });
 

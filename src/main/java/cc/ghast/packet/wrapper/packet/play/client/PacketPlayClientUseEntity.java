@@ -6,6 +6,8 @@ import cc.ghast.packet.wrapper.bukkit.Vector3D;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.Packet;
 import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -32,6 +34,10 @@ public class PacketPlayClientUseEntity extends Packet<ClientPacket> {
         } else {
             this.body = Optional.empty();
         }
+    }
+
+    public Entity getEntity() {
+        return Bukkit.getPlayer(uuid).getWorld().getEntities().parallelStream().filter(e-> e.getEntityId() == entityId).findFirst().orElse(null);
     }
 
     public enum UseType {
