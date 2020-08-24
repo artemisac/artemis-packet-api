@@ -42,7 +42,6 @@ public class PacketPlayClientBlockPlace extends Packet<ClientPacket> {
 
         }
 
-
         else if (version.isBelow(ProtocolVersion.V1_9)) {
             // 1.8 - 1.8.8 version range
 

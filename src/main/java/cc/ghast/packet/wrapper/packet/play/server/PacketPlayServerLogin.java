@@ -33,7 +33,7 @@ public class PacketPlayServerLogin extends Packet<ServerPacket> {
         this.entityId = byteBuf.readInt();
 
         // Gamemode
-        short gm = byteBuf.readUnsignedByte();
+        final short gm = byteBuf.readUnsignedByte();
         this.gamemode = gm == 0x8 ? GameMode.HARDCORE : GameMode.values()[gm];
 
         // Dimension

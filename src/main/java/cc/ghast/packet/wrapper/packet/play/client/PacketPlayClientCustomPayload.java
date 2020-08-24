@@ -7,8 +7,6 @@ import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.Packet;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import net.minecraft.server.v1_8_R3.PacketDataSerializer;
-import net.minecraft.server.v1_8_R3.PacketPlayInCustomPayload;
 
 import java.io.IOException;
 import java.util.UUID;

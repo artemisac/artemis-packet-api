@@ -24,7 +24,7 @@ public class PacketPlayClientEntityAction extends Packet<ClientPacket> {
         this.parameter = byteBuf.readVarInt();
     }
 
-    enum PlayerAction {
+    public enum PlayerAction {
         START_SNEAKING,
         STOP_SNEAKING,
         LEAVE_BED,

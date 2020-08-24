@@ -29,6 +29,7 @@ public class PacketPlayClientSettings extends Packet<ClientPacket> {
         this.int16 = byteBuf.readUnsignedByte();
     }
 
+    @Getter
     public enum ChatVisibility {
 
         FULL(0, "options.chat.visibility.full"),

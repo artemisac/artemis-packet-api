@@ -28,9 +28,9 @@ public class PacketPlayClientBlockDig extends Packet<ClientPacket> {
 
         // Position of the block placed
         if (version.isBelow(ProtocolVersion.V1_8)) {
-            int x = byteBuf.readInt();
-            int y = byteBuf.readByte();
-            int z = byteBuf.readInt();
+            final int x = byteBuf.readInt();
+            final int y = byteBuf.readByte();
+            final int z = byteBuf.readInt();
             this.location = new Location(getPlayer().getWorld(), x, y, z);
         } else {
             BlockPosition position = byteBuf.readBlockPositionFromLong();
@@ -38,7 +38,8 @@ public class PacketPlayClientBlockDig extends Packet<ClientPacket> {
         }
 
         // Face of the block
-        this.face = BlockFace.values()[byteBuf.readByte()];
+        final byte faze = byteBuf.readByte();
+        this.face = BlockFace.values()[faze > 5 ? 6 : faze];
     }
 
     public enum DigType {
