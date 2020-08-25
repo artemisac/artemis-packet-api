@@ -12,6 +12,7 @@ import cc.ghast.packet.protocol.EnumProtocolLegacy;
 import cc.ghast.packet.protocol.ProtocolDirection;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
+import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.Packet;
 import cc.ghast.packet.wrapper.packet.handshake.PacketHandshakeClientSetProtocol;
 import io.netty.buffer.ByteBuf;
@@ -87,7 +88,11 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
             // Collect the packet from the enum map. This needs to be rewritten for better accuracy tho
             Packet<?> packet = protocol.getPacket(ProtocolDirection.IN, id, profile.getUuid(), profile.getVersion());
-            packet.handle(new ProtocolByteBuf(in));
+
+            if (packet instanceof ReadableBuffer) {
+                ReadableBuffer buffer = (ReadableBuffer) packet;
+                buffer.read(new ProtocolByteBuf(in));
+            }
 
             // Handle and collect the handshake
             if (packet instanceof PacketHandshakeClientSetProtocol){
