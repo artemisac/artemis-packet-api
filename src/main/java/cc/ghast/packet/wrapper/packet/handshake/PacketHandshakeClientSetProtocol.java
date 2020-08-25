@@ -4,13 +4,14 @@ import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.wrapper.packet.Packet;
 import cc.ghast.packet.wrapper.packet.ServerPacket;
+import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.UUID;
 
 @Getter
-public class PacketHandshakeClientSetProtocol extends Packet<ServerPacket> {
+public class PacketHandshakeClientSetProtocol extends Packet<ServerPacket> implements ReadableBuffer {
     public PacketHandshakeClientSetProtocol(UUID player, ProtocolVersion version) {
         super("PacketHandshakingInSetProtocol", player, version);
     }
@@ -21,7 +22,7 @@ public class PacketHandshakeClientSetProtocol extends Packet<ServerPacket> {
     private State nextState;
 
     @Override
-    public void handle(ProtocolByteBuf byteBuf) {
+    public void read(ProtocolByteBuf byteBuf) {
         this.protocolVersion = byteBuf.readVarInt();
         this.serverAddress = byteBuf.readString();
         this.serverPort = (short) byteBuf.readUnsignedShort();

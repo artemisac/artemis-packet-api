@@ -4,6 +4,8 @@ import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.wrapper.netty.MutableByteBufAllocator;
 import cc.ghast.packet.wrapper.netty.MutableByteProcessor;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.UnpooledByteBufAllocator;
+import io.netty.buffer.UnpooledHeapByteBuf;
 import io.netty.util.ByteProcessor;
 
 import java.io.IOException;

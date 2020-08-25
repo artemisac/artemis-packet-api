@@ -3,13 +3,14 @@ package cc.ghast.packet.wrapper.packet.play.client;
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
+import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.Packet;
 import lombok.Getter;
 
 import java.util.UUID;
 
 @Getter
-public class PacketPlayClientFlying extends Packet<ClientPacket> {
+public class PacketPlayClientFlying extends Packet<ClientPacket> implements ReadableBuffer {
 
 
     public PacketPlayClientFlying(UUID player, ProtocolVersion version) {
@@ -32,7 +33,7 @@ public class PacketPlayClientFlying extends Packet<ClientPacket> {
     private boolean hasLook;
 
     @Override
-    public void handle(ProtocolByteBuf byteBuf) {
+    public void read(ProtocolByteBuf byteBuf) {
         this.onGround = byteBuf.readBoolean();
     }
 
@@ -44,7 +45,7 @@ public class PacketPlayClientFlying extends Packet<ClientPacket> {
         }
 
         @Override
-        public void handle(ProtocolByteBuf byteBuf) {
+        public void read(ProtocolByteBuf byteBuf) {
             super.x = byteBuf.readDouble();
             super.y = byteBuf.readDouble();
             super.z = byteBuf.readDouble();
@@ -63,7 +64,7 @@ public class PacketPlayClientFlying extends Packet<ClientPacket> {
         }
 
         @Override
-        public void handle(ProtocolByteBuf byteBuf) {
+        public void read(ProtocolByteBuf byteBuf) {
             super.yaw = byteBuf.readFloat();
             super.pitch = byteBuf.readFloat();
             super.hasLook = true;
@@ -80,7 +81,7 @@ public class PacketPlayClientFlying extends Packet<ClientPacket> {
         }
 
         @Override
-        public void handle(ProtocolByteBuf byteBuf) {
+        public void read(ProtocolByteBuf byteBuf) {
             super.x = byteBuf.readDouble();
             super.y = byteBuf.readDouble();
             super.z = byteBuf.readDouble();

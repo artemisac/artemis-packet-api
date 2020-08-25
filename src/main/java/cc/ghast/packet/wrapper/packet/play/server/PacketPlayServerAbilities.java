@@ -4,12 +4,13 @@ import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.wrapper.packet.Packet;
 import cc.ghast.packet.wrapper.packet.ServerPacket;
+import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import lombok.Getter;
 
 import java.util.UUID;
 
 @Getter
-public class PacketPlayServerAbilities extends Packet<ServerPacket> {
+public class PacketPlayServerAbilities extends Packet<ServerPacket> implements ReadableBuffer {
     public PacketPlayServerAbilities(UUID player, ProtocolVersion version) {
         super("PacketPlayOutAbilities", player, version);
     }
@@ -23,7 +24,7 @@ public class PacketPlayServerAbilities extends Packet<ServerPacket> {
     private float walkSpeed;
 
     @Override
-    public void handle(ProtocolByteBuf byteBuf) {
+    public void read(ProtocolByteBuf byteBuf) {
         // These are under a bit mask, see https://stackoverflow.com/questions/31575691/what-is-a-bitmask-and-a-mask
         byte flags = byteBuf.readByte();
 

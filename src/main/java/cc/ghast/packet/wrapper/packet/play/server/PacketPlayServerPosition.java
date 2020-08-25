@@ -4,6 +4,7 @@ import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.wrapper.packet.Packet;
 import cc.ghast.packet.wrapper.packet.ServerPacket;
+import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPosition;
@@ -13,7 +14,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Getter
-public class PacketPlayServerPosition extends Packet<ServerPacket> {
+public class PacketPlayServerPosition extends Packet<ServerPacket> implements ReadableBuffer {
     public PacketPlayServerPosition(UUID player, ProtocolVersion version) {
         super("PacketPlayOutPosition", player, version);
     }
@@ -26,7 +27,7 @@ public class PacketPlayServerPosition extends Packet<ServerPacket> {
     private Set<PlayerTeleportFlags> flags;
 
     @Override
-    public void handle(ProtocolByteBuf byteBuf) {
+    public void read(ProtocolByteBuf byteBuf) {
         this.x = byteBuf.readDouble();
         this.y = byteBuf.readDouble();
         this.z = byteBuf.readDouble();

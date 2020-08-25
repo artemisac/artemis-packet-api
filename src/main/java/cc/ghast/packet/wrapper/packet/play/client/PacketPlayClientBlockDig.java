@@ -5,6 +5,7 @@ import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.wrapper.bukkit.BlockFace;
 import cc.ghast.packet.wrapper.bukkit.BlockPosition;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
+import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.Packet;
 import lombok.Getter;
 import org.bukkit.Location;
@@ -12,7 +13,7 @@ import org.bukkit.Location;
 import java.util.UUID;
 
 @Getter
-public class PacketPlayClientBlockDig extends Packet<ClientPacket> {
+public class PacketPlayClientBlockDig extends Packet<ClientPacket> implements ReadableBuffer {
     public PacketPlayClientBlockDig(UUID player, ProtocolVersion version) {
         super("PacketPlayInBlockDig", player, version);
     }
@@ -22,7 +23,7 @@ public class PacketPlayClientBlockDig extends Packet<ClientPacket> {
     private BlockFace face;
 
     @Override
-    public void handle(ProtocolByteBuf byteBuf) {
+    public void read(ProtocolByteBuf byteBuf) {
         // Type of the dig
         this.type = DigType.values()[byteBuf.readByte()];
 

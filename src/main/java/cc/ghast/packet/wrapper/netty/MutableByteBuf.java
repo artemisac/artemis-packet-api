@@ -21,6 +21,10 @@ public interface MutableByteBuf {
     static MutableByteBuf translate(Object byteBuf) {
         return ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8) ? new CurrentByteBuf(byteBuf) : new LegacyByteBuf(byteBuf);
     }
+
+    static MutableByteBuf create() {
+        return
+    }
     
     int capacity() ;
 

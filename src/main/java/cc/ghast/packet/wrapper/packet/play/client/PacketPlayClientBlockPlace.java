@@ -8,6 +8,7 @@ import cc.ghast.packet.wrapper.bukkit.BlockPosition;
 import cc.ghast.packet.wrapper.bukkit.Vector3D;
 import cc.ghast.packet.wrapper.nbt.WrappedItem;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
+import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.Packet;
 import lombok.Getter;
 
@@ -15,7 +16,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Getter
-public class PacketPlayClientBlockPlace extends Packet<ClientPacket> {
+public class PacketPlayClientBlockPlace extends Packet<ClientPacket> implements ReadableBuffer {
     public PacketPlayClientBlockPlace(UUID player, ProtocolVersion version) {
         super("PacketPlayInBlockPlace", player, version);
     }
@@ -28,7 +29,7 @@ public class PacketPlayClientBlockPlace extends Packet<ClientPacket> {
     private Vector3D vector;
 
     @Override
-    public void handle(ProtocolByteBuf byteBuf) {
+    public void read(ProtocolByteBuf byteBuf) {
         if (version.isBelow(ProtocolVersion.V1_8)) {
             // 1.6.4 - 1.7.10 version range
 

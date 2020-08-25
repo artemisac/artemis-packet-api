@@ -4,6 +4,7 @@ import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.wrapper.bukkit.Vector3D;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
+import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.Packet;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -13,7 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Getter
-public class PacketPlayClientUseEntity extends Packet<ClientPacket> {
+public class PacketPlayClientUseEntity extends Packet<ClientPacket> implements ReadableBuffer {
     public PacketPlayClientUseEntity(UUID player, ProtocolVersion version) {
         super("PacketPlayInUseEntity", player, version);
     }
@@ -23,7 +24,7 @@ public class PacketPlayClientUseEntity extends Packet<ClientPacket> {
     private Optional<Vector3D> body;
 
     @Override
-    public void handle(ProtocolByteBuf byteBuf) {
+    public void read(ProtocolByteBuf byteBuf) {
         this.entityId = byteBuf.readVarInt();
         this.type = UseType.values()[byteBuf.readVarInt()];
         if (type.equals(UseType.INTERACT_AT)) {
