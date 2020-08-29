@@ -18,6 +18,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.DecoderException;
 
 import java.util.Arrays;
@@ -28,7 +29,7 @@ import java.util.zip.Inflater;
  * @author Ghast
  * @since 24-Apr-20
  */
-public class ArtemisDecoder extends ChannelDuplexHandler {
+public class ArtemisDecoder extends ChannelInboundHandlerAdapter {
 
     private static final boolean debug = false;
 

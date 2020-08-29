@@ -10,11 +10,11 @@ import cc.ghast.packet.protocol.EnumProtocolCurrent;
 import cc.ghast.packet.protocol.ProtocolDirection;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.wrapper.packet.Packet;
-import cc.ghast.packet.wrapper.packet.handshake.PacketHandshakeClientSetProtocol;
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelOutboundHandlerAdapter;
-import io.netty.channel.ChannelPromise;
+import net.minecraft.util.io.netty.buffer.ByteBuf;
+import net.minecraft.util.io.netty.channel.ChannelHandlerContext;
+import net.minecraft.util.io.netty.channel.ChannelOutboundHandlerAdapter;
+import net.minecraft.util.io.netty.channel.ChannelPromise;
+
 
 import java.util.Arrays;
 import java.util.zip.Inflater;
@@ -23,7 +23,7 @@ import java.util.zip.Inflater;
  * @author Ghast
  * @since 24-Apr-20
  */
-public class ArtemisEncoder extends ChannelOutboundHandlerAdapter {
+public class ArtemisEncoderLegacy extends ChannelOutboundHandlerAdapter {
     // Todo
 
     private static final boolean debug = false;
@@ -32,7 +32,7 @@ public class ArtemisEncoder extends ChannelOutboundHandlerAdapter {
     private final Inflater inflater;
     private EnumProtocol protocol;
 
-    public ArtemisEncoder(Profile profile) {
+    public ArtemisEncoderLegacy(Profile profile) {
         this.profile = profile;
         this.inflater = new Inflater();
         this.protocol = EnumProtocolCurrent.HANDSHAKE;
