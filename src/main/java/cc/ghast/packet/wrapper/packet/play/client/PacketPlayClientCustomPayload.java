@@ -4,17 +4,16 @@ import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.nms.payload.MinecraftKey;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
+import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.Packet;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import net.minecraft.server.v1_8_R3.PacketDataSerializer;
-import net.minecraft.server.v1_8_R3.PacketPlayInCustomPayload;
 
 import java.io.IOException;
 import java.util.UUID;
 
 @Getter
-public class PacketPlayClientCustomPayload extends Packet<ClientPacket> {
+public class PacketPlayClientCustomPayload extends Packet<ClientPacket> implements ReadableBuffer {
     public PacketPlayClientCustomPayload(UUID player, ProtocolVersion version) {
         super("PacketPlayInCustomPayload", player, version);
     }
@@ -24,7 +23,7 @@ public class PacketPlayClientCustomPayload extends Packet<ClientPacket> {
 
     @Override
     @SneakyThrows
-    public void handle(ProtocolByteBuf byteBuf) {
+    public void read(ProtocolByteBuf byteBuf) {
         // Header
         if (version.isBelow(ProtocolVersion.V1_13)) {
             this.header = byteBuf.readStringBuf(20);

@@ -1,5 +1,8 @@
 package cc.ghast.packet.wrapper.bukkit;
 
+import lombok.Getter;
+
+@Getter
 public enum WorldType {
     NORMAL("DEFAULT"),
     FLAT("FLAT"),

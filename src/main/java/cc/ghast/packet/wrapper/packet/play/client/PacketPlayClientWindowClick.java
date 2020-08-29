@@ -3,13 +3,14 @@ package cc.ghast.packet.wrapper.packet.play.client;
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
+import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.Packet;
 import lombok.Getter;
 
 import java.util.UUID;
 
 @Getter
-public class PacketPlayClientWindowClick extends Packet<ClientPacket> {
+public class PacketPlayClientWindowClick extends Packet<ClientPacket> implements ReadableBuffer {
     public PacketPlayClientWindowClick(UUID player, ProtocolVersion version) {
         super("PacketPlayInWindowClick", player, version);
     }
@@ -24,7 +25,7 @@ public class PacketPlayClientWindowClick extends Packet<ClientPacket> {
     private Object clickedItem;
 
     @Override
-    public void handle(ProtocolByteBuf byteBuf) {
+    public void read(ProtocolByteBuf byteBuf) {
         this.windowId = byteBuf.readByte();
         this.slot = byteBuf.readShort();
         this.button = byteBuf.readByte();

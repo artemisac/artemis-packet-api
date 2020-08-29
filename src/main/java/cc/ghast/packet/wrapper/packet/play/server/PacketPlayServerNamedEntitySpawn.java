@@ -4,12 +4,13 @@ import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.wrapper.packet.Packet;
 import cc.ghast.packet.wrapper.packet.ServerPacket;
+import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import lombok.Getter;
 
 import java.util.UUID;
 
 @Getter
-public class PacketPlayServerNamedEntitySpawn extends Packet<ServerPacket> {
+public class PacketPlayServerNamedEntitySpawn extends Packet<ServerPacket> implements ReadableBuffer {
     public PacketPlayServerNamedEntitySpawn(UUID player, ProtocolVersion version) {
         super("PacketPlayOutNamedEntitySpawn", player, version);
     }
@@ -26,7 +27,7 @@ public class PacketPlayServerNamedEntitySpawn extends Packet<ServerPacket> {
     private int data;
 
     @Override
-    public void handle(ProtocolByteBuf byteBuf) {
+    public void read(ProtocolByteBuf byteBuf) {
         this.entityId = byteBuf.readVarInt();
         this.objectUUID = byteBuf.readUUID();
         this.x = byteBuf.readInt() / 32.0D;

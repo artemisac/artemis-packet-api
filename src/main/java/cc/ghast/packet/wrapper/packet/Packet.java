@@ -29,6 +29,5 @@ public abstract class Packet<D> {
         return Bukkit.getPlayer(uuid);
     }
 
-    public abstract void handle(ProtocolByteBuf byteBuf);
 }
 

@@ -9,7 +9,9 @@ public enum BlockFace {
     Z_MINUS(2),
     Z_PLUS(3),
     X_MINUS(4),
-    X_PLUS(5);
+    X_PLUS(5),
+    INVALID(6)
+    ;
 
     private final int id;
 

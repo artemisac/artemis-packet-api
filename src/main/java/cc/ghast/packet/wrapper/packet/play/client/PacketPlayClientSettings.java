@@ -3,13 +3,14 @@ package cc.ghast.packet.wrapper.packet.play.client;
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
+import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.Packet;
 import lombok.Getter;
 
 import java.util.UUID;
 
 @Getter
-public class PacketPlayClientSettings extends Packet<ClientPacket> {
+public class PacketPlayClientSettings extends Packet<ClientPacket> implements ReadableBuffer {
     public PacketPlayClientSettings(UUID player, ProtocolVersion version) {
         super("PacketPlayInSettings", player, version);
     }
@@ -21,7 +22,7 @@ public class PacketPlayClientSettings extends Packet<ClientPacket> {
     private int int16;
 
     @Override
-    public void handle(ProtocolByteBuf byteBuf) {
+    public void read(ProtocolByteBuf byteBuf) {
         this.locale = byteBuf.readStringBuf(7);
         this.idk = byteBuf.readByte();
         this.visibility = ChatVisibility.values()[byteBuf.readVarInt()];
@@ -29,6 +30,7 @@ public class PacketPlayClientSettings extends Packet<ClientPacket> {
         this.int16 = byteBuf.readUnsignedByte();
     }
 
+    @Getter
     public enum ChatVisibility {
 
         FULL(0, "options.chat.visibility.full"),
