@@ -83,19 +83,6 @@ public class LegacyByteBuf implements MutableByteBuf {
     }
 
     @Override
-    @Deprecated
-    public boolean isReadOnly() {
-        return false;
-    }
-
-    @Override
-    @Deprecated
-    public MutableByteBuf asReadOnly() {
-        //this.byteBuf.asReadOnly();
-        return this;
-    }
-
-    @Override
     public int readerIndex() {
         return this.byteBuf.readerIndex();
     }
@@ -232,17 +219,7 @@ public class LegacyByteBuf implements MutableByteBuf {
     }
 
     @Override
-    public short getShortLE(final int i) {
-        return this.byteBuf.getShort(i);
-    }
-
-    @Override
     public int getUnsignedShort(final int i) {
-        return this.byteBuf.getUnsignedShort(i);
-    }
-
-    @Override
-    public int getUnsignedShortLE(final int i) {
         return this.byteBuf.getUnsignedShort(i);
     }
 
@@ -252,17 +229,7 @@ public class LegacyByteBuf implements MutableByteBuf {
     }
 
     @Override
-    public int getMediumLE(final int i) {
-        return this.byteBuf.getMedium(i);
-    }
-
-    @Override
     public int getUnsignedMedium(final int i) {
-        return this.byteBuf.getUnsignedMedium(i);
-    }
-
-    @Override
-    public int getUnsignedMediumLE(final int i) {
         return this.byteBuf.getUnsignedMedium(i);
     }
 
@@ -272,27 +239,12 @@ public class LegacyByteBuf implements MutableByteBuf {
     }
 
     @Override
-    public int getIntLE(final int i) {
-        return this.byteBuf.getInt(i);
-    }
-
-    @Override
     public long getUnsignedInt(final int i) {
         return this.byteBuf.getUnsignedInt(i);
     }
 
     @Override
-    public long getUnsignedIntLE(final int i) {
-        return this.byteBuf.getUnsignedInt(i);
-    }
-
-    @Override
     public long getLong(final int i) {
-        return this.byteBuf.getLong(i);
-    }
-
-    @Override
-    public long getLongLE(final int i) {
         return this.byteBuf.getLong(i);
     }
 
@@ -359,18 +311,6 @@ public class LegacyByteBuf implements MutableByteBuf {
     }
 
     @Override
-    @Deprecated
-    public int getBytes(final int i, final FileChannel fileChannel, final long l, final int i1) throws IOException {
-        return 0;
-    }
-
-    @Override
-    @Deprecated
-    public CharSequence getCharSequence(final int i, final int i1, final Charset charset) {
-        return null;
-    }
-
-    @Override
     public MutableByteBuf setBoolean(final int i, final boolean b) {
         this.byteBuf.setBoolean(i, b);
         return this;
@@ -389,19 +329,7 @@ public class LegacyByteBuf implements MutableByteBuf {
     }
 
     @Override
-    public MutableByteBuf setShortLE(final int i, final int i1) {
-        this.byteBuf.setShort(i, i1);
-        return this;
-    }
-
-    @Override
     public MutableByteBuf setMedium(final int i, final int i1) {
-        this.byteBuf.setMedium(i, i1);
-        return this;
-    }
-
-    @Override
-    public MutableByteBuf setMediumLE(final int i, final int i1) {
         this.byteBuf.setMedium(i, i1);
         return this;
     }
@@ -413,19 +341,7 @@ public class LegacyByteBuf implements MutableByteBuf {
     }
 
     @Override
-    public MutableByteBuf setIntLE(final int i, final int i1) {
-        this.byteBuf.setInt(i, i1);
-        return this;
-    }
-
-    @Override
     public MutableByteBuf setLong(final int i, final long l) {
-        this.byteBuf.setLong(i, l);
-        return this;
-    }
-
-    @Override
-    public MutableByteBuf setLongLE(final int i, final long l) {
         this.byteBuf.setLong(i, l);
         return this;
     }
@@ -494,24 +410,12 @@ public class LegacyByteBuf implements MutableByteBuf {
         return this.byteBuf.setBytes(i, scatteringByteChannel, i1);
     }
 
-    @Override
-    @Deprecated
-    public int setBytes(final int i, final FileChannel fileChannel, final long l, final int i1) throws IOException {
-        return 0;
-    }
 
     @Override
     public MutableByteBuf setZero(final int i, final int i1) {
         this.byteBuf.setZero(i, i1);
         return this;
     }
-
-    @Override
-    @Deprecated
-    public int setCharSequence(final int i, final CharSequence charSequence, final Charset charset) {
-        return 0;
-    }
-
     @Override
     public boolean readBoolean() {
         return this.byteBuf.readBoolean();
@@ -533,17 +437,7 @@ public class LegacyByteBuf implements MutableByteBuf {
     }
 
     @Override
-    public short readShortLE() {
-        return this.byteBuf.readShort();
-    }
-
-    @Override
     public int readUnsignedShort() {
-        return this.byteBuf.readUnsignedShort();
-    }
-
-    @Override
-    public int readUnsignedShortLE() {
         return this.byteBuf.readUnsignedShort();
     }
 
@@ -553,17 +447,7 @@ public class LegacyByteBuf implements MutableByteBuf {
     }
 
     @Override
-    public int readMediumLE() {
-        return this.byteBuf.readMedium();
-    }
-
-    @Override
     public int readUnsignedMedium() {
-        return this.byteBuf.readUnsignedMedium();
-    }
-
-    @Override
-    public int readUnsignedMediumLE() {
         return this.byteBuf.readUnsignedMedium();
     }
 
@@ -573,27 +457,12 @@ public class LegacyByteBuf implements MutableByteBuf {
     }
 
     @Override
-    public int readIntLE() {
-        return this.byteBuf.readInt();
-    }
-
-    @Override
     public long readUnsignedInt() {
         return this.byteBuf.readUnsignedInt();
     }
 
     @Override
-    public long readUnsignedIntLE() {
-        return this.byteBuf.readUnsignedInt();
-    }
-
-    @Override
     public long readLong() {
-        return this.byteBuf.readLong();
-    }
-
-    @Override
-    public long readLongLE() {
         return this.byteBuf.readLong();
     }
 
@@ -621,13 +490,6 @@ public class LegacyByteBuf implements MutableByteBuf {
     @Override
     public MutableByteBuf readSlice(final int i) {
         this.byteBuf.readSlice(i);
-        return this;
-    }
-
-    @Override
-    @Deprecated
-    public MutableByteBuf readRetainedSlice(final int i) {
-        //this.byteBuf.rea(i);
         return this;
     }
 
@@ -679,18 +541,6 @@ public class LegacyByteBuf implements MutableByteBuf {
     }
 
     @Override
-    @Deprecated
-    public CharSequence readCharSequence(final int i, final Charset charset) {
-        return null;
-    }
-
-    @Override
-    @Deprecated
-    public int readBytes(final FileChannel fileChannel, final long l, final int i) throws IOException {
-        return 0;
-    }
-
-    @Override
     public MutableByteBuf skipBytes(final int i) {
         this.byteBuf.skipBytes(i);
         return this;
@@ -715,19 +565,7 @@ public class LegacyByteBuf implements MutableByteBuf {
     }
 
     @Override
-    public MutableByteBuf writeShortLE(final int i) {
-        this.byteBuf.writeShort(i);
-        return this;
-    }
-
-    @Override
     public MutableByteBuf writeMedium(final int i) {
-        this.byteBuf.writeMedium(i);
-        return this;
-    }
-
-    @Override
-    public MutableByteBuf writeMediumLE(final int i) {
         this.byteBuf.writeMedium(i);
         return this;
     }
@@ -739,19 +577,7 @@ public class LegacyByteBuf implements MutableByteBuf {
     }
 
     @Override
-    public MutableByteBuf writeIntLE(final int i) {
-        this.byteBuf.writeInt(i);
-        return this;
-    }
-
-    @Override
     public MutableByteBuf writeLong(final long l) {
-        this.byteBuf.writeLong(l);
-        return this;
-    }
-
-    @Override
-    public MutableByteBuf writeLongLE(final long l) {
         this.byteBuf.writeLong(l);
         return this;
     }
@@ -821,21 +647,9 @@ public class LegacyByteBuf implements MutableByteBuf {
     }
 
     @Override
-    @Deprecated
-    public int writeBytes(final FileChannel fileChannel, final long l, final int i) throws IOException {
-        return 0;
-    }
-
-    @Override
     public MutableByteBuf writeZero(final int i) {
         this.byteBuf.writeZero(i);
         return this;
-    }
-
-    @Override
-    @Deprecated
-    public int writeCharSequence(final CharSequence charSequence, final Charset charset) {
-        return 0;
     }
 
     @Override
@@ -859,30 +673,6 @@ public class LegacyByteBuf implements MutableByteBuf {
     }
 
     @Override
-
-    public int forEachByte(MutableByteProcessor byteProcessor) {
-        return this.byteBuf.forEachByte((ByteBufProcessor) byteProcessor.getParent());
-    }
-
-    @Override
-
-    public int forEachByte(int i, int i1, MutableByteProcessor byteProcessor) {
-        return this.byteBuf.forEachByte(i, i1, (ByteBufProcessor) byteProcessor.getParent());
-    }
-
-    @Override
-
-    public int forEachByteDesc(MutableByteProcessor byteProcessor) {
-        return this.byteBuf.forEachByteDesc((ByteBufProcessor) byteProcessor.getParent());
-    }
-
-    @Override
-
-    public int forEachByteDesc(int i, int i1, MutableByteProcessor byteProcessor) {
-        return this.byteBuf.forEachByteDesc(i, i1, (ByteBufProcessor) byteProcessor.getParent());
-    }
-
-    @Override
     public MutableByteBuf copy() {
         return MutableByteBuf.translate(this.byteBuf.copy());
     }
@@ -899,33 +689,12 @@ public class LegacyByteBuf implements MutableByteBuf {
     }
 
     @Override
-    @Deprecated
-    public MutableByteBuf retainedSlice() {
-        ///this.byteBuf.retainedSlice();
-        return this;
-    }
-
-    @Override
     public MutableByteBuf slice(final int i, final int i1) {
         this.byteBuf.slice(i, i1);
         return this;
     }
-
-    @Override
-    @Deprecated
-    public MutableByteBuf retainedSlice(final int i, final int i1) {
-//        this.byteBuf.retainedSlice(i, i1);
-        return this;
-    }
-
     @Override
     public MutableByteBuf duplicate() {
-        return MutableByteBuf.translate(this.byteBuf.duplicate());
-    }
-
-    @Override
-    @Deprecated
-    public MutableByteBuf retainedDuplicate() {
         return MutableByteBuf.translate(this.byteBuf.duplicate());
     }
 
@@ -1023,20 +792,6 @@ public class LegacyByteBuf implements MutableByteBuf {
     @Override
     public MutableByteBuf retain() {
         this.byteBuf.retain();
-        return this;
-    }
-
-    @Override
-    @Deprecated
-    public MutableByteBuf touch() {
-        //this.byteBuf.touch();
-        return this;
-    }
-
-    @Override
-    @Deprecated
-    public MutableByteBuf touch(final Object o) {
-        //this.byteBuf.touch(o);
         return this;
     }
 

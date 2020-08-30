@@ -38,10 +38,6 @@ public interface MutableByteBuf {
 
     boolean isDirect() ;
 
-    boolean isReadOnly() ;
-
-    MutableByteBuf asReadOnly() ;
-
     int readerIndex() ;
 
     MutableByteBuf readerIndex(final int i) ;
@@ -92,31 +88,17 @@ public interface MutableByteBuf {
 
     short getShort(final int i) ;
 
-    short getShortLE(final int i) ;
-
     int getUnsignedShort(final int i) ;
-
-    int getUnsignedShortLE(final int i) ;
 
     int getMedium(final int i) ;
 
-    int getMediumLE(final int i) ;
-
     int getUnsignedMedium(final int i) ;
-
-    int getUnsignedMediumLE(final int i) ;
 
     int getInt(final int i) ;
 
-    int getIntLE(final int i) ;
-
     long getUnsignedInt(final int i) ;
 
-    long getUnsignedIntLE(final int i) ;
-
     long getLong(final int i) ;
-
-    long getLongLE(final int i) ;
 
     char getChar(final int i) ;
 
@@ -140,29 +122,17 @@ public interface MutableByteBuf {
 
     int getBytes(final int i, final GatheringByteChannel gatheringByteChannel, final int i1) throws IOException ;
 
-    int getBytes(final int i, final FileChannel fileChannel, final long l, final int i1) throws IOException ;
-
-    CharSequence getCharSequence(final int i, final int i1, final Charset charset) ;
-
     MutableByteBuf setBoolean(final int i, final boolean b) ;
 
     MutableByteBuf setByte(final int i, final int i1) ;
 
     MutableByteBuf setShort(final int i, final int i1) ;
 
-    MutableByteBuf setShortLE(final int i, final int i1) ;
-
     MutableByteBuf setMedium(final int i, final int i1) ;
-
-    MutableByteBuf setMediumLE(final int i, final int i1) ;
 
     MutableByteBuf setInt(final int i, final int i1) ;
 
-    MutableByteBuf setIntLE(final int i, final int i1) ;
-
     MutableByteBuf setLong(final int i, final long l) ;
-
-    MutableByteBuf setLongLE(final int i, final long l) ;
 
     MutableByteBuf setChar(final int i, final int i1) ;
 
@@ -186,11 +156,7 @@ public interface MutableByteBuf {
 
     int setBytes(final int i, final ScatteringByteChannel scatteringByteChannel, final int i1) throws IOException ;
 
-    int setBytes(final int i, final FileChannel fileChannel, final long l, final int i1) throws IOException ;
-
     MutableByteBuf setZero(final int i, final int i1) ;
-
-    int setCharSequence(final int i, final CharSequence charSequence, final Charset charset) ;
 
     boolean readBoolean() ;
 
@@ -200,31 +166,17 @@ public interface MutableByteBuf {
 
     short readShort() ;
 
-    short readShortLE() ;
-
     int readUnsignedShort() ;
-
-    int readUnsignedShortLE() ;
 
     int readMedium() ;
 
-    int readMediumLE() ;
-
     int readUnsignedMedium() ;
-
-    int readUnsignedMediumLE() ;
 
     int readInt() ;
 
-    int readIntLE() ;
-
     long readUnsignedInt() ;
 
-    long readUnsignedIntLE() ;
-
     long readLong() ;
-
-    long readLongLE() ;
 
     char readChar() ;
 
@@ -235,8 +187,6 @@ public interface MutableByteBuf {
     MutableByteBuf readBytes(final int i) ;
 
     MutableByteBuf readSlice(final int i) ;
-
-    MutableByteBuf readRetainedSlice(final int i) ;
 
     MutableByteBuf readBytes(final MutableByteBuf byteBuf) ;
 
@@ -254,10 +204,6 @@ public interface MutableByteBuf {
 
     int readBytes(final GatheringByteChannel gatheringByteChannel, final int i) throws IOException ;
 
-    CharSequence readCharSequence(final int i, final Charset charset) ;
-
-    int readBytes(final FileChannel fileChannel, final long l, final int i) throws IOException ;
-
     MutableByteBuf skipBytes(final int i) ;
 
     MutableByteBuf writeBoolean(final boolean b) ;
@@ -266,19 +212,11 @@ public interface MutableByteBuf {
 
     MutableByteBuf writeShort(final int i) ;
 
-    MutableByteBuf writeShortLE(final int i) ;
-
     MutableByteBuf writeMedium(final int i) ;
-
-    MutableByteBuf writeMediumLE(final int i) ;
 
     MutableByteBuf writeInt(final int i) ;
 
-    MutableByteBuf writeIntLE(final int i) ;
-
     MutableByteBuf writeLong(final long l) ;
-
-    MutableByteBuf writeLongLE(final long l) ;
 
     MutableByteBuf writeChar(final int i) ;
 
@@ -302,11 +240,7 @@ public interface MutableByteBuf {
 
     int writeBytes(final ScatteringByteChannel scatteringByteChannel, final int i) throws IOException ;
 
-    int writeBytes(final FileChannel fileChannel, final long l, final int i) throws IOException ;
-
     MutableByteBuf writeZero(final int i) ;
-
-    int writeCharSequence(final CharSequence charSequence, final Charset charset) ;
 
     int indexOf(final int i, final int i1, final byte b) ;
 
@@ -316,29 +250,15 @@ public interface MutableByteBuf {
 
     int bytesBefore(final int i, final int i1, final byte b) ;
 
-    int forEachByte(final MutableByteProcessor byteProcessor) ;
-
-    int forEachByte(final int i, final int i1, final MutableByteProcessor byteProcessor) ;
-
-    int forEachByteDesc(final MutableByteProcessor byteProcessor) ;
-
-    int forEachByteDesc(final int i, final int i1, final MutableByteProcessor byteProcessor) ;
-
     MutableByteBuf copy() ;
 
     MutableByteBuf copy(final int i, final int i1) ;
 
     MutableByteBuf slice() ;
 
-    MutableByteBuf retainedSlice() ;
-
     MutableByteBuf slice(final int i, final int i1) ;
 
-    MutableByteBuf retainedSlice(final int i, final int i1) ;
-
     MutableByteBuf duplicate() ;
-
-    MutableByteBuf retainedDuplicate() ;
 
     int nioBufferCount() ;
 
@@ -377,10 +297,6 @@ public interface MutableByteBuf {
     MutableByteBuf retain(final int i) ;
 
     MutableByteBuf retain() ;
-
-    MutableByteBuf touch() ;
-
-    MutableByteBuf touch(final Object o) ;
 
     int refCnt() ;
 

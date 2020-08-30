@@ -119,14 +119,6 @@ public class ProtocolByteBuf {
         return this.byteBuf.isDirect();
     }
 
-    public boolean isReadOnly() {
-        return this.byteBuf.isReadOnly();
-    }
-
-    public MutableByteBuf asReadOnly() {
-        return this.byteBuf.asReadOnly();
-    }
-
     public int readerIndex() {
         return this.byteBuf.readerIndex();
     }
@@ -227,56 +219,28 @@ public class ProtocolByteBuf {
         return this.byteBuf.getShort(i);
     }
 
-    public short getShortLE(final int i) {
-        return this.byteBuf.getShortLE(i);
-    }
-
     public int getUnsignedShort(final int i) {
         return this.byteBuf.getUnsignedShort(i);
-    }
-
-    public int getUnsignedShortLE(final int i) {
-        return this.byteBuf.getUnsignedShortLE(i);
     }
 
     public int getMedium(final int i) {
         return this.byteBuf.getMedium(i);
     }
 
-    public int getMediumLE(final int i) {
-        return this.byteBuf.getMediumLE(i);
-    }
-
     public int getUnsignedMedium(final int i) {
         return this.byteBuf.getUnsignedMedium(i);
-    }
-
-    public int getUnsignedMediumLE(final int i) {
-        return this.byteBuf.getUnsignedMediumLE(i);
     }
 
     public int getInt(final int i) {
         return this.byteBuf.getInt(i);
     }
 
-    public int getIntLE(final int i) {
-        return this.byteBuf.getIntLE(i);
-    }
-
     public long getUnsignedInt(final int i) {
         return this.byteBuf.getUnsignedInt(i);
     }
 
-    public long getUnsignedIntLE(final int i) {
-        return this.byteBuf.getUnsignedIntLE(i);
-    }
-
     public long getLong(final int i) {
         return this.byteBuf.getLong(i);
-    }
-
-    public long getLongLE(final int i) {
-        return this.byteBuf.getLongLE(i);
     }
 
     public char getChar(final int i) {
@@ -323,13 +287,6 @@ public class ProtocolByteBuf {
         return this.byteBuf.getBytes(i, gatheringByteChannel, i1);
     }
 
-    public int getBytes(final int i, final FileChannel fileChannel, final long l, final int i1) throws IOException {
-        return this.byteBuf.getBytes(i, fileChannel, l, i1);
-    }
-
-    public CharSequence getCharSequence(final int i, final int i1, final Charset charset) {
-        return this.byteBuf.getCharSequence(i, i1, charset);
-    }
 
     public MutableByteBuf setBoolean(final int i, final boolean b) {
         return this.byteBuf.setBoolean(i, b);
@@ -343,32 +300,16 @@ public class ProtocolByteBuf {
         return this.byteBuf.setShort(i, i1);
     }
 
-    public MutableByteBuf setShortLE(final int i, final int i1) {
-        return this.byteBuf.setShortLE(i, i1);
-    }
-
     public MutableByteBuf setMedium(final int i, final int i1) {
         return this.byteBuf.setMedium(i, i1);
-    }
-
-    public MutableByteBuf setMediumLE(final int i, final int i1) {
-        return this.byteBuf.setMediumLE(i, i1);
     }
 
     public MutableByteBuf setInt(final int i, final int i1) {
         return this.byteBuf.setInt(i, i1);
     }
 
-    public MutableByteBuf setIntLE(final int i, final int i1) {
-        return this.byteBuf.setIntLE(i, i1);
-    }
-
     public MutableByteBuf setLong(final int i, final long l) {
         return this.byteBuf.setLong(i, l);
-    }
-
-    public MutableByteBuf setLongLE(final int i, final long l) {
-        return this.byteBuf.setLongLE(i, l);
     }
 
     public MutableByteBuf setChar(final int i, final int i1) {
@@ -415,16 +356,8 @@ public class ProtocolByteBuf {
         return this.byteBuf.setBytes(i, scatteringByteChannel, i1);
     }
 
-    public int setBytes(final int i, final FileChannel fileChannel, final long l, final int i1) throws IOException {
-        return this.byteBuf.setBytes(i, fileChannel, l, i1);
-    }
-
     public MutableByteBuf setZero(final int i, final int i1) {
         return this.byteBuf.setZero(i, i1);
-    }
-
-    public int setCharSequence(final int i, final CharSequence charSequence, final Charset charset) {
-        return this.byteBuf.setCharSequence(i, charSequence, charset);
     }
 
     public boolean readBoolean() {
@@ -443,56 +376,28 @@ public class ProtocolByteBuf {
         return this.byteBuf.readShort();
     }
 
-    public short readShortLE() {
-        return this.byteBuf.readShortLE();
-    }
-
     public int readUnsignedShort() {
         return this.byteBuf.readUnsignedShort();
-    }
-
-    public int readUnsignedShortLE() {
-        return this.byteBuf.readUnsignedShortLE();
     }
 
     public int readMedium() {
         return this.byteBuf.readMedium();
     }
 
-    public int readMediumLE() {
-        return this.byteBuf.readMediumLE();
-    }
-
     public int readUnsignedMedium() {
         return this.byteBuf.readUnsignedMedium();
-    }
-
-    public int readUnsignedMediumLE() {
-        return this.byteBuf.readUnsignedMediumLE();
     }
 
     public int readInt() {
         return this.byteBuf.readInt();
     }
 
-    public int readIntLE() {
-        return this.byteBuf.readIntLE();
-    }
-
     public long readUnsignedInt() {
         return this.byteBuf.readUnsignedInt();
     }
 
-    public long readUnsignedIntLE() {
-        return this.byteBuf.readUnsignedIntLE();
-    }
-
     public long readLong() {
         return this.byteBuf.readLong();
-    }
-
-    public long readLongLE() {
-        return this.byteBuf.readLongLE();
     }
 
     public char readChar() {
@@ -513,10 +418,6 @@ public class ProtocolByteBuf {
 
     public MutableByteBuf readSlice(final int i) {
         return this.byteBuf.readSlice(i);
-    }
-
-    public MutableByteBuf readRetainedSlice(final int i) {
-        return this.byteBuf.readRetainedSlice(i);
     }
 
     public MutableByteBuf readBytes(final MutableByteBuf byteBuf) {
@@ -551,14 +452,6 @@ public class ProtocolByteBuf {
         return this.byteBuf.readBytes(gatheringByteChannel, i);
     }
 
-    public CharSequence readCharSequence(final int i, final Charset charset) {
-        return this.byteBuf.readCharSequence(i, charset);
-    }
-
-    public int readBytes(final FileChannel fileChannel, final long l, final int i) throws IOException {
-        return this.byteBuf.readBytes(fileChannel, l, i);
-    }
-
     public MutableByteBuf skipBytes(final int i) {
         return this.byteBuf.skipBytes(i);
     }
@@ -575,32 +468,16 @@ public class ProtocolByteBuf {
         return this.byteBuf.writeShort(i);
     }
 
-    public MutableByteBuf writeShortLE(final int i) {
-        return this.byteBuf.writeShortLE(i);
-    }
-
     public MutableByteBuf writeMedium(final int i) {
         return this.byteBuf.writeMedium(i);
-    }
-
-    public MutableByteBuf writeMediumLE(final int i) {
-        return this.byteBuf.writeMediumLE(i);
     }
 
     public MutableByteBuf writeInt(final int i) {
         return this.byteBuf.writeInt(i);
     }
 
-    public MutableByteBuf writeIntLE(final int i) {
-        return this.byteBuf.writeIntLE(i);
-    }
-
     public MutableByteBuf writeLong(final long l) {
         return this.byteBuf.writeLong(l);
-    }
-
-    public MutableByteBuf writeLongLE(final long l) {
-        return this.byteBuf.writeLongLE(l);
     }
 
     public MutableByteBuf writeChar(final int i) {
@@ -647,16 +524,8 @@ public class ProtocolByteBuf {
         return this.byteBuf.writeBytes(scatteringByteChannel, i);
     }
 
-    public int writeBytes(final FileChannel fileChannel, final long l, final int i) throws IOException {
-        return this.byteBuf.writeBytes(fileChannel, l, i);
-    }
-
     public MutableByteBuf writeZero(final int i) {
         return this.byteBuf.writeZero(i);
-    }
-
-    public int writeCharSequence(final CharSequence charSequence, final Charset charset) {
-        return this.byteBuf.writeCharSequence(charSequence, charset);
     }
 
     public int indexOf(final int i, final int i1, final byte b) {
@@ -675,22 +544,6 @@ public class ProtocolByteBuf {
         return this.byteBuf.bytesBefore(i, i1, b);
     }
 
-    public int forEachByte(final MutableByteProcessor byteProcessor) {
-        return this.byteBuf.forEachByte(byteProcessor);
-    }
-
-    public int forEachByte(final int i, final int i1, final MutableByteProcessor byteProcessor) {
-        return this.byteBuf.forEachByte(i, i1, byteProcessor);
-    }
-
-    public int forEachByteDesc(final MutableByteProcessor byteProcessor) {
-        return this.byteBuf.forEachByteDesc(byteProcessor);
-    }
-
-    public int forEachByteDesc(final int i, final int i1, final MutableByteProcessor byteProcessor) {
-        return this.byteBuf.forEachByteDesc(i, i1, byteProcessor);
-    }
-
     public MutableByteBuf copy() {
         return this.byteBuf.copy();
     }
@@ -703,24 +556,12 @@ public class ProtocolByteBuf {
         return this.byteBuf.slice();
     }
 
-    public MutableByteBuf retainedSlice() {
-        return this.byteBuf.retainedSlice();
-    }
-
     public MutableByteBuf slice(final int i, final int i1) {
         return this.byteBuf.slice(i, i1);
     }
 
-    public MutableByteBuf retainedSlice(final int i, final int i1) {
-        return this.byteBuf.retainedSlice(i, i1);
-    }
-
     public MutableByteBuf duplicate() {
         return this.byteBuf.duplicate();
-    }
-
-    public MutableByteBuf retainedDuplicate() {
-        return this.byteBuf.retainedDuplicate();
     }
 
     public int nioBufferCount() {
@@ -797,14 +638,6 @@ public class ProtocolByteBuf {
 
     public MutableByteBuf retain() {
         return this.byteBuf.retain();
-    }
-
-    public MutableByteBuf touch() {
-        return this.byteBuf.touch();
-    }
-
-    public MutableByteBuf touch(final Object o) {
-        return this.byteBuf.touch(o);
     }
 
     public int refCnt() {
