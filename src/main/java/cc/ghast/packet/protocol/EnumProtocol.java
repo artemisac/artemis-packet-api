@@ -7,6 +7,7 @@ import java.util.UUID;
 
 public interface EnumProtocol {
     Packet<?> getPacket(ProtocolDirection direction, int id, UUID playerId, ProtocolVersion version);
+    int getPacketId(ProtocolDirection direction, Packet<?> packet);
     Class<? extends Packet<?>> getPacketClass(ProtocolDirection direction, String name);
     int getOrdinal();
 }

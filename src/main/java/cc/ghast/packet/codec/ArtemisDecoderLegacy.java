@@ -4,8 +4,11 @@ import cc.ghast.packet.PacketManager;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.buffer.types.Converters;
 import cc.ghast.packet.exceptions.IncompatiblePipelineException;
+import cc.ghast.packet.nms.EnumDirection;
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.profile.Profile;
+import cc.ghast.packet.protocol.EnumProtocol;
+import cc.ghast.packet.protocol.EnumProtocolCurrent;
 import cc.ghast.packet.protocol.EnumProtocolLegacy;
 import cc.ghast.packet.protocol.ProtocolDirection;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
@@ -33,12 +36,13 @@ public class ArtemisDecoderLegacy extends ChannelDuplexHandler {
 
     private final Profile profile;
     private final Inflater inflater;
-    private EnumProtocolLegacy protocol;
+    private final ProtocolDirection direction;
 
-    public ArtemisDecoderLegacy(Profile profile) {
+    public ArtemisDecoderLegacy(Profile profile, ProtocolDirection direction) {
         this.profile = profile;
         this.inflater = new Inflater();
-        this.protocol = EnumProtocolLegacy.HANDSHAKE;
+        this.direction = direction;
+        this.profile.setProtocol(EnumProtocolLegacy.HANDSHAKE);
     }
 
 
@@ -73,7 +77,11 @@ public class ArtemisDecoderLegacy extends ChannelDuplexHandler {
     protected boolean decode(MutableByteBuf in) throws Exception {
 
         // If there's no readable bytes, the packet is empty. Don't worry, such can happen
-        in = decompress(in);
+
+        if (profile.getProtocol().equals(EnumProtocolCurrent.PLAY) && direction.equals(ProtocolDirection.IN)){
+            in = decompress(in);
+        }
+
 
         if (in.readableBytes() != 0) {
 
@@ -86,7 +94,7 @@ public class ArtemisDecoderLegacy extends ChannelDuplexHandler {
             }
 
             // Collect the packet from the enum map. This needs to be rewritten for better accuracy tho
-            Packet<?> packet = protocol.getPacket(ProtocolDirection.IN, id, profile.getUuid(), profile.getVersion());
+            Packet<?> packet = profile.getProtocol().getPacket(direction, id, profile.getUuid(), profile.getVersion());
 
             if (packet instanceof ReadableBuffer) {
                 ReadableBuffer buffer = (ReadableBuffer) packet;
@@ -153,6 +161,6 @@ public class ArtemisDecoderLegacy extends ChannelDuplexHandler {
 
     private void handleHandshake(PacketHandshakeClientSetProtocol handshake){
         profile.setVersion(ProtocolVersion.getVersion(handshake.getProtocolVersion()));
-        protocol = EnumProtocolLegacy.PLAY;
+        profile.setProtocol(EnumProtocolLegacy.PLAY);
     }
 }

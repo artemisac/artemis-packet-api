@@ -50,7 +50,7 @@ public class PacketPlayClientFlying extends Packet<ClientPacket> implements Read
             super.y = byteBuf.readDouble();
             super.z = byteBuf.readDouble();
             super.hasPos = true;
-            super.handle(byteBuf);
+            super.read(byteBuf);
         }
 
     }
@@ -68,7 +68,7 @@ public class PacketPlayClientFlying extends Packet<ClientPacket> implements Read
             super.yaw = byteBuf.readFloat();
             super.pitch = byteBuf.readFloat();
             super.hasLook = true;
-            super.handle(byteBuf);
+            super.read(byteBuf);
         }
 
     }
@@ -90,7 +90,7 @@ public class PacketPlayClientFlying extends Packet<ClientPacket> implements Read
             super.pitch = byteBuf.readFloat();
             super.hasPos = true;
             super.hasLook = true;
-            super.handle(byteBuf);
+            super.read(byteBuf);
         }
 
     }

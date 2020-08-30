@@ -8,6 +8,7 @@ import cc.ghast.packet.wrapper.nbt.WrappedItem;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.wrapper.netty.MutableByteBufAllocator;
 import cc.ghast.packet.wrapper.netty.MutableByteProcessor;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -66,20 +67,16 @@ public class ProtocolByteBuf {
         Converters.UUID.write(byteBuf, uuid);
     }
 
-    public WrappedItem readItem() {
+    public ItemStack readItem() {
         try {
-            return Converters.ITEM.read(byteBuf);
+            return Converters.ITEM_STACK.read(byteBuf);
         } catch (IOException e) {
             throw new InvalidByteBufStructureException(e);
         }
     }
 
-    public void writeItem(WrappedItem item) {
-        try {
-            Converters.ITEM.write(byteBuf, item);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void writeItem(ItemStack item) {
+        Converters.ITEM_STACK.write(byteBuf, item);
     }
 
     public String readStringBuf(int i) {

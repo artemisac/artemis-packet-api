@@ -37,7 +37,7 @@ public class PacketPlayServerEntity extends Packet<ServerPacket> implements Read
 
         @Override
         public void read(ProtocolByteBuf byteBuf) {
-            super.handle(byteBuf);
+            super.read(byteBuf);
 
             this.x = byteBuf.readByte();
             this.y = byteBuf.readByte();
@@ -55,7 +55,7 @@ public class PacketPlayServerEntity extends Packet<ServerPacket> implements Read
 
         @Override
         public void read(ProtocolByteBuf byteBuf) {
-            super.handle(byteBuf);
+            super.read(byteBuf);
 
             this.yaw = byteBuf.readByte();
             this.pitch = byteBuf.readByte();
@@ -71,7 +71,7 @@ public class PacketPlayServerEntity extends Packet<ServerPacket> implements Read
 
         @Override
         public void read(ProtocolByteBuf byteBuf) {
-            super.handle(byteBuf);
+            super.read(byteBuf);
             this.x = byteBuf.readByte();
             this.y = byteBuf.readByte();
             this.z = byteBuf.readByte();

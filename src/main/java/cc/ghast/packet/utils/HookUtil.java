@@ -19,6 +19,10 @@ public class HookUtil {
         return "decoder";
     }
 
+    public static String getHookForward() {
+        return "encoder";
+    }
+
     private static boolean clazzExist(String name) {
         try {
             Class.forName(name);

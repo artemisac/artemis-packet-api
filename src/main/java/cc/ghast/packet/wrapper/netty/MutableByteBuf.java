@@ -22,10 +22,6 @@ public interface MutableByteBuf {
         return ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8) ? new CurrentByteBuf(byteBuf) : new LegacyByteBuf(byteBuf);
     }
 
-    static MutableByteBuf create() {
-        return
-    }
-    
     int capacity() ;
 
     MutableByteBuf capacity(final int i) ;

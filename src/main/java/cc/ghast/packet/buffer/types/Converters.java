@@ -5,9 +5,7 @@ import cc.ghast.packet.buffer.types.exclusive.StringPoolConverter;
 import cc.ghast.packet.buffer.types.exclusive.VarIntConverter;
 import cc.ghast.packet.buffer.types.exclusive.VarLongConverter;
 import cc.ghast.packet.buffer.types.java.*;
-import cc.ghast.packet.buffer.types.minecraft.ItemConverter;
-import cc.ghast.packet.buffer.types.minecraft.LongLocationConverter;
-import cc.ghast.packet.buffer.types.minecraft.NBTCompoundConverter;
+import cc.ghast.packet.buffer.types.minecraft.*;
 import cc.ghast.packet.protocol.EnumProtocolLegacy;
 import io.netty.util.AttributeKey;
 
@@ -32,7 +30,9 @@ public class Converters {
     public static final UUIDConverter UUID = new UUIDConverter();
 
     public static final NBTCompoundConverter NBT = new NBTCompoundConverter();
+    public static final NMSCompoundTagConverter NMS_NBT = new NMSCompoundTagConverter();
     public static final ItemConverter ITEM = new ItemConverter();
+    public static final ItemStackConverter ITEM_STACK = new ItemStackConverter();
 
     public static final LongLocationConverter LOCATION_LONG = new LongLocationConverter();
 

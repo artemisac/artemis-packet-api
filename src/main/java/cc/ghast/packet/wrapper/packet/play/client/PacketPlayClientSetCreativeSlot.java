@@ -8,6 +8,7 @@ import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.Packet;
 import lombok.Getter;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
@@ -18,7 +19,7 @@ public class PacketPlayClientSetCreativeSlot extends Packet<ClientPacket> implem
     }
 
     private int slot;
-    private WrappedItem item;
+    private ItemStack item;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {

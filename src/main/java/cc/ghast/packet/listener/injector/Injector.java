@@ -2,7 +2,9 @@ package cc.ghast.packet.listener.injector;
 
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.profile.Profile;
+import cc.ghast.packet.wrapper.packet.Packet;
 import lombok.SneakyThrows;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -14,6 +16,10 @@ import java.util.WeakHashMap;
 
 public interface Injector {
 
+    String clientBound = "artemis_client";
+    String serverBound = "artemis_server";
+    String encoder = "artemis_encoder";
+
     static Injector build() {
         return ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)
                 ? new InjectorModern() : new InjectorLegacy();
@@ -24,6 +30,8 @@ public interface Injector {
 
     @SneakyThrows
     void uninject(PlayerQuitEvent event);
+
+    void writePacket(Player player, Packet<?> packet);
 
     Map<UUID, Profile> profiles = new WeakHashMap<>();
 

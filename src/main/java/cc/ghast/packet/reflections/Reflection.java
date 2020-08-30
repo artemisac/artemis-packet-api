@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -250,7 +251,8 @@ public final class Reflection {
 
     public static MethodInvoker getTypedMethod(Class<?> clazz, int index, Class<?> returnType, Class<?>... params) {
         for (final Method method : clazz.getDeclaredMethods()) {
-            if ((returnType == null || method.getReturnType().equals(returnType))
+            if (((returnType == null && method.getReturnType().equals(void.class))
+                    || method.getReturnType().equals(returnType))
                     && Arrays.equals(method.getParameterTypes(), params) && index-- <= 0) {
                 method.setAccessible(true);
 

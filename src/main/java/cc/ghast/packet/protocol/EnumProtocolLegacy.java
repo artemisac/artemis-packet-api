@@ -183,10 +183,17 @@ public enum EnumProtocolLegacy implements EnumProtocol {
         }
     }
 
+
+
     @SneakyThrows
     public Packet<?> getPacket(ProtocolDirection enumProtocolDirection, int i, UUID player, ProtocolVersion version) {
         Class<? extends Packet<?>> clazz = this.packetMap.get(enumProtocolDirection).get(i);
         return clazz == null ? null : clazz.getConstructor(UUID.class, ProtocolVersion.class).newInstance(player, version);
+    }
+
+    @Override
+    public int getPacketId(ProtocolDirection direction, Packet<?> packet) {
+        return this.packetMap.get(direction).inverse().get(packet.getClass());
     }
 
     @Override

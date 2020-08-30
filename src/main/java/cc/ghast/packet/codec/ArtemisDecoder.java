@@ -30,18 +30,19 @@ import java.util.zip.Inflater;
  * @author Ghast
  * @since 24-Apr-20
  */
-public class ArtemisDecoder extends ChannelInboundHandlerAdapter {
+public class ArtemisDecoder extends ChannelDuplexHandler {
 
     private static final boolean debug = false;
 
     private final Profile profile;
     private final Inflater inflater;
-    private EnumProtocol protocol;
+    private final ProtocolDirection direction;
 
-    public ArtemisDecoder(Profile profile) {
+    public ArtemisDecoder(Profile profile, ProtocolDirection direction) {
         this.profile = profile;
         this.inflater = new Inflater();
-        this.protocol = EnumProtocolCurrent.HANDSHAKE;
+        this.direction = direction;
+        this.profile.setProtocol(EnumProtocolLegacy.HANDSHAKE);
     }
 
 
@@ -57,17 +58,20 @@ public class ArtemisDecoder extends ChannelInboundHandlerAdapter {
         // Make sure we're receiving a ByteBuf. If a protocol is placed before such, it may screw with the decompression
         if (msg instanceof ByteBuf) {
             // Decode the message and send it off
-            final boolean cancelled = decode(MutableByteBuf.translate((ByteBuf) msg).copy());
-
-            // Nullify if the packet was cancelled
-            if (cancelled) {
-                msg = null;
+            try {
+                final boolean cancelled = decode(MutableByteBuf.translate((ByteBuf) msg).copy());
+                // Nullify if the packet was cancelled
+                if (cancelled) {
+                    msg = msg;
+                }
+            } catch (Exception e){
+                e.printStackTrace();
             }
 
         } else {
             // If the message is not a ByteBuf, there's obviously an issue with the pipeline, so disinject and throw error
             ctx.pipeline().remove(this);
-            throw new IncompatiblePipelineException(msg.getClass());
+            new IncompatiblePipelineException(msg.getClass()).printStackTrace();
         }
         super.channelRead(ctx, msg);
     }
@@ -75,7 +79,9 @@ public class ArtemisDecoder extends ChannelInboundHandlerAdapter {
     protected boolean decode(MutableByteBuf in) throws Exception {
 
         // If there's no readable bytes, the packet is empty. Don't worry, such can happen
-        in = decompress(in);
+        if (profile.getProtocol().equals(EnumProtocolCurrent.PLAY) && direction.equals(ProtocolDirection.IN)){
+            in = decompress(in);
+        }
 
         if (in.readableBytes() != 0) {
 
@@ -88,12 +94,14 @@ public class ArtemisDecoder extends ChannelInboundHandlerAdapter {
             }
 
             // Collect the packet from the enum map. This needs to be rewritten for better accuracy tho
-            Packet<?> packet = protocol.getPacket(ProtocolDirection.IN, id, profile.getUuid(), profile.getVersion());
+            Packet<?> packet = profile.getProtocol().getPacket(ProtocolDirection.IN, id, profile.getUuid(), profile.getVersion());
 
             if (packet instanceof ReadableBuffer) {
                 ReadableBuffer buffer = (ReadableBuffer) packet;
                 buffer.read(new ProtocolByteBuf(in));
             }
+
+            System.out.println("pakcet=" + packet.getRealName());
 
             // Handle and collect the handshake
             if (packet instanceof PacketHandshakeClientSetProtocol){
@@ -156,6 +164,6 @@ public class ArtemisDecoder extends ChannelInboundHandlerAdapter {
     private void handleHandshake(PacketHandshakeClientSetProtocol handshake){
         profile.setVersion(ProtocolVersion.getVersion(handshake.getProtocolVersion()));
         System.out.println("Version=" + handshake.getVersion());
-        protocol = EnumProtocolLegacy.PLAY;
+        profile.setProtocol(EnumProtocolCurrent.PLAY);
     }
 }

@@ -26,7 +26,8 @@ public class ItemConverter extends BufConverter<WrappedItem> {
         } else {
             buffer.writeShort(value.getId());
             buffer.writeByte(value.getAmount());
-            Converters.NBT.write(buffer, value.getTag());
+            // Todo Fix this
+            //Converters.NBT.write(buffer, value.getTag());
         }
     }
 

@@ -11,6 +11,7 @@ import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.Packet;
 import lombok.Getter;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -22,7 +23,7 @@ public class PacketPlayClientBlockPlace extends Packet<ClientPacket> implements 
     }
 
     private EnumDirection direction;
-    private WrappedItem itemNMS;
+    private ItemStack item;
     private BlockPosition position;
     private boolean mainHand;
     private boolean missed;
@@ -54,7 +55,7 @@ public class PacketPlayClientBlockPlace extends Packet<ClientPacket> implements 
 
             // Item
             try {
-                this.itemNMS = Converters.ITEM.read(byteBuf.getByteBuf());
+                this.item = Converters.ITEM_STACK.read(byteBuf.getByteBuf());
             } catch (IOException e){
                 e.printStackTrace();
             }

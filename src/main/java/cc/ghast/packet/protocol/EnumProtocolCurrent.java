@@ -207,9 +207,20 @@ public enum EnumProtocolCurrent implements EnumProtocol {
     }
 
     @Override
+    public int getPacketId(ProtocolDirection direction, Packet<?> packet) {
+        Map.Entry<Integer, Class<? extends Packet<?>>> v = packetMap.get(direction).entrySet().parallelStream()
+                .filter(e -> e.getValue().equals(packet.getClass())).findFirst().orElse(null);
+        if (v == null) return -1;
+
+        return v.getKey();
+    }
+
+    @Override
     public int getOrdinal() {
         return ordinal();
     }
+
+
 
     @Override
     public Class<? extends Packet<?>> getPacketClass(ProtocolDirection direction, String name){
