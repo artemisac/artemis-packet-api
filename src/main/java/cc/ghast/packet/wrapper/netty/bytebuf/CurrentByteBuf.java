@@ -6,6 +6,7 @@ import cc.ghast.packet.wrapper.netty.MutableByteProcessor;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.UnpooledByteBufAllocator;
 import io.netty.buffer.UnpooledHeapByteBuf;
+import io.netty.buffer.UnpooledUnsafeDirectByteBuf;
 import io.netty.util.ByteProcessor;
 
 import java.io.IOException;
@@ -482,8 +483,7 @@ public class CurrentByteBuf implements MutableByteBuf {
 
     @Override
     public MutableByteBuf readBytes(final int i) {
-        this.byteBuf.readBytes(i);
-        return this;
+        return MutableByteBuf.translate(this.byteBuf.readBytes(i));
     }
 
     @Override

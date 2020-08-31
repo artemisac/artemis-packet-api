@@ -167,7 +167,6 @@ public enum EnumProtocolLegacy implements EnumProtocol {
     }
 
     public EnumProtocolLegacy addPacket(ProtocolDirection enumProtocolDirection, Class<? extends Packet<?>> clazz) {
-        System.out.println("ADDED PACKET " + clazz);
         BiMap<Integer, Class<? extends Packet<?>>> object = this.packetMap.get(enumProtocolDirection);
 
         if (object == null) {

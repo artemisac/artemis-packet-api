@@ -42,7 +42,6 @@ public class ArtemisDecoderLegacy extends ChannelDuplexHandler {
         this.profile = profile;
         this.inflater = new Inflater();
         this.direction = direction;
-        this.profile.setProtocol(EnumProtocolLegacy.HANDSHAKE);
     }
 
 
@@ -51,7 +50,7 @@ public class ArtemisDecoderLegacy extends ChannelDuplexHandler {
         if (debug) {
             System.out.println("Has decoder: " + (ctx.channel().pipeline().get("decoder") != null));
             System.out.println("Has decompresser: " + (ctx.channel().pipeline().get("decompress") != null));
-            System.out.println("Structure: " + Arrays.toString(ctx.channel().pipeline().names().toArray()));
+            System.out.println("Structure: " + ctx.channel().pipeline().toMap());
             System.out.println(msg.toString());
         }
 
@@ -85,7 +84,7 @@ public class ArtemisDecoderLegacy extends ChannelDuplexHandler {
 
         if (in.readableBytes() != 0) {
 
-            // Get the var_int packet id of the packet. This is quite important as it's what determins it's type
+            // Get the var_int packet id of the packet. This is quite important as it's what determines it's type
             int id = Converters.VAR_INT.read(in);
 
             if (debug) {

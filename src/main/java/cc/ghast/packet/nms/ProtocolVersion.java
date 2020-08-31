@@ -33,7 +33,7 @@ public enum ProtocolVersion {
     V1_15(573, "v1_15_R1"),
     V1_15_1(575, "v1_15_R1"),
     V1_15_2(578, "v1_15_R1"),
-    UNKNOWN(-1, "UNKNOWN");
+    UNKNOWN(999, "UNKNOWN");
 
     @Getter
     private static final ProtocolVersion gameVersion = fetchGameVersion();
@@ -42,7 +42,7 @@ public enum ProtocolVersion {
 
     private static ProtocolVersion fetchGameVersion() {
         for (ProtocolVersion version : values()) {
-            if (version.getServerVersion() != null && version.getServerVersion().equals(Reflection.VERSION))
+            if (version.getServerVersion() != null && version.getServerVersion().equalsIgnoreCase(Reflection.VERSION))
                 return version;
 
         }

@@ -2,8 +2,10 @@ package cc.ghast.packet.listener;
 
 import cc.ghast.packet.PacketManager;
 import cc.ghast.packet.listener.injector.Injector;
+import cc.ghast.packet.utils.Chat;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -29,11 +31,13 @@ public class ChannelListener implements Listener {
     @EventHandler
     public void onLogin(AsyncPlayerPreLoginEvent e) {
         injector.inject(e);
+        Bukkit.getConsoleSender().sendMessage(Chat.translate("&r[&bPacket&r] &aSuccessfully &binjected&a into player &r" + e.getName()));
     }
 
     @EventHandler
     public void onLeave(PlayerQuitEvent e) {
         injector.uninject(e);
+        Bukkit.getConsoleSender().sendMessage(Chat.translate("&r[&bPacket&r] &aSuccessfully &cdisinjected&r from player &r" + e.getPlayer().getName()));
     }
 
 }

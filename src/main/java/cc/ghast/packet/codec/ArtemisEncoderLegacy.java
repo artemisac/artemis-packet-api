@@ -26,7 +26,7 @@ public class ArtemisEncoderLegacy extends MessageToByteEncoder<Packet<?>> {
     }
 
     @Override
-    protected void encode(ChannelHandlerContext channelHandlerContext, Packet<?> packet, ByteBuf byteBuf) throws Exception {
+    protected void encode(ChannelHandlerContext channelHandlerContext, Packet<?> packet, ByteBuf byteBuf) {
 
         int packetId = profile.getProtocol().getPacketId(ProtocolDirection.OUT, packet);
 

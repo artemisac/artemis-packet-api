@@ -11,6 +11,8 @@ import cc.ghast.packet.reflections.ReflectUtil;
 import cc.ghast.packet.utils.HookUtil;
 import cc.ghast.packet.wrapper.packet.Packet;
 import net.minecraft.util.io.netty.channel.Channel;
+import net.minecraft.util.io.netty.channel.ChannelFuture;
+import net.minecraft.util.io.netty.channel.ChannelFutureListener;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -24,6 +26,11 @@ import java.util.UUID;
  * Artemis © 2020
  */
 public class InjectorLegacy implements Injector {
+
+    public InjectorLegacy() {
+        System.out.println("[Artemis] Using Legacy Encoder");
+    }
+
     @Override
     public void inject(AsyncPlayerPreLoginEvent event) {
         Channel channel = (Channel) ReflectUtil.getChannel(event.getUniqueId(), event.getAddress().getHostAddress());
@@ -43,14 +50,15 @@ public class InjectorLegacy implements Injector {
         Profile profile = new Profile(uuid, inetAddress, ProtocolVersion.getGameVersion(), channel);
         ((Channel)channel).pipeline().addBefore(HookUtil.getHookBehind(), clientBound, new ArtemisDecoderLegacy(profile, ProtocolDirection.IN));
         ((Channel)channel).pipeline().addAfter(HookUtil.getHookForward(), serverBound, new ArtemisDecoderLegacy(profile, ProtocolDirection.OUT));
-        ((Channel)channel).pipeline().addAfter(HookUtil.getHookForward(), encoder, new ArtemisEncoderLegacy(profile));
+        ((Channel)channel).pipeline().addLast(encoder, new ArtemisEncoderLegacy(profile));
         profiles.put(uuid, profile);
     }
 
     @Override
     public void writePacket(Player player, Packet<?> packet) {
         Channel channel = (Channel) profiles.get(player.getUniqueId()).getChannel();
-        channel.pipeline().writeAndFlush(packet);
+        ChannelFuture channelfuture = channel.writeAndFlush(packet);
+        channelfuture.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
     }
     
 }

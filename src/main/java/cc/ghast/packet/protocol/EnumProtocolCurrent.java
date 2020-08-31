@@ -14,6 +14,7 @@ import cc.ghast.packet.wrapper.packet.status.PacketStatusServerInfoServer;
 import cc.ghast.packet.wrapper.packet.status.PacketStatusServerPing;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.AnnotationUtils;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -30,7 +31,7 @@ public enum EnumProtocolCurrent implements EnumProtocol {
     HANDSHAKE(-1, new Pair[][]{
             // Client
             new Pair[]{
-                new Pair<>(PacketHandshakeClientSetProtocol.class, "PacketHandshakeInSetProtocol")
+                new Pair<>(PacketHandshakeClientSetProtocol.class, "PacketHandshakingInSetProtocol")
             },
 
             // Server
@@ -44,15 +45,9 @@ public enum EnumProtocolCurrent implements EnumProtocol {
                 new Pair<>(PacketPlayClientChat.class, "PacketPlayInChat"),
                 new Pair<>(PacketPlayClientUseEntity.class, "PacketPlayInUseEntity"),
                 new Pair<>(PacketPlayClientFlying.class, "PacketPlayInFlying"),
-                new Pair<>(PacketPlayClientFlying.PacketPlayClientPosition.class,
-                        ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8)
-                                ? "PacketPlayInFlying$PacketPlayInPosition" : "PacketPlayInPosition"),
-                new Pair<>(PacketPlayClientFlying.PacketPlayClientLook.class,
-                        ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8)
-                        ? "PacketPlayInFlying$PacketPlayInLook" : "PacketPlayInLook"),
-                new Pair<>(PacketPlayClientFlying.PacketPlayClientPositionLook.class,
-                        ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8)
-                        ? "PacketPlayInFlying$PacketPlayInPositionLook" : "PacketPlayInPositionLook"),
+                new Pair<>(PacketPlayClientFlying.PacketPlayClientPosition.class,"PacketPlayInPosition"),
+                new Pair<>(PacketPlayClientFlying.PacketPlayClientLook.class,"PacketPlayInLook"),
+                new Pair<>(PacketPlayClientFlying.PacketPlayClientPositionLook.class,"PacketPlayInPositionLook"),
                 new Pair<>(PacketPlayClientBlockDig .class, "PacketPlayInBlockDig"),
                 new Pair<>(PacketPlayClientBlockPlace.class, "PacketPlayInBlockPlace"),
                 new Pair<>(PacketPlayClientHeldItemSlot.class, "PacketPlayInHeldItemSlot"),
@@ -97,15 +92,9 @@ public enum EnumProtocolCurrent implements EnumProtocol {
                 new Pair<>(PacketPlayServerEntityVelocity.class, "PacketPlayOutEntityVelocity"),
                 new Pair<>(PacketPlayServerEntityDestroy.class, "PacketPlayOutEntityDestroy"),
                 new Pair<>(PacketPlayServerEntity.class, "PacketPlayOutEntity"),
-                new Pair<>(PacketPlayServerEntity.PacketPlayServerRelEntityMove.class,
-                        ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8)
-                        ? "PacketPlayOutEntity$PacketPlayOutRelEntityMove" : "PacketPlayOutRelEntityMove"),
-                new Pair<>(PacketPlayServerEntity.PacketPlayServerEntityLook.class,
-                        ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8)
-                                ? "PacketPlayOutEntity$PacketPlayOutEntityLook" : "PacketPlayOutEntityLook"),
-                new Pair<>(PacketPlayServerEntity.PacketPlayServerRelEntityMoveLook.class,
-                        ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8)
-                                ? "PacketPlayOutEntity$PacketPlayOutRelEntityMove" : "PacketPlayOutRelEntityMoveLook"),
+                new Pair<>(PacketPlayServerEntity.PacketPlayServerRelEntityMove.class,"PacketPlayOutRelEntityMove"),
+                new Pair<>(PacketPlayServerEntity.PacketPlayServerEntityLook.class,"PacketPlayOutEntityLook"),
+                new Pair<>(PacketPlayServerEntity.PacketPlayServerRelEntityMoveLook.class,"PacketPlayOutRelEntityMoveLook"),
                 new Pair<>(PacketPlayServerEntityTeleport.class, "PacketPlayOutEntityTeleport"),
                 new Pair<>(PacketPlayServerEntityHeadRotation.class, "PacketPlayOutEntityHeadRotation"),
                 new Pair<>(PacketPlayServerEntityStatus.class, "PacketPlayOutEntityStatus"),
@@ -144,11 +133,11 @@ public enum EnumProtocolCurrent implements EnumProtocol {
                 new Pair<>(PacketPlayServerScoreboardDisplayObjective.class, "PacketPlayOutScoreboardDisplayObjective"),
                 new Pair<>(PacketPlayServerScoreboardTeam.class, "PacketPlayOutScoreboardTeam"),
                 new Pair<>(PacketPlayServerCustomPayload.class, "PacketPlayOutCustomPayload"),
-                new Pair<>(PacketPlayServerKickDisconnect.class, "PacketPlayOutKickDisconnect"),
+                new Pair<>(PacketPlayServerKickDisconnect.class, "PacketPlayOutKickDisconnect"), //
                 new Pair<>(PacketPlayServerServerDifficulty.class, "PacketPlayOutServerDifficulty"),
                 new Pair<>(PacketPlayServerCombatEvent.class, "PacketPlayOutCombatEvent"),
                 new Pair<>(PacketPlayServerCamera.class, "PacketPlayOutCamera"),
-                new Pair<>(PacketPlayServerWorldBorder.class, "PacketPlayOutWorldBoarder"),
+                new Pair<>(PacketPlayServerWorldBorder.class, "PacketPlayOutWorldBorder"), //
                 new Pair<>(PacketPlayServerTitle.class, "PacketPlayOutTitle"),
                 new Pair<>(PacketPlayServerSetCompression.class, "PacketPlayOutSetCompression"),
                 new Pair<>(PacketPlayServerPlayerListHeaderFooter.class, "PacketPlayOutPlayerListHeaderFooter"),
@@ -166,8 +155,8 @@ public enum EnumProtocolCurrent implements EnumProtocol {
 
             // Server
             new Pair[]{
-                new Pair<>(PacketStatusServerInfoServer.class, "PacketStatusOutInfoServer"),
-                new Pair<>(PacketStatusServerPing.class, "PacketStatusOutPing")
+                new Pair<>(PacketStatusServerInfoServer.class, "PacketStatusOutServerInfo"),
+                new Pair<>(PacketStatusServerPing.class, "PacketStatusOutPong")
             }
     }),
     LOGIN(2, new Pair[][]{
@@ -203,13 +192,22 @@ public enum EnumProtocolCurrent implements EnumProtocol {
     @SneakyThrows
     public Packet<?> getPacket(ProtocolDirection direction, int id, UUID playerId, ProtocolVersion version) {
         Class<? extends Packet<?>> clazz = packetMap.get(direction).get(id);
+        if (clazz == null) {
+            System.out.println("Packet of id " + id + " in direction does not exist! - " + packetMap.get(direction));
+            return null;
+        }
         return clazz.getConstructor(UUID.class, ProtocolVersion.class).newInstance(playerId, version);
     }
 
     @Override
     public int getPacketId(ProtocolDirection direction, Packet<?> packet) {
-        Map.Entry<Integer, Class<? extends Packet<?>>> v = packetMap.get(direction).entrySet().parallelStream()
-                .filter(e -> e.getValue().equals(packet.getClass())).findFirst().orElse(null);
+        Map.Entry<Integer, Class<? extends Packet<?>>> v = packetMap
+                .get(direction)
+                .entrySet()
+                .parallelStream()
+                .filter(e -> e != null && e.getValue() != null && e.getValue().equals(packet.getClass()))
+                .findFirst()
+                .orElse(null);
         if (v == null) return -1;
 
         return v.getKey();

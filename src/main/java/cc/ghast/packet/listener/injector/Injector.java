@@ -21,8 +21,7 @@ public interface Injector {
     String encoder = "artemis_encoder";
 
     static Injector build() {
-        return ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)
-                ? new InjectorModern() : new InjectorLegacy();
+        return ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8) ? new InjectorModern() : new InjectorLegacy();
     }
 
     @SneakyThrows

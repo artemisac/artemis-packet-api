@@ -20,6 +20,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.ChannelPromise;
 import io.netty.handler.codec.DecoderException;
 
 import java.util.Arrays;
@@ -42,16 +43,29 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
         this.profile = profile;
         this.inflater = new Inflater();
         this.direction = direction;
-        this.profile.setProtocol(EnumProtocolLegacy.HANDSHAKE);
+        this.profile.setProtocol(EnumProtocolCurrent.HANDSHAKE);
     }
 
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        if (direction.equals(ProtocolDirection.IN)) handle(ctx, msg);
+        super.channelRead(ctx, msg);
+    }
+
+    @Override
+    public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
+        if (direction.equals(ProtocolDirection.OUT)){
+            handle(ctx, msg);
+        }
+        super.write(ctx, msg, promise);
+    }
+
+    private void handle(ChannelHandlerContext ctx, Object msg) {
         if (debug) {
             System.out.println("Has decoder: " + (ctx.channel().pipeline().get("decoder") != null));
             System.out.println("Has decompresser: " + (ctx.channel().pipeline().get("decompress") != null));
-            System.out.println("Structure: " + Arrays.toString(ctx.channel().pipeline().names().toArray()));
+            System.out.println("Structure: " + ctx.channel().pipeline().toMap());
             System.out.println(msg.toString());
         }
 
@@ -59,7 +73,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
         if (msg instanceof ByteBuf) {
             // Decode the message and send it off
             try {
-                final boolean cancelled = decode(MutableByteBuf.translate((ByteBuf) msg).copy());
+                final boolean cancelled = decode(MutableByteBuf.translate(((ByteBuf) msg).copy()));
                 // Nullify if the packet was cancelled
                 if (cancelled) {
                     msg = msg;
@@ -70,22 +84,23 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
         } else {
             // If the message is not a ByteBuf, there's obviously an issue with the pipeline, so disinject and throw error
-            ctx.pipeline().remove(this);
+            //ctx.pipeline().remove(this);
             new IncompatiblePipelineException(msg.getClass()).printStackTrace();
         }
-        super.channelRead(ctx, msg);
     }
 
     protected boolean decode(MutableByteBuf in) throws Exception {
 
         // If there's no readable bytes, the packet is empty. Don't worry, such can happen
-        if (profile.getProtocol().equals(EnumProtocolCurrent.PLAY) && direction.equals(ProtocolDirection.IN)){
+        if (direction.equals(ProtocolDirection.IN)){
             in = decompress(in);
+        } else {
+            profile.setProtocol(EnumProtocolCurrent.PLAY);
         }
 
         if (in.readableBytes() != 0) {
 
-            // Get the var_int packet id of the packet. This is quite important as it's what determins it's type
+            // Get the var_int packet id of the packet. This is quite important as it's what determines it's type
             int id = Converters.VAR_INT.read(in);
 
             if (debug) {
@@ -94,14 +109,14 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
             }
 
             // Collect the packet from the enum map. This needs to be rewritten for better accuracy tho
-            Packet<?> packet = profile.getProtocol().getPacket(ProtocolDirection.IN, id, profile.getUuid(), profile.getVersion());
+            Packet<?> packet = profile.getProtocol().getPacket(direction, id, profile.getUuid(), profile.getVersion());
 
             if (packet instanceof ReadableBuffer) {
                 ReadableBuffer buffer = (ReadableBuffer) packet;
                 buffer.read(new ProtocolByteBuf(in));
             }
 
-            System.out.println("pakcet=" + packet.getRealName());
+            //System.out.println("pakcet=" + packet.getRealName());
 
             // Handle and collect the handshake
             if (packet instanceof PacketHandshakeClientSetProtocol){

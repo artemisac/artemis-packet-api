@@ -3,7 +3,9 @@ package cc.ghast.packet.chain;
 import cc.ghast.packet.profile.Profile;
 import cc.ghast.packet.wrapper.packet.Packet;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
@@ -13,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
  * Artemis © 2020
  */
 public class ChainManager {
-    private final Set<PacketListener> packetListeners = new HashSet<>();
+    private final List<PacketListener> packetListeners = new ArrayList<>();
 
     public void callPacket(Profile profile, Packet<?> packet){
         this.packetListeners.forEach(listener -> {

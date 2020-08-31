@@ -10,6 +10,9 @@ import cc.ghast.packet.reflections.ReflectUtil;
 import cc.ghast.packet.utils.HookUtil;
 import cc.ghast.packet.wrapper.packet.Packet;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
+import lombok.SneakyThrows;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -23,6 +26,11 @@ import java.util.UUID;
  * Artemis © 2020
  */
 public class InjectorModern implements Injector {
+
+    public InjectorModern() {
+        System.out.println("[Artemis] Using Modern Encoder");
+    }
+
     @Override
     public void inject(AsyncPlayerPreLoginEvent event) {
         Channel channel = (Channel) ReflectUtil.getChannel(event.getUniqueId(), event.getAddress().getHostAddress());
@@ -46,14 +54,17 @@ public class InjectorModern implements Injector {
         Profile profile = new Profile(uuid, inetAddress, ProtocolVersion.getGameVersion(), channel);
         profile.setProtocol(EnumProtocolCurrent.PLAY);
         ((Channel)channel).pipeline().addBefore(HookUtil.getHookBehind(), clientBound, new ArtemisDecoder(profile, ProtocolDirection.IN));
-        ((Channel)channel).pipeline().addAfter(HookUtil.getHookForward(), serverBound, new ArtemisDecoder(profile, ProtocolDirection.OUT));
-        ((Channel)channel).pipeline().addAfter(HookUtil.getHookForward(), encoder, new ArtemisEncoder(profile));
+        ((Channel)channel).pipeline().addAfter(HookUtil.getHookOutbound(), serverBound, new ArtemisDecoder(profile, ProtocolDirection.OUT));
+        ((Channel)channel).pipeline().addLast(encoder, new ArtemisEncoder(profile));
         profiles.put(uuid, profile);
     }
 
     @Override
+    @SneakyThrows
     public void writePacket(Player player, Packet<?> packet) {
         Channel channel = (Channel) profiles.get(player.getUniqueId()).getChannel();
-        channel.pipeline().writeAndFlush(packet);
+
+        ChannelFuture channelfuture = channel.writeAndFlush(packet);
+        channelfuture.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
     }
 }

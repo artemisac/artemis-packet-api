@@ -1,5 +1,6 @@
 package cc.ghast.packet.utils;
 
+import cc.ghast.packet.utils.hook.ProtocolLibHook;
 import org.bukkit.Bukkit;
 
 /**
@@ -8,27 +9,37 @@ import org.bukkit.Bukkit;
  * Artemis © 2020
  */
 public class HookUtil {
-    public static String getHookBehind() {
-        final boolean hasProtocolLib = clazzExist("com.comphenix.protocol.ProtocolLib");
-        final boolean hasViaVersion = clazzExist("us.myles.ViaVersion.ViaVersionPlugin");
 
-        if (hasProtocolLib) {
-            return "protocol_lib_finish";
+    private static boolean plib;
+
+    static {
+        try {
+            new ProtocolLibHook();
+            plib = true;
+        } catch (Exception e){
+            plib = false;
+        }
+    }
+
+    public static String getHookBehind() {
+        if (plib) {
+            return "protocol_lib_decoder";
         }
 
         return "decoder";
     }
 
-    public static String getHookForward() {
+    public static String getHookOutbound() {
         return "encoder";
     }
 
-    private static boolean clazzExist(String name) {
-        try {
-            Class.forName(name);
-            return true;
-        } catch (ClassNotFoundException ignored){
-            return false;
+    public static String getHookForward() {
+        if (plib) {
+            return "protocol_lib_encoder";
         }
+
+        return "encoder";
     }
+
+
 }

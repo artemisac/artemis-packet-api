@@ -11,13 +11,14 @@ import cc.ghast.packet.wrapper.packet.WriteableBuffer;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
+import lombok.SneakyThrows;
 
 /**
  * @author Ghast
  * @since 30/08/2020
  * Artemis © 2020
  */
-public class ArtemisEncoder extends MessageToByteEncoder<Packet<?>> {
+public class ArtemisEncoder extends MessageToByteEncoder<cc.ghast.packet.wrapper.packet.Packet<?>> {
 
     private final Profile profile;
 
@@ -26,15 +27,23 @@ public class ArtemisEncoder extends MessageToByteEncoder<Packet<?>> {
     }
 
     @Override
-    protected void encode(ChannelHandlerContext channelHandlerContext, Packet<?> packet, ByteBuf byteBuf) throws Exception {
+    protected void encode(ChannelHandlerContext channelHandlerContext, Packet<?> obj, ByteBuf byteBuf) {
+        try {
+            encode(obj, byteBuf);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
+    private void encode(Packet<?> packet, ByteBuf buf){
+        System.out.println(packet);
         int packetId = profile.getProtocol().getPacketId(ProtocolDirection.OUT, packet);
 
         if (packetId < 0){
             throw new InvalidPacketException(packet.getClass());
         }
 
-        ProtocolByteBuf buffer = new ProtocolByteBuf(MutableByteBuf.translate(byteBuf));
+        ProtocolByteBuf buffer = new ProtocolByteBuf(MutableByteBuf.translate((ByteBuf) buf));
 
         buffer.writeVarInt(packetId);
 
@@ -42,5 +51,10 @@ public class ArtemisEncoder extends MessageToByteEncoder<Packet<?>> {
             WriteableBuffer writeableBuffer = (WriteableBuffer) packet;
             writeableBuffer.write(buffer);
         }
+    }
+
+    @Override
+    public boolean acceptOutboundMessage(Object msg) {
+        return msg instanceof Packet<?>;
     }
 }

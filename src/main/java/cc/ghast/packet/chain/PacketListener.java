@@ -16,4 +16,5 @@ public interface PacketListener {
     }
 
     void onPacket(Profile profile, Packet<?> packet);
+
 }
