@@ -29,7 +29,7 @@ public class PacketPlayServerRespawn extends Packet<ServerPacket> implements Rea
         this.gamemode = GameMode.getById(byteBuf.readUnsignedByte());
         this.d = WorldType.getByName(byteBuf.readStringBuf(16).toUpperCase());
         if (this.d == null) {
-            this.d = WorldType.NORMAL;
+            this.d = WorldType.DEFAULT;
         }
     }
 }
