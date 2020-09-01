@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum WorldType {
-    NORMAL("DEFAULT"),
+    DEFAULT("DEFAULT"),
     FLAT("FLAT"),
     VERSION_1_1("DEFAULT_1_1"),
     LARGE_BIOMES("LARGEBIOMES"),

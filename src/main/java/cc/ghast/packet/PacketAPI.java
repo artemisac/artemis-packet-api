@@ -52,6 +52,5 @@ public class PacketAPI {
 
     public static void sendPacket(Player player, Packet<?> packet){
         PacketManager.INSTANCE.getListener().getInjector().writePacket(player, packet);
-        PacketManager.INSTANCE.getManager().callPacket(getProfile(player.getUniqueId()), packet);
     }
 }
