@@ -14,9 +14,6 @@ import cc.ghast.packet.wrapper.packet.status.PacketStatusServerInfoServer;
 import cc.ghast.packet.wrapper.packet.status.PacketStatusServerPing;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.AnnotationUtils;
-
-import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
 

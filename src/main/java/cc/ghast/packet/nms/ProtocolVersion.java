@@ -56,6 +56,8 @@ public enum ProtocolVersion {
         return UNKNOWN;
     }
 
+    public static boolean isLegacy() {return gameVersion.isBelow(ProtocolVersion.V1_8);}
+
     public static ProtocolVersion getLastVersion(){
         return values()[values().length - 2];
     }

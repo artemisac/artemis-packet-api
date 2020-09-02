@@ -7,7 +7,6 @@ import cc.ghast.packet.wrapper.packet.ServerPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.minecraft.server.v1_8_R3.PacketPlayOutPosition;
 
 import java.util.EnumSet;
 import java.util.Set;

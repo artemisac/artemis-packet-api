@@ -2,18 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>Artemis</artifactId>
-        <groupId>cc.ghast</groupId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
+
     <modelVersion>4.0.0</modelVersion>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <main.basedir>${project.parent.basedir}</main.basedir>
     </properties>
     <artifactId>ArtemisPacket</artifactId>
+    <groupId>cc.ghast</groupId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Packet</name>
@@ -37,45 +33,70 @@
     </repositories>
 
     <dependencies>
+
+        <!-- Bukkit API -->
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.8.8-R0.1-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Netty API which's version somewhats matches NMS's one -->
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
             <version>4.1.49.Final</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.comphenix.protocol</groupId>
-            <artifactId>ProtocolLib</artifactId>
-            <version>4.5.0</version>
-            <scope>provided</scope>
-        </dependency>
 
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/spigot-1.8.8-R0.1-SNAPSHOT.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot2</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/spigot-1.7.10-SNAPSHOT-b1657(1).jar</systemPath>
-        </dependency>
+        <!-- Casual utils used for simplicity -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.8</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>com.github.Steveice10</groupId>
             <artifactId>OpenNBT</artifactId>
             <version>1.3</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Prepackaged libs in NMS -->
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.minecraft</groupId>
+            <artifactId>utils</artifactId>
+            <version>1.8.8</version>
+            <systemPath>${project.basedir}/lib/legacy-libs.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+
+
+        <!-- Add compatibility with ProtocolLib -->
+        <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>4.5.0</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -106,7 +127,7 @@
                                 <!-- add Main-Class to manifest file -->
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>cc.ArtemisPlugin</mainClass>
+                                    <mainClass>cc.ghast.packet.PacketManager</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

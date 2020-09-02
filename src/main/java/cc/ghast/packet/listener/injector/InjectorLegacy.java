@@ -57,8 +57,6 @@ public class InjectorLegacy implements Injector {
     @Override
     public void writePacket(Player player, Packet<?> packet) {
         Channel channel = (Channel) profiles.get(player.getUniqueId()).getChannel();
-        ChannelFuture channelfuture = channel.writeAndFlush(packet);
-        channelfuture.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
     }
     
 }
