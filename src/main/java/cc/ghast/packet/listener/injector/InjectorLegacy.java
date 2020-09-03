@@ -1,8 +1,6 @@
 package cc.ghast.packet.listener.injector;
 
-import cc.ghast.packet.codec.ArtemisDecoder;
 import cc.ghast.packet.codec.ArtemisDecoderLegacy;
-import cc.ghast.packet.codec.ArtemisEncoder;
 import cc.ghast.packet.codec.ArtemisEncoderLegacy;
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.profile.Profile;
@@ -11,8 +9,6 @@ import cc.ghast.packet.reflections.ReflectUtil;
 import cc.ghast.packet.utils.HookUtil;
 import cc.ghast.packet.wrapper.packet.Packet;
 import net.minecraft.util.io.netty.channel.Channel;
-import net.minecraft.util.io.netty.channel.ChannelFuture;
-import net.minecraft.util.io.netty.channel.ChannelFutureListener;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
