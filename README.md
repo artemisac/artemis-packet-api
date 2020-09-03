@@ -1,4 +1,6 @@
 # Artemis Packet API
+[![](https://jitpack.io/v/artemisac/Artemis-Packet-API.svg)](https://jitpack.io/#artemisac/Artemis-Packet-API)
+
 This is a simplistic yet extremely efficient way to handle packets. Instead of relying on directly calling NMS packet via
 reflections, this reads them the proper way. It allows for a quite noticeable performance boost and a whole lot more control.
 
