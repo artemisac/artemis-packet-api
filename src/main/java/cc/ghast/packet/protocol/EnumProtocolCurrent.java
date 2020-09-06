@@ -98,6 +98,7 @@ public enum EnumProtocolCurrent implements EnumProtocol {
                 new Pair<>(PacketPlayServerAttachEntity.class, "PacketPlayOutAttachEntity"),
                 new Pair<>(PacketPlayServerEntityMetadata.class, "PacketPlayOutEntityMetadata"),
                 new Pair<>(PacketPlayServerEntityEffect.class, "PacketPlayOutEntityEffect"),
+                new Pair<>(PacketPlayServerRemoveEntityEffect.class, "PacketPlayOutRemoveEntityEffect"),
                 new Pair<>(PacketPlayServerExperience.class, "PacketPlayOutExperience"),
                 new Pair<>(PacketPlayServerUpdateAttributes.class, "PacketPlayOutUpdateAttributes"),
                 new Pair<>(PacketPlayServerMapChunk.class, "PacketPlayOutMapChunk"),
