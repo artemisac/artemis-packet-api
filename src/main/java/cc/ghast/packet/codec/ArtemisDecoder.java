@@ -33,7 +33,7 @@ import java.util.zip.Inflater;
  */
 public class ArtemisDecoder extends ChannelDuplexHandler {
 
-    private static final boolean debug = false;
+    private static final boolean debug = true;
 
     private final Profile profile;
     private final Inflater inflater;
@@ -62,7 +62,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
     }
 
     private void handle(ChannelHandlerContext ctx, Object msg) {
-        if (debug) {
+        if (debug && false) {
             System.out.println("Has decoder: " + (ctx.channel().pipeline().get("decoder") != null));
             System.out.println("Has decompresser: " + (ctx.channel().pipeline().get("decompress") != null));
             System.out.println("Structure: " + ctx.channel().pipeline().toMap());

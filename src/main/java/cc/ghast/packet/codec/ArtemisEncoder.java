@@ -36,7 +36,7 @@ public class ArtemisEncoder extends MessageToByteEncoder<cc.ghast.packet.wrapper
     }
 
     private void encode(Packet<?> packet, ByteBuf buf){
-        System.out.println(packet);
+        //System.out.println(packet);
         int packetId = profile.getProtocol().getPacketId(ProtocolDirection.OUT, packet);
 
         if (packetId < 0){

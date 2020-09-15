@@ -1,5 +1,6 @@
 package cc.ghast.packet.wrapper.packet.play.client;
 
+import cc.ghast.packet.nms.EnumDirection;
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.wrapper.bukkit.BlockFace;
@@ -20,7 +21,7 @@ public class PacketPlayClientBlockDig extends Packet<ClientPacket> implements Re
 
     private DigType type;
     private Location location;
-    private BlockFace face;
+    private EnumDirection face;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
@@ -39,8 +40,7 @@ public class PacketPlayClientBlockDig extends Packet<ClientPacket> implements Re
         }
 
         // Face of the block
-        final byte faze = byteBuf.readByte();
-        this.face = BlockFace.values()[faze > 5 ? 6 : faze];
+        this.face = EnumDirection.fromType1(byteBuf.readUnsignedByte());
     }
 
     public enum DigType {

@@ -2,6 +2,7 @@ package cc.ghast.packet.protocol;
 
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.reflections.ReflectUtil;
+import cc.ghast.packet.utils.PacketUtil;
 import cc.ghast.packet.utils.Pair;
 import cc.ghast.packet.wrapper.packet.Packet;
 import cc.ghast.packet.wrapper.packet.handshake.PacketHandshakeClientSetProtocol;
@@ -14,6 +15,7 @@ import cc.ghast.packet.wrapper.packet.status.PacketStatusServerInfoServer;
 import cc.ghast.packet.wrapper.packet.status.PacketStatusServerPing;
 import lombok.Getter;
 import lombok.SneakyThrows;
+
 import java.util.Map;
 import java.util.UUID;
 
@@ -46,7 +48,7 @@ public enum EnumProtocolCurrent implements EnumProtocol {
                 new Pair<>(PacketPlayClientFlying.PacketPlayClientLook.class,"PacketPlayInLook"),
                 new Pair<>(PacketPlayClientFlying.PacketPlayClientPositionLook.class,"PacketPlayInPositionLook"),
                 new Pair<>(PacketPlayClientBlockDig .class, "PacketPlayInBlockDig"),
-                new Pair<>(PacketPlayClientBlockPlace.class, "PacketPlayInBlockPlace"),
+                new Pair<>(PacketPlayClientBlockPlace.class, PacketUtil.BLOCK_PLACE),
                 new Pair<>(PacketPlayClientHeldItemSlot.class, "PacketPlayInHeldItemSlot"),
                 new Pair<>(PacketPlayClientArmAnimation.class, "PacketPlayInArmAnimation"),
                 new Pair<>(PacketPlayClientEntityAction.class, "PacketPlayInEntityAction"),

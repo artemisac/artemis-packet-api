@@ -14,6 +14,7 @@ import java.util.UUID;
 public abstract class Packet<D> {
     protected final UUID uuid;
     protected final ProtocolVersion version;
+    protected final static ProtocolVersion gameVersion = ProtocolVersion.getGameVersion();
     protected final long timestamp;
     protected boolean cancelled;
     protected final String realName;

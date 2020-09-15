@@ -1,5 +1,7 @@
 package cc.ghast.packet.protocol;
 
 public enum ProtocolDirection {
-    IN, OUT;
+    IN, // Inbound / Client
+
+    OUT; // Outbound / Client
 }

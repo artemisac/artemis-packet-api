@@ -19,36 +19,36 @@ import java.util.UUID;
 @Getter
 public class PacketPlayClientBlockPlace extends Packet<ClientPacket> implements ReadableBuffer {
     public PacketPlayClientBlockPlace(UUID player, ProtocolVersion version) {
-        super("PacketPlayInBlockPlace", player, version);
+        super(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_11) ? "PacketPlayInBlockPlace" : "PacketPlayInUseItem", player, version);
     }
 
     private EnumDirection direction;
     private ItemStack item;
+    private Hand hand;
     private BlockPosition position;
-    private boolean mainHand;
-    private boolean missed;
     private Vector3D vector;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-        if (version.isBelow(ProtocolVersion.V1_8)) {
+
+        final boolean legacy = gameVersion.isOrBelow(ProtocolVersion.V1_8_9);
+
+        if (legacy) {
+
             // 1.6.4 - 1.7.10 version range
+            if (version.isBelow(ProtocolVersion.V1_8)) {
+                // Position
+                int x = byteBuf.readInt();
+                int y = byteBuf.readByte();
+                int z = byteBuf.readInt();
+                this.position = new BlockPosition(x, y, z);
+            }
 
-            // Position
-            int x = byteBuf.readInt();
-            int y = byteBuf.readByte();
-            int z = byteBuf.readInt();
-            this.position = new BlockPosition(x, y, z);
-
-            //
-
-        }
-
-        else if (version.isBelow(ProtocolVersion.V1_9)) {
             // 1.8 - 1.8.8 version range
-
-            // Position
-            this.position = Converters.LOCATION_LONG.read(byteBuf.getByteBuf());
+            else if (version.isBelow(ProtocolVersion.V1_9)) {
+                // Position
+                this.position = Converters.LOCATION_LONG.read(byteBuf.getByteBuf());
+            }
 
             // Direction
             this.direction = EnumDirection.values()[byteBuf.readUnsignedByte()];
@@ -65,6 +65,14 @@ public class PacketPlayClientBlockPlace extends Packet<ClientPacket> implements 
             float y = (float) byteBuf.readUnsignedByte() / 16.0F;
             float z = (float) byteBuf.readUnsignedByte() / 16.0F;
             this.vector = new Vector3D(x, y, z);
+        } else {
+
         }
+
+
+    }
+
+    public enum Hand {
+        MAIN_HAND, OFF_HAND;
     }
 }
