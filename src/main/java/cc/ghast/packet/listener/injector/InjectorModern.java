@@ -64,7 +64,7 @@ public class InjectorModern implements Injector {
     public void writePacket(Player player, Packet<?> packet) {
         Channel channel = (Channel) profiles.get(player.getUniqueId()).getChannel();
 
-        ChannelFuture channelfuture = channel.writeAndFlush(packet);
+        ChannelFuture channelfuture = channel.write(packet);
         channelfuture.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
     }
 }

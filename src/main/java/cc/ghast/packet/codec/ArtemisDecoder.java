@@ -17,10 +17,7 @@ import cc.ghast.packet.wrapper.packet.Packet;
 import cc.ghast.packet.wrapper.packet.handshake.PacketHandshakeClientSetProtocol;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelDuplexHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.ChannelPromise;
+import io.netty.channel.*;
 import io.netty.handler.codec.DecoderException;
 
 import java.util.Arrays;
@@ -56,7 +53,8 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
         if (direction.equals(ProtocolDirection.OUT)){
-            handle(ctx, msg);
+            this.handle(ctx, msg);
+            ((Channel) profile.getChannel()).flush();
         }
         super.write(ctx, msg, promise);
     }
