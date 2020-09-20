@@ -54,9 +54,9 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
         if (direction.equals(ProtocolDirection.OUT)){
             this.handle(ctx, msg);
-            ((Channel) profile.getChannel()).flush();
         }
         super.write(ctx, msg, promise);
+        ((Channel) profile.getChannel()).flush();
     }
 
     private void handle(ChannelHandlerContext ctx, Object msg) {
