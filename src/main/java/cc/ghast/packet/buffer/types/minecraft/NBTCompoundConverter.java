@@ -1,10 +1,10 @@
 package cc.ghast.packet.buffer.types.minecraft;
 
 import cc.ghast.packet.buffer.BufConverter;
+import cc.ghast.packet.exceptions.InvalidByteBufStructureException;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import com.github.steveice10.opennbt.NBTIO;
 import com.github.steveice10.opennbt.tag.builtin.CompoundTag;
-import com.google.common.base.Preconditions;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
@@ -34,8 +34,9 @@ public class NBTCompoundConverter extends BufConverter<CompoundTag> {
 
     @Override
     public CompoundTag read(MutableByteBuf buffer, Object... args) throws IOException {
-        Preconditions.checkArgument(buffer.readableBytes() <= 2097152,
-                "Cannot read NBT (got %s bytes)", buffer.readableBytes());
+        if (buffer.readableBytes() <= 2097152) {
+            throw new InvalidByteBufStructureException(String.format("Cannot read NBT (got %s bytes)", buffer.readableBytes()));
+        }
         int readerIndex = buffer.readerIndex();
         byte b = buffer.readByte();
         if (b == 0) {

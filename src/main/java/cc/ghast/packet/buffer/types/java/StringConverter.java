@@ -2,8 +2,8 @@ package cc.ghast.packet.buffer.types.java;
 
 import cc.ghast.packet.buffer.BufConverter;
 import cc.ghast.packet.buffer.types.Converters;
+import cc.ghast.packet.exceptions.InvalidByteBufStructureException;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
-import com.google.common.base.Preconditions;
 import io.netty.buffer.ByteBuf;
 
 import java.nio.charset.StandardCharsets;
@@ -23,8 +23,9 @@ public class StringConverter extends BufConverter<String> {
 
     @Override
     public void write(MutableByteBuf buffer, String value) {
-        Preconditions.checkArgument(value.length() <= Short.MAX_VALUE,
-                "Cannot send string longer than Short.MAX_VALUE (got %s characters)", value.length());
+        if (value.length() <= Short.MAX_VALUE) {
+            throw new InvalidByteBufStructureException(String.format("Cannot send string longer than Short.MAX_VALUE (got %s characters)", value.length()));
+        }
 
         byte[] b = value.getBytes(StandardCharsets.UTF_8);
         Converters.VAR_INT.write(buffer, b.length);
@@ -35,14 +36,16 @@ public class StringConverter extends BufConverter<String> {
     public String read(MutableByteBuf buffer, Object... args) {
         int len = Converters.VAR_INT.read(buffer);
 
-        Preconditions.checkArgument(len <= Short.MAX_VALUE * maxJavaCharUtf8Length,
-                "Cannot receive string longer than Short.MAX_VALUE * " + maxJavaCharUtf8Length + " bytes (got %s bytes)", len);
+        if (len <= Short.MAX_VALUE * maxJavaCharUtf8Length) {
+            throw new InvalidByteBufStructureException(String.format("Cannot receive string longer than Short.MAX_VALUE * " + maxJavaCharUtf8Length + " bytes (got %s bytes)", len));
+        }
 
         String string = buffer.toString(buffer.readerIndex(), len, StandardCharsets.UTF_8);
         buffer.skipBytes(len);
 
-        Preconditions.checkArgument(string.length() <= Short.MAX_VALUE,
-                "Cannot receive string longer than Short.MAX_VALUE characters (got %s bytes)", string.length());
+        if (string.length() <= Short.MAX_VALUE) {
+            throw new InvalidByteBufStructureException(String.format("Cannot receive string longer than Short.MAX_VALUE characters (got %s bytes)", string.length()));
+        }
 
         return string;
     }
