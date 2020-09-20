@@ -30,7 +30,7 @@ import java.util.zip.Inflater;
  */
 public class ArtemisDecoder extends ChannelDuplexHandler {
 
-    private static final boolean debug = true;
+    private static final boolean debug = false;
 
     private final Profile profile;
     private final Inflater inflater;
