@@ -24,7 +24,6 @@ public class PacketPlayClientBlockPlace extends Packet<ClientPacket> implements 
 
     private EnumDirection direction;
     private ItemStack item;
-    private Hand hand;
     private BlockPosition position;
     private Vector3D vector;
 
@@ -51,7 +50,13 @@ public class PacketPlayClientBlockPlace extends Packet<ClientPacket> implements 
             }
 
             // Direction
-            this.direction = EnumDirection.values()[byteBuf.readUnsignedByte()];
+            final short direction = byteBuf.readUnsignedByte();
+
+            if (direction == 255) {
+                this.direction = EnumDirection.USE_ITEM;
+            } else {
+                this.direction = EnumDirection.values()[direction];
+            }
 
             // Item
             try {
