@@ -30,6 +30,7 @@ public class ArtemisEncoder extends MessageToByteEncoder<cc.ghast.packet.wrapper
     protected void encode(ChannelHandlerContext channelHandlerContext, Packet<?> obj, ByteBuf byteBuf) {
         try {
             encode(obj, byteBuf);
+            System.out.println("Wrote packet ");
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -55,6 +56,6 @@ public class ArtemisEncoder extends MessageToByteEncoder<cc.ghast.packet.wrapper
 
     @Override
     public boolean acceptOutboundMessage(Object msg) {
-        return msg instanceof Packet<?>;
+        return Packet.class.isAssignableFrom(msg.getClass());
     }
 }

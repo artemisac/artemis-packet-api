@@ -56,7 +56,6 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
             this.handle(ctx, msg);
         }
         super.write(ctx, msg, promise);
-        ((Channel) profile.getChannel()).flush();
     }
 
     private void handle(ChannelHandlerContext ctx, Object msg) {

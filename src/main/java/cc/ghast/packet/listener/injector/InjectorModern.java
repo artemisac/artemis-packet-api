@@ -55,7 +55,7 @@ public class InjectorModern implements Injector {
         profile.setProtocol(EnumProtocolCurrent.PLAY);
         ((Channel)channel).pipeline().addBefore(HookUtil.getHookBehind(), clientBound, new ArtemisDecoder(profile, ProtocolDirection.IN));
         ((Channel)channel).pipeline().addAfter(HookUtil.getHookOutbound(), serverBound, new ArtemisDecoder(profile, ProtocolDirection.OUT));
-        ((Channel)channel).pipeline().addLast(encoder, new ArtemisEncoder(profile));
+        ((Channel)channel).pipeline().addBefore("encoder", encoder, new ArtemisEncoder(profile));
         profiles.put(uuid, profile);
     }
 
@@ -64,7 +64,7 @@ public class InjectorModern implements Injector {
     public void writePacket(Player player, Packet<?> packet) {
         Channel channel = (Channel) profiles.get(player.getUniqueId()).getChannel();
 
-        ChannelFuture channelfuture = channel.write(packet);
+        ChannelFuture channelfuture = channel.writeAndFlush(packet);
         channelfuture.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
     }
 }
