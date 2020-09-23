@@ -23,7 +23,7 @@ public class StringConverter extends BufConverter<String> {
 
     @Override
     public void write(MutableByteBuf buffer, String value) {
-        if (value.length() <= Short.MAX_VALUE) {
+        if (value.length() >= Short.MAX_VALUE) {
             throw new InvalidByteBufStructureException(String.format("Cannot send string longer than Short.MAX_VALUE (got %s characters)", value.length()));
         }
 
@@ -36,14 +36,14 @@ public class StringConverter extends BufConverter<String> {
     public String read(MutableByteBuf buffer, Object... args) {
         int len = Converters.VAR_INT.read(buffer);
 
-        if (len <= Short.MAX_VALUE * maxJavaCharUtf8Length) {
+        if (len >= Short.MAX_VALUE * maxJavaCharUtf8Length) {
             throw new InvalidByteBufStructureException(String.format("Cannot receive string longer than Short.MAX_VALUE * " + maxJavaCharUtf8Length + " bytes (got %s bytes)", len));
         }
 
         String string = buffer.toString(buffer.readerIndex(), len, StandardCharsets.UTF_8);
         buffer.skipBytes(len);
 
-        if (string.length() <= Short.MAX_VALUE) {
+        if (string.length() >= Short.MAX_VALUE) {
             throw new InvalidByteBufStructureException(String.format("Cannot receive string longer than Short.MAX_VALUE characters (got %s bytes)", string.length()));
         }
 
