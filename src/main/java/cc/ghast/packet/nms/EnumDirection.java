@@ -26,7 +26,6 @@ public enum EnumDirection {
             EnumDirection.EnumAxis.X, new BlockPosition(-1, 0, 0)),
     EAST(5, 4, 3, "east", EnumDirection.EnumAxisDirection.POSITIVE,
             EnumDirection.EnumAxis.X, new BlockPosition(1, 0, 0)),
-    USE_ITEM(0,0,0, "use_item", null, null, null);
     ;
 
     private static final EnumDirection[] n = new EnumDirection[6];

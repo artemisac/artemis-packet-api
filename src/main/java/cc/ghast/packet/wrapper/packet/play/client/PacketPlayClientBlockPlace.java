@@ -14,6 +14,7 @@ import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Getter
@@ -22,7 +23,7 @@ public class PacketPlayClientBlockPlace extends Packet<ClientPacket> implements 
         super(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_11) ? "PacketPlayInBlockPlace" : "PacketPlayInUseItem", player, version);
     }
 
-    private EnumDirection direction;
+    private Optional<EnumDirection> direction;
     private ItemStack item;
     private BlockPosition position;
     private Vector3D vector;
@@ -53,9 +54,9 @@ public class PacketPlayClientBlockPlace extends Packet<ClientPacket> implements 
             final short direction = byteBuf.readUnsignedByte();
 
             if (direction == 255) {
-                this.direction = EnumDirection.USE_ITEM;
+                this.direction = Optional.empty();
             } else {
-                this.direction = EnumDirection.values()[direction];
+                this.direction = Optional.of(EnumDirection.values()[direction]);
             }
 
             // Item
