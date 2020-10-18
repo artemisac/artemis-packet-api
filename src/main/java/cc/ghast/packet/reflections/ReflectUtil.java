@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.DataInput;
 import java.io.DataOutput;
+import java.io.EOFException;
 import java.net.SocketAddress;
 import java.util.*;
 
@@ -163,11 +164,18 @@ public class ReflectUtil {
      * @param stream ByteBufStream
      * @return NMS object of the compound tag
      */
-    public static Object getCompoundTag(Object stream){
+    public static Object getCompoundTag(Object stream) {
         // Instantiate a new limiter
         Object threadLimiter = NBT_READ_LIMITER_CONSTRUCTOR.invoke(2097152L);
         // Invoke the object
-        return NBT_COMPOUND_READ_FROM_BYTEBUF.invoke(null, stream, threadLimiter);
+        Object tag = null;
+
+        try {
+            tag = NBT_COMPOUND_READ_FROM_BYTEBUF.invoke(null, stream, threadLimiter);
+        } catch (Exception e){
+            // ignore
+        }
+        return tag;
     }
 
     private static final MethodInvoker WRITE_NBT_COMPOUND_TO_BYTEBUF = Reflection.getMethod(NBT_TOOLS_CLAZZ, void.class,

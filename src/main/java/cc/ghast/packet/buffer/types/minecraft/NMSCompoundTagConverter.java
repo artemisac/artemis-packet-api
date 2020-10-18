@@ -6,6 +6,7 @@ import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.wrapper.netty.MutableByteBufOutputStream;
 import cc.ghast.packet.wrapper.netty.input.NettyUtil;
 import java.io.DataInput;
+import java.io.EOFException;
 
 /**
  * @author Ghast
