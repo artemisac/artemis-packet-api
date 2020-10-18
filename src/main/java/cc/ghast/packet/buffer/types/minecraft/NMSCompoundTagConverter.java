@@ -3,10 +3,9 @@ package cc.ghast.packet.buffer.types.minecraft;
 import cc.ghast.packet.buffer.BufConverter;
 import cc.ghast.packet.reflections.ReflectUtil;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
-import cc.ghast.packet.wrapper.netty.MutableByteBufInputStream;
 import cc.ghast.packet.wrapper.netty.MutableByteBufOutputStream;
-
-import java.io.IOException;
+import cc.ghast.packet.wrapper.netty.input.NettyUtil;
+import java.io.DataInput;
 
 /**
  * @author Ghast
@@ -25,6 +24,14 @@ public class NMSCompoundTagConverter extends BufConverter<Object> {
 
     @Override
     public Object read(MutableByteBuf buffer, Object... args) {
-        return ReflectUtil.getCompoundTag(MutableByteBufInputStream.build(buffer));
+        int index = buffer.readerIndex();
+        byte id = buffer.readByte();
+
+        if (id == 0) {
+            return null;
+        } else {
+            buffer.readerIndex(index);
+            return ReflectUtil.getCompoundTag(NettyUtil.getInstance().newByteBufStream(buffer));
+        }
     }
 }

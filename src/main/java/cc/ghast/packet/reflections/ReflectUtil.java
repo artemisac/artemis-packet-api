@@ -7,6 +7,7 @@ import cc.ghast.packet.wrapper.nbt.WrappedItem;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.wrapper.netty.MutableByteBufInputStream;
 import cc.ghast.packet.wrapper.netty.MutableByteBufOutputStream;
+import cc.ghast.packet.wrapper.netty.input.NettyUtil;
 import cc.ghast.packet.wrapper.packet.Packet;
 import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
@@ -24,6 +25,11 @@ import java.util.*;
  * Artemis © 2020
  */
 public class ReflectUtil {
+
+    /**
+     * Util designated to help with some random object stuff. Jeez 1.7 is a pain :/
+     */
+    private static final NettyUtil NETTY_UTIL = NettyUtil.getInstance();
 
     /*
         Minecraft Server field
@@ -157,16 +163,18 @@ public class ReflectUtil {
      * @param stream ByteBufStream
      * @return NMS object of the compound tag
      */
-    public static Object getCompoundTag(MutableByteBufInputStream stream){
+    public static Object getCompoundTag(Object stream){
+        // Instantiate a new limiter
         Object threadLimiter = NBT_READ_LIMITER_CONSTRUCTOR.invoke(2097152L);
-        return NBT_COMPOUND_READ_FROM_BYTEBUF.invoke(stream, threadLimiter);
+        // Invoke the object
+        return NBT_COMPOUND_READ_FROM_BYTEBUF.invoke(null, stream, threadLimiter);
     }
 
     private static final MethodInvoker WRITE_NBT_COMPOUND_TO_BYTEBUF = Reflection.getMethod(NBT_TOOLS_CLAZZ, void.class,
             0, NBT_COMPOUND_CLAZZ, DataOutput.class);
 
     public static void writeCompoundTag(Object compoundTag, MutableByteBufOutputStream stream){
-        WRITE_NBT_COMPOUND_TO_BYTEBUF.invoke(compoundTag, stream);
+        WRITE_NBT_COMPOUND_TO_BYTEBUF.invoke(null, compoundTag, stream);
     }
 
     private static final Class<?> CRAFT_ITEM_CLAZZ = Reflection.getCraftBukkitClass("inventory.CraftItemStack");
