@@ -26,7 +26,7 @@ public class PacketPlayClientBlockDig extends Packet<ClientPacket> implements Re
     @Override
     public void read(ProtocolByteBuf byteBuf) {
         // Type of the dig
-        this.type = DigType.values()[byteBuf.readByte()];
+        this.type = DigType.values()[byteBuf.readVarInt()];
 
         // Position of the block placed
         if (version.isBelow(ProtocolVersion.V1_8)) {
