@@ -35,9 +35,13 @@ public class ItemStackConverter extends BufConverter<ItemStack> {
     @Override
     public ItemStack read(MutableByteBuf buffer, Object... args) throws IOException {
         short id = buffer.readShort();
-        byte amount = buffer.readByte();
-        Object tag = Converters.NMS_NBT.read(buffer);
-        WrappedItem item = new WrappedItem(id, amount, tag);
-        return ReflectUtil.getItemFromWrapper(item);
+        if (id >= 0) {
+            byte amount = buffer.readByte();
+            short data = buffer.readShort();
+            Object tag = Converters.NMS_NBT.read(buffer);
+            WrappedItem item = new WrappedItem(id, amount, data, tag);
+            return ReflectUtil.getItemFromWrapper(item);
+        }
+        return null;
     }
 }
