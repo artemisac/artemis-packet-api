@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.EOFException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.SocketAddress;
 import java.util.*;
 
@@ -200,13 +201,17 @@ public class ReflectUtil {
 
     private static final MethodInvoker GET_ITEM_FROM_ID_METHOD = Reflection.getMethod(ITEM_TYPE_CLAZZ, "getById", int.class);
     private static final ConstructorInvoker ITEM_NMS_CONSTRUCTOR = Reflection.getConstructor(ITEM_NMS_CLAZZ, ITEM_TYPE_CLAZZ, int.class, int.class);
-    private static final MethodInvoker SET_DATA_METHOD = Reflection.getMethod(ITEM_NMS_CLAZZ, null, 0, NBT_COMPOUND_CLAZZ);
+    private static final MethodInvoker SET_DATA_METHOD = Reflection.getMethod(ITEM_NMS_CLAZZ, void.class, 0, NBT_COMPOUND_CLAZZ);
     private static final MethodInvoker AS_BUKKIT_COPY_METHOD = Reflection.getMethod(CRAFT_ITEM_CLAZZ, "asBukkitCopy", ITEM_NMS_CLAZZ);
 
     public static ItemStack getItemFromWrapper(WrappedItem item){
         Object id = GET_ITEM_FROM_ID_METHOD.invoke(null, item.getId());
         Object nmsItem = ITEM_NMS_CONSTRUCTOR.invoke(id, item.getAmount(), item.getData());
-        SET_DATA_METHOD.invoke(nmsItem, item.getTag());
+        try {
+            SET_DATA_METHOD.invoke(nmsItem, item.getTag());
+        } catch (Exception e) {
+            // ignored
+        }
         return (ItemStack) AS_BUKKIT_COPY_METHOD.invoke(null, nmsItem);
     }
 

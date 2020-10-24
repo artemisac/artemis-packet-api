@@ -47,7 +47,7 @@ public enum EnumProtocolCurrent implements EnumProtocol {
                 new Pair<>(PacketPlayClientFlying.PacketPlayClientPosition.class,"PacketPlayInPosition"),
                 new Pair<>(PacketPlayClientFlying.PacketPlayClientLook.class,"PacketPlayInLook"),
                 new Pair<>(PacketPlayClientFlying.PacketPlayClientPositionLook.class,"PacketPlayInPositionLook"),
-                new Pair<>(PacketPlayClientBlockDig .class, "PacketPlayInBlockDig"),
+                new Pair<>(PacketPlayClientBlockDig.class, "PacketPlayInBlockDig"),
                 new Pair<>(PacketPlayClientBlockPlace.class, PacketUtil.BLOCK_PLACE),
                 new Pair<>(PacketPlayClientHeldItemSlot.class, "PacketPlayInHeldItemSlot"),
                 new Pair<>(PacketPlayClientArmAnimation.class, "PacketPlayInArmAnimation"),
