@@ -6,7 +6,9 @@ import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.Packet;
 import lombok.Getter;
+import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 @Getter
@@ -20,9 +22,14 @@ public class PacketPlayClientWindowClick extends Packet<ClientPacket> implements
     private byte button;
     private short actionNumber;
     private int shiftedMode;
-    private SlotType mode;
+
     @Deprecated
-    private Object clickedItem;
+    private SlotType mode;
+
+    private SimpleSlotType simpleMode;
+
+    @Deprecated
+    private ItemStack clickedItem;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
@@ -30,8 +37,17 @@ public class PacketPlayClientWindowClick extends Packet<ClientPacket> implements
         this.slot = byteBuf.readShort();
         this.button = byteBuf.readByte();
         this.actionNumber = byteBuf.readShort();
-        this.shiftedMode = byteBuf.readByte();
+
+
+        if (version.isOrBelow(ProtocolVersion.V1_8_9)) {
+            this.shiftedMode = byteBuf.readByte();
+        } else if (version.isOrBelow(ProtocolVersion.V1_9_4)) {
+            this.shiftedMode = byteBuf.readVarInt();
+            this.clickedItem = byteBuf.readItem();
+        }
+
         this.mode = types[shiftedMode][button];
+        this.simpleMode = SimpleSlotType.values()[shiftedMode];
     }
 
     private static final SlotType[][] types = {
@@ -43,6 +59,16 @@ public class PacketPlayClientWindowClick extends Packet<ClientPacket> implements
             {SlotType.START_LEFT_MOUSE_DRAG, SlotType.START_RIGHT_MOUSE_DRAG, SlotType.ADD_SLOT_LEFT_MOUSE_DRAG, SlotType.ADD_SLOT_RIGHT_MOUSE_DRAG, SlotType.END_LEFT_MOUSE_DRAG, SlotType.END_RIGHT_MOUSE_DRAG},
             {SlotType.DOUBLE_CLICK}
     };
+
+    enum SimpleSlotType {
+        PICKUP,
+        QUICK_MOVE,
+        SWAP,
+        CLONE,
+        THROW,
+        QUICK_CRAFT,
+        PICKUP_ALL;
+    }
 
     enum SlotType {
         LEFT_MOUSE_CLICK,

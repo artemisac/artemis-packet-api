@@ -2,6 +2,7 @@ package cc.ghast.packet.wrapper.packet.play.client;
 
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
+import cc.ghast.packet.wrapper.mc.PlayerEnums;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.Packet;
@@ -16,17 +17,14 @@ public class PacketPlayClientResourcePackStatus extends Packet<ClientPacket> imp
     }
 
     private String url;
-    private ResourcePackStatus status;
+    private PlayerEnums.ResourcePackStatus status;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
         this.url = byteBuf.readStringBuf(40);
-        this.status = ResourcePackStatus.values()[byteBuf.readVarInt()];
+        this.status = PlayerEnums.ResourcePackStatus.values()[byteBuf.readVarInt()];
     }
 
-    public enum ResourcePackStatus {
 
-        SUCCESSFULLY_LOADED, DECLINED, FAILED_DOWNLOAD, ACCEPTED;
 
-    }
 }

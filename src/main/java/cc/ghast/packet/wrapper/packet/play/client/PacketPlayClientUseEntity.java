@@ -3,6 +3,7 @@ package cc.ghast.packet.wrapper.packet.play.client;
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.wrapper.bukkit.Vector3D;
+import cc.ghast.packet.wrapper.mc.PlayerEnums;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.Packet;
@@ -20,14 +21,15 @@ public class PacketPlayClientUseEntity extends Packet<ClientPacket> implements R
     }
 
     private int entityId;
-    private UseType type;
+    private PlayerEnums.UseType type;
     private Optional<Vector3D> body;
+    private PlayerEnums.Hand hand;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
         this.entityId = byteBuf.readVarInt();
-        this.type = UseType.values()[byteBuf.readVarInt()];
-        if (type.equals(UseType.INTERACT_AT)) {
+        this.type = PlayerEnums.UseType.values()[byteBuf.readVarInt()];
+        if (type.equals(PlayerEnums.UseType.INTERACT_AT)) {
             float targetX = byteBuf.readFloat();
             float targetY = byteBuf.readFloat();
             float targetZ = byteBuf.readFloat();
@@ -35,15 +37,17 @@ public class PacketPlayClientUseEntity extends Packet<ClientPacket> implements R
         } else {
             this.body = Optional.empty();
         }
+
+        if (this.version.isOrBelow(ProtocolVersion.V1_9)) {
+            this.hand = PlayerEnums.Hand.MAIN_HAND;
+        } else {
+            this.hand = PlayerEnums.Hand.values()[byteBuf.readVarInt()];
+        }
     }
 
     public Entity getEntity() {
         return Bukkit.getPlayer(uuid).getWorld().getEntities().parallelStream().filter(e-> e.getEntityId() == entityId).findFirst().orElse(null);
     }
 
-    public enum UseType {
-        INTERACT,
-        ATTACK,
-        INTERACT_AT;
-    }
+
 }

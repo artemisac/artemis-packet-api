@@ -5,16 +5,22 @@ import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.Packet;
+import lombok.Getter;
 
 import java.util.UUID;
 
+@Getter
 public class PacketPlayClientEnchantItem extends Packet<ClientPacket> implements ReadableBuffer {
     public PacketPlayClientEnchantItem(UUID player, ProtocolVersion version) {
-        super("PacketPlayInEnchantItem", player, version);
+        super("PacketPlayInEnchantItem", player, version, e -> e.isOrAbove(ProtocolVersion.V1_9));
     }
+
+    private int windowId;
+    private int button;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-
+        this.windowId = byteBuf.readByte();
+        this.button = byteBuf.readByte();
     }
 }

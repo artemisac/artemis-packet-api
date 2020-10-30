@@ -2,6 +2,7 @@ package cc.ghast.packet.wrapper.packet.play.client;
 
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
+import cc.ghast.packet.wrapper.mc.PlayerEnums;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.Packet;
@@ -15,14 +16,12 @@ public class PacketPlayClientClientCommand extends Packet<ClientPacket> implemen
         super("PacketPlayInClientCommand", player, version);
     }
 
-    private ClientCommand command;
+    private PlayerEnums.ClientCommand command;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-        this.command = ClientCommand.values()[byteBuf.readVarInt()];
+        this.command = PlayerEnums.ClientCommand.values()[byteBuf.readVarInt()];
     }
 
-    public enum ClientCommand {
-        PERFORM_RESPAWN, REQUEST_STATS, OPEN_INVENTORY_ACHIEVEMENT;
-    }
+
 }

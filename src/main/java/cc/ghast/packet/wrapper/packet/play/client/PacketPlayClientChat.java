@@ -21,6 +21,11 @@ public class PacketPlayClientChat extends Packet<ClientPacket> implements Readab
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-        this.message = byteBuf.readString();
+        if (version.isOrBelow(ProtocolVersion.V1_8_9)) {
+            this.message = byteBuf.readString();
+        } else {
+            this.message = byteBuf.readStringBuf(100);
+        }
+
     }
 }

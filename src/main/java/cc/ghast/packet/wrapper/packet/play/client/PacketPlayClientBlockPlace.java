@@ -20,10 +20,14 @@ import java.util.UUID;
 @Getter
 public class PacketPlayClientBlockPlace extends Packet<ClientPacket> implements ReadableBuffer {
     public PacketPlayClientBlockPlace(UUID player, ProtocolVersion version) {
-        super(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_11) ? "PacketPlayInBlockPlace" : "PacketPlayInUseItem", player, version);
+        super(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_11) ? "PacketPlayInBlockPlace"
+                : "PacketPlayInUseItem", player, version);
     }
 
     private Optional<EnumDirection> direction;
+
+    @Deprecated
+    private int directionId;
     private ItemStack item;
     private BlockPosition position;
     private Vector3D vector;
@@ -53,6 +57,8 @@ public class PacketPlayClientBlockPlace extends Packet<ClientPacket> implements 
             // Direction
             final short direction = byteBuf.readUnsignedByte();
 
+            this.directionId = direction;
+
             if (direction == 255) {
                 this.direction = Optional.empty();
             } else {
@@ -76,9 +82,5 @@ public class PacketPlayClientBlockPlace extends Packet<ClientPacket> implements 
         }
 
 
-    }
-
-    public enum Hand {
-        MAIN_HAND, OFF_HAND;
     }
 }

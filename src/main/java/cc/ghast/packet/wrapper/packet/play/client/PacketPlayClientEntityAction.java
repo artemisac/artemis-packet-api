@@ -2,6 +2,7 @@ package cc.ghast.packet.wrapper.packet.play.client;
 
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
+import cc.ghast.packet.wrapper.mc.PlayerEnums;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.Packet;
@@ -15,23 +16,15 @@ public class PacketPlayClientEntityAction extends Packet<ClientPacket> implement
     }
 
     private int entityId;
-    private PlayerAction action;
+    private PlayerEnums.PlayerAction action;
     private int parameter;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
         this.entityId = byteBuf.readVarInt();
-        this.action = PlayerAction.values()[byteBuf.readVarInt()];
+        this.action = PlayerEnums.PlayerAction.values()[byteBuf.readVarInt()];
         this.parameter = byteBuf.readVarInt();
     }
 
-    public enum PlayerAction {
-        START_SNEAKING,
-        STOP_SNEAKING,
-        LEAVE_BED,
-        START_SPRINTING,
-        STOP_SPRINTING,
-        JUMP_HORSE,
-        OPEN_RIDE_INVENTORY
-    }
+
 }
