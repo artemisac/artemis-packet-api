@@ -34,7 +34,7 @@ public class PacketPlayClientFlying extends Packet<ClientPacket> implements Read
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-        this.onGround = byteBuf.readBoolean();
+        this.onGround = byteBuf.readUnsignedByte() != 0;
     }
 
     @Getter
