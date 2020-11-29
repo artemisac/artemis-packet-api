@@ -34,7 +34,7 @@ public interface Injector {
 
     Map<UUID, Profile> profiles = new WeakHashMap<>();
 
-    void inject(Object channel, UUID uuid, InetAddress inetAddress);
+    void inject(Object channel, UUID uuid, String inetAddress);
 
     default Profile getProfile(UUID uuid) {
         return profiles.get(uuid);

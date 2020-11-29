@@ -16,12 +16,12 @@ import java.util.UUID;
 @Data
 public class Profile {
     private final UUID uuid;
-    private final InetAddress address;
+    private final String address;
     private ProtocolVersion version;
     private Object channel;
     private EnumProtocol protocol;
 
-    public Profile(UUID uuid, InetAddress address, ProtocolVersion version, Object channel) {
+    public Profile(UUID uuid, String address, ProtocolVersion version, Object channel) {
         this.uuid = uuid;
         this.address = address;
         this.version = version;

@@ -13,6 +13,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import lombok.SneakyThrows;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -34,7 +35,7 @@ public class InjectorModern implements Injector {
     @Override
     public void inject(AsyncPlayerPreLoginEvent event) {
         Channel channel = (Channel) ReflectUtil.getChannel(event.getUniqueId(), event.getAddress().getHostAddress());
-        inject(channel, event.getUniqueId(), event.getAddress());
+        inject(channel, event.getUniqueId(), event.getAddress().getHostAddress());
     }
 
     @Override
@@ -50,7 +51,7 @@ public class InjectorModern implements Injector {
     }
 
     @Override
-    public void inject(Object channel, UUID uuid, InetAddress inetAddress) {
+    public void inject(Object channel, UUID uuid, String inetAddress) {
         Profile profile = new Profile(uuid, inetAddress, ProtocolVersion.getGameVersion(), channel);
         profile.setProtocol(EnumProtocolCurrent.PLAY);
         ((Channel)channel).pipeline().addBefore(HookUtil.getHookBehind(), clientBound, new ArtemisDecoder(profile, ProtocolDirection.IN));
@@ -60,9 +61,19 @@ public class InjectorModern implements Injector {
     }
 
     @Override
+    public Profile getProfile(UUID uuid) {
+        return profiles.computeIfAbsent(uuid, e -> {
+            String addy = parseAddress(Bukkit.getPlayer(e).getAddress());
+            Channel pipeline = (Channel) ReflectUtil.getChannel(e, addy);
+            inject(pipeline, e, addy);
+            return profiles.get(e);
+        });
+    }
+
+    @Override
     @SneakyThrows
     public void writePacket(Player player, Packet<?> packet) {
-        Channel channel = (Channel) profiles.get(player.getUniqueId()).getChannel();
+        Channel channel = (Channel) this.getProfile(player.getUniqueId()).getChannel();
 
         ChannelFuture channelfuture = channel.writeAndFlush(packet);
         channelfuture.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
