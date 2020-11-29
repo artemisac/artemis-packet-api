@@ -19,6 +19,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.handler.codec.DecoderException;
+import org.bukkit.Bukkit;
 
 import java.util.Arrays;
 import java.util.zip.DataFormatException;
@@ -90,7 +91,14 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
         // If there's no readable bytes, the packet is empty. Don't worry, such can happen
         if (direction.equals(ProtocolDirection.IN)){
-            in = decompress(in);
+            try {
+                in = decompress(in);
+            } catch (DecoderException e){
+                Bukkit.getScheduler().runTask(PacketManager.INSTANCE.getPlugin(), () -> {
+                    Bukkit.getPlayer(profile.getUuid()).kickPlayer(e.getMessage());
+                });
+            }
+
         } else {
             profile.setProtocol(EnumProtocolCurrent.PLAY);
         }
@@ -108,24 +116,26 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
             // Collect the packet from the enum map. This needs to be rewritten for better accuracy tho
             Packet<?> packet = profile.getProtocol().getPacket(direction, id, profile.getUuid(), profile.getVersion());
 
-            if (packet instanceof ReadableBuffer) {
-                ReadableBuffer buffer = (ReadableBuffer) packet;
-                buffer.read(new ProtocolByteBuf(in));
+            if (packet != null) {
+                if (packet instanceof ReadableBuffer) {
+                    ReadableBuffer buffer = (ReadableBuffer) packet;
+                    buffer.read(new ProtocolByteBuf(in));
+                }
+
+                //System.out.println("pakcet=" + packet.getRealName());
+
+                // Handle and collect the handshake
+                if (packet instanceof PacketHandshakeClientSetProtocol){
+                    handleHandshake((PacketHandshakeClientSetProtocol) packet);
+                }
+
+                PacketManager.INSTANCE.getManager().callPacket(profile, packet);
+
+                if (packet.isCancelled()) {
+                    return true;
+                }
             }
-
-            //System.out.println("pakcet=" + packet.getRealName());
-
-            // Handle and collect the handshake
-            if (packet instanceof PacketHandshakeClientSetProtocol){
-                handleHandshake((PacketHandshakeClientSetProtocol) packet);
-            }
-
-            PacketManager.INSTANCE.getManager().callPacket(profile, packet);
-
-            if (packet.isCancelled()) {
-                return true;
-            }
-
+            
             // Reset the reader index to prevent following pipelines to have a sort of issue. Normally it doesn't, I'm
             // Still new to Netty. I'll need to investigate. More can be seen @ https://netty.io/4.0/api/io/netty/buffer/ByteBuf.html
             in.resetReaderIndex();
@@ -141,7 +151,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
         return false;
     }
 
-    private MutableByteBuf decompress(MutableByteBuf byteBuf) throws DataFormatException {
+    private MutableByteBuf decompress(MutableByteBuf byteBuf) throws DataFormatException, DecoderException {
         if (byteBuf.readableBytes() != 0) {
             ProtocolByteBuf packetdataserializer = new ProtocolByteBuf(byteBuf);
             int i = packetdataserializer.readVarInt();
