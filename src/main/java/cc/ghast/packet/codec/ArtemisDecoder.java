@@ -70,11 +70,14 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
         // Make sure we're receiving a ByteBuf. If a protocol is placed before such, it may screw with the decompression
         if (msg instanceof ByteBuf) {
             // Decode the message and send it off
+            final ByteBuf buffer = (ByteBuf) msg;
             try {
-                final boolean cancelled = decode(MutableByteBuf.translate(((ByteBuf) msg).copy()));
+                buffer.retain();
+                final boolean cancelled = decode(MutableByteBuf.translate(buffer.copy()));
+                buffer.release();
                 // Nullify if the packet was cancelled
                 if (cancelled) {
-                    msg = msg;
+                    //msg = msg;
                 }
             } catch (Exception e){
                 e.printStackTrace();
@@ -135,7 +138,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                     return true;
                 }
             }
-            
+
             // Reset the reader index to prevent following pipelines to have a sort of issue. Normally it doesn't, I'm
             // Still new to Netty. I'll need to investigate. More can be seen @ https://netty.io/4.0/api/io/netty/buffer/ByteBuf.html
             in.resetReaderIndex();
