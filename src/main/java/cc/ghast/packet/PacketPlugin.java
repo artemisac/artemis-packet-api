@@ -13,4 +13,9 @@ public class PacketPlugin extends JavaPlugin {
     public void onEnable() {
         PacketManager.INSTANCE.init(this);
     }
+
+    @Override
+    public void onDisable() {
+        PacketManager.INSTANCE.onDisable();
+    }
 }
