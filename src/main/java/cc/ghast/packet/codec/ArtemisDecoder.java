@@ -109,12 +109,18 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
         if (in.readableBytes() != 0) {
 
             // Get the var_int packet id of the packet. This is quite important as it's what determines it's type
-            int id = Converters.VAR_INT.read(in);
+            final int id = Converters.VAR_INT.read(in);
 
             if (debug) {
                 System.out.println("Reader index=" + in.readerIndex());
                 System.out.println("Id of " + id);
             }
+
+            // Initialize the protocol byte buf
+            final ProtocolByteBuf protocolByteBuf = new ProtocolByteBuf(in);
+
+            // Modify with hooks
+            PacketManager.INSTANCE.getHookManager().modifyAll(profile, direction, protocolByteBuf);
 
             // Collect the packet from the enum map. This needs to be rewritten for better accuracy tho
             Packet<?> packet = profile.getProtocol().getPacket(direction, id, profile.getUuid(), profile.getVersion());
@@ -122,7 +128,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
             if (packet != null) {
                 if (packet instanceof ReadableBuffer) {
                     ReadableBuffer buffer = (ReadableBuffer) packet;
-                    buffer.read(new ProtocolByteBuf(in));
+                    buffer.read(protocolByteBuf);
                 }
 
                 //System.out.println("pakcet=" + packet.getRealName());

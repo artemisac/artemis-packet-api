@@ -62,6 +62,8 @@ public class ViaVersionHook implements PacketModifier {
             e.printStackTrace();
         }
 
+        byteBuf.resetReaderIndex();
+
         return byteBuf;
     }
 

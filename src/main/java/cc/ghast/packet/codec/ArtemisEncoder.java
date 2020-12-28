@@ -1,5 +1,6 @@
 package cc.ghast.packet.codec;
 
+import cc.ghast.packet.PacketManager;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.exceptions.InvalidPacketException;
 import cc.ghast.packet.profile.Profile;
@@ -43,7 +44,10 @@ public class ArtemisEncoder extends MessageToByteEncoder<cc.ghast.packet.wrapper
             throw new InvalidPacketException(packet.getClass());
         }
 
-        ProtocolByteBuf buffer = new ProtocolByteBuf(MutableByteBuf.translate((ByteBuf) buf));
+        final ProtocolByteBuf buffer = new ProtocolByteBuf(MutableByteBuf.translate((ByteBuf) buf));
+
+        // Modify with hooks
+        PacketManager.INSTANCE.getHookManager().modifyAll(profile, ProtocolDirection.OUT, buffer);
 
         buffer.writeVarInt(packetId);
 
