@@ -34,7 +34,8 @@ public class ViaVersionHook implements PacketModifier {
         UserConnection connection = api.getConnectionManager().getConnectedClient(profile.getUuid());
 
         if (connection == null) {
-            throw new CompatProfileNotFoundException(profile.getUuid());
+            return byteBuf;
+            //throw new CompatProfileNotFoundException(profile.getUuid());
         }
 
         if (connection.getProtocolInfo() == null) {
