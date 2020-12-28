@@ -8,6 +8,7 @@ import cc.ghast.packet.wrapper.packet.Packet;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import lombok.Getter;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Getter
@@ -16,13 +17,13 @@ public class PacketPlayClientAbilities extends Packet<ClientPacket> implements R
         super("PacketPLayInAbilities", player, version);
     }
 
-    private boolean invulnerable;
+    private Optional<Boolean> invulnerable;
     private boolean flying;
-    private boolean allowedFlight;
-    private boolean creativeMode;
+    private Optional<Boolean> allowedFlight;
+    private Optional<Boolean> creativeMode;
 
-    private float flySpeed;
-    private float walkSpeed;
+    private Optional<Float> flySpeed;
+    private Optional<Float> walkSpeed;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
@@ -41,12 +42,24 @@ public class PacketPlayClientAbilities extends Packet<ClientPacket> implements R
             Here, basically we are placing a 1 on different scales. If the one is here, it's true. Simple yet complex.
 
         */
-        this.creativeMode = (flags & 0x01) > 0;
-        this.flying = (flags & 0x02) > 0;
-        this.allowedFlight = (flags & 0x04) > 0;
-        this.invulnerable = (flags & 0x08) > 0;
 
-        this.flySpeed = byteBuf.readFloat();
-        this.walkSpeed = byteBuf.readFloat();
+        this.flying = (flags & 0x02) > 0;
+        if(version.isOrBelow(ProtocolVersion.V1_15_2)) {
+            this.creativeMode = Optional.of((flags & 0x01) > 0);
+            this.allowedFlight = Optional.of((flags & 0x04) > 0);
+            this.invulnerable = Optional.of((flags & 0x08) > 0);
+
+            this.flySpeed = Optional.of(byteBuf.readFloat());
+            this.walkSpeed = Optional.of(byteBuf.readFloat());
+        }
+        else {
+            //Don't exist on 1.16+ :(
+            this.creativeMode = Optional.empty();
+            this.allowedFlight = Optional.empty();
+            this.invulnerable = Optional.empty();
+
+            this.flySpeed = Optional.empty();
+            this.walkSpeed = Optional.empty();
+        }
     }
 }
