@@ -10,11 +10,16 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 @Getter
 public class PacketPlayClientWindowClick extends Packet<ClientPacket> implements ReadableBuffer {
     public PacketPlayClientWindowClick(UUID player, ProtocolVersion version) {
         super("PacketPlayInWindowClick", player, version);
+    }
+
+    public PacketPlayClientWindowClick(String realName, UUID player, ProtocolVersion version) {
+        super(realName, player, version);
     }
 
     private byte windowId;
@@ -49,6 +54,8 @@ public class PacketPlayClientWindowClick extends Packet<ClientPacket> implements
         this.mode = types[shiftedMode][button];
         this.simpleMode = SimpleSlotType.values()[shiftedMode];
     }
+
+
 
     private static final SlotType[][] types = {
             {SlotType.LEFT_MOUSE_CLICK, SlotType.RIGHT_MOUSE_CLICK},

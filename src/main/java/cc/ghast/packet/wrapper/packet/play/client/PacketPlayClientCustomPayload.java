@@ -34,7 +34,7 @@ public class PacketPlayClientCustomPayload extends Packet<ClientPacket> implemen
         // Payload
         int readableBytes = byteBuf.readableBytes();
         if (readableBytes >= 0 && readableBytes <= 32767) {
-            this.message = new ProtocolByteBuf(byteBuf.readBytes(readableBytes));
+            this.message = new ProtocolByteBuf(byteBuf.readBytes(readableBytes), version);
         } else {
             throw new IOException("Payload may not be larger than 32767 bytes");
         }

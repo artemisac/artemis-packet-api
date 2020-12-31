@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.EnumSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -24,6 +25,7 @@ public class PacketPlayServerPosition extends Packet<ServerPacket> implements Re
     private float yaw;
     private float pitch;
     private Set<PlayerTeleportFlags> flags;
+    private Optional<Integer> confirmId;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {

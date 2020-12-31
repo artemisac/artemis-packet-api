@@ -44,10 +44,11 @@ public class ArtemisEncoder extends MessageToByteEncoder<cc.ghast.packet.wrapper
             throw new InvalidPacketException(packet.getClass());
         }
 
-        final ProtocolByteBuf buffer = new ProtocolByteBuf(MutableByteBuf.translate((ByteBuf) buf));
+        final ProtocolByteBuf buffer = new ProtocolByteBuf(MutableByteBuf.translate(buf.copy()),
+                profile.getVersion());
 
         // Modify with hooks
-        PacketManager.INSTANCE.getHookManager().modifyAll(profile, ProtocolDirection.OUT, buffer);
+        //PacketManager.INSTANCE.getHookManager().modifyAll(profile, ProtocolDirection.OUT, b);
 
         buffer.writeVarInt(packetId);
 

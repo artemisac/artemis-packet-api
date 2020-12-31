@@ -2,3 +2,6 @@ main: cc.ghast.packet.PacketPlugin
 name: Artemis-Packet-API
 version: 1.0-SNAPSHOT
 author: Ghast
+softdepend:
+  - ViaVersion
+  - ProtocolLib

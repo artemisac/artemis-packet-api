@@ -1,6 +1,5 @@
 package cc.ghast.packet;
 
-import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.chain.ChainManager;
 import cc.ghast.packet.compat.HookManager;
 import cc.ghast.packet.listener.ChannelListener;
@@ -27,13 +26,13 @@ public enum PacketManager {
         this.manager = new ChainManager();
         this.listener = new ChannelListener(this);
         this.hookManager = new HookManager();
-        System.out.println("[Artemis Test] Enabled Test Decoder");
-;
-    }
-
-    public void onDisable() {
-
     }
 
 
+    public void info(String log) {
+        plugin.getLogger().info(log);
+    }
+    public void fatal(String log) {
+        plugin.getLogger().severe(log);
+    }
 }

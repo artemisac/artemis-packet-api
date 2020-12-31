@@ -25,6 +25,10 @@ public class PacketPlayServerEntity extends Packet<ServerPacket> implements Read
         super("PacketPlayOutEntity", player, version);
     }
 
+    public PacketPlayServerEntity(String realName, UUID player, ProtocolVersion version) {
+        super(realName, player, version);
+    }
+
     @Override
     public void read(ProtocolByteBuf byteBuf) {
         this.entityId = byteBuf.readVarInt();
@@ -32,7 +36,7 @@ public class PacketPlayServerEntity extends Packet<ServerPacket> implements Read
 
     public static class PacketPlayServerRelEntityMove extends PacketPlayServerEntity {
         public PacketPlayServerRelEntityMove(UUID player, ProtocolVersion version) {
-            super(player, version);
+            super("PacketPlayOutRelEntityMove", player, version);
         }
 
         @Override
@@ -50,7 +54,7 @@ public class PacketPlayServerEntity extends Packet<ServerPacket> implements Read
 
     public static class PacketPlayServerEntityLook extends PacketPlayServerEntity {
         public PacketPlayServerEntityLook(UUID player, ProtocolVersion version) {
-            super(player, version);
+            super("PacketPlayOutEntityLook", player, version);
         }
 
         @Override
@@ -66,7 +70,7 @@ public class PacketPlayServerEntity extends Packet<ServerPacket> implements Read
 
     public static class PacketPlayServerRelEntityMoveLook extends PacketPlayServerEntity {
         public PacketPlayServerRelEntityMoveLook(UUID player, ProtocolVersion version) {
-            super(player, version);
+            super("PacketPlayOutRelEntityMoveLook", player, version);
         }
 
         @Override

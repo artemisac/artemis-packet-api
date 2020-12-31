@@ -2,6 +2,7 @@ package cc.ghast.packet.buffer;
 
 import cc.ghast.packet.exceptions.InvalidByteBufStructureException;
 import cc.ghast.packet.buffer.types.Converters;
+import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.wrapper.bukkit.BlockPosition;
 import cc.ghast.packet.wrapper.codec.StringPool;
 import cc.ghast.packet.wrapper.nbt.WrappedItem;
@@ -23,20 +24,21 @@ import java.util.UUID;
 
 public class ProtocolByteBuf {
     private final MutableByteBuf byteBuf;
-    private final int version;
+    private final ProtocolVersion version;
+    private int id;
 
-    public ProtocolByteBuf(final MutableByteBuf byteBuf) {
-        this.byteBuf = byteBuf;
-        this.version = 5;
-    }
-
-    public ProtocolByteBuf(final MutableByteBuf byteBuf, int version) {
+    public ProtocolByteBuf(final MutableByteBuf byteBuf, ProtocolVersion version) {
         this.byteBuf = byteBuf;
         this.version = version;
     }
 
+    public ProtocolByteBuf(final MutableByteBuf byteBuf, int version) {
+        this.byteBuf = byteBuf;
+        this.version = ProtocolVersion.getVersion(version);
+    }
+
     public int readVarInt() {
-        return Converters.VAR_INT.read(this.byteBuf);
+        return Converters.VAR_INT.read(this.byteBuf, version);
     }
 
     public void writeVarInt(final int i) {
@@ -44,7 +46,7 @@ public class ProtocolByteBuf {
     }
 
     public String readString() {
-        return Converters.STRING.read(byteBuf);
+        return Converters.STRING.read(byteBuf, version);
     }
 
     public void writeString(String s) {
@@ -52,7 +54,7 @@ public class ProtocolByteBuf {
     }
 
     public BlockPosition readBlockPositionFromLong() {
-        return Converters.LOCATION_LONG.read(byteBuf);
+        return Converters.LOCATION_LONG.read(byteBuf, version);
     }
 
     public void writeBlockPositionIntoLong(BlockPosition position) {
@@ -60,7 +62,7 @@ public class ProtocolByteBuf {
     }
 
     public UUID readUUID(){
-        return Converters.UUID.read(byteBuf);
+        return Converters.UUID.read(byteBuf, version);
     }
 
     public void writeUUID(UUID uuid){
@@ -69,7 +71,7 @@ public class ProtocolByteBuf {
 
     public ItemStack readItem() {
         try {
-            return Converters.ITEM_STACK.read(byteBuf);
+            return Converters.ITEM_STACK.read(byteBuf, version);
         } catch (IOException e) {
             throw new InvalidByteBufStructureException(e);
         }
@@ -80,7 +82,7 @@ public class ProtocolByteBuf {
     }
 
     public String readStringBuf(int i) {
-        return Converters.STRING_POOL.read(byteBuf, i).getData();
+        return Converters.STRING_POOL.read(byteBuf, version, i).getData();
     }
 
     public void writeStringBuf(String s, int size) {
@@ -654,5 +656,13 @@ public class ProtocolByteBuf {
 
     public MutableByteBuf getByteBuf() {
         return this.byteBuf;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

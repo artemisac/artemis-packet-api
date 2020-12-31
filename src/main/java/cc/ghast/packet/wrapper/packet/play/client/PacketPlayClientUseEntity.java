@@ -40,8 +40,13 @@ public class PacketPlayClientUseEntity extends Packet<ClientPacket> implements R
 
         if (this.version.isOrBelow(ProtocolVersion.V1_9)) {
             this.hand = PlayerEnums.Hand.MAIN_HAND;
-        } else {
-            this.hand = PlayerEnums.Hand.values()[byteBuf.readVarInt()];
+        }
+
+        else {
+            if (type.equals(PlayerEnums.UseType.INTERACT) || type.equals(PlayerEnums.UseType.INTERACT_AT))
+                this.hand = PlayerEnums.Hand.values()[byteBuf.readVarInt()];
+            else
+                this.hand = PlayerEnums.Hand.MAIN_HAND;
         }
     }
 

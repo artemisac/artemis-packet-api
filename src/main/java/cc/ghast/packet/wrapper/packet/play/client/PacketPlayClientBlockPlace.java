@@ -51,7 +51,7 @@ public class PacketPlayClientBlockPlace extends Packet<ClientPacket> implements 
             // 1.8 - 1.8.8 version range
             else if (version.isBelow(ProtocolVersion.V1_9)) {
                 // Position
-                this.position = Converters.LOCATION_LONG.read(byteBuf.getByteBuf());
+                this.position = Converters.LOCATION_LONG.read(byteBuf.getByteBuf(), version);
             }
 
             // Direction
@@ -67,7 +67,7 @@ public class PacketPlayClientBlockPlace extends Packet<ClientPacket> implements 
 
             // Item
             try {
-                this.item = Converters.ITEM_STACK.read(byteBuf.getByteBuf());
+                this.item = Converters.ITEM_STACK.read(byteBuf.getByteBuf(), version);
             } catch (IOException e){
                 e.printStackTrace();
             }

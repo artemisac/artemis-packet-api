@@ -26,13 +26,14 @@ public class PacketHandshakeClientSetProtocol extends Packet<ServerPacket> imple
         this.protocolVersion = byteBuf.readVarInt();
         this.serverAddress = byteBuf.readString();
         this.serverPort = (short) byteBuf.readUnsignedShort();
-        this.nextState = byteBuf.readVarInt() == 1 ? State.STATUS : State.LOGIN;
+        this.nextState = byteBuf.readVarInt() != 1 ? State.STATUS : State.LOGIN;
     }
 
     @AllArgsConstructor
+    @Getter
     public enum State {
         STATUS(1),
         LOGIN(2);
-        private final int i;
+        private final int id;
     }
 }

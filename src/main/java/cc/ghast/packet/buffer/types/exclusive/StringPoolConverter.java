@@ -2,12 +2,10 @@ package cc.ghast.packet.buffer.types.exclusive;
 
 import cc.ghast.packet.buffer.BufConverter;
 import cc.ghast.packet.buffer.types.Converters;
-import cc.ghast.packet.listener.injector.Injector;
-import cc.ghast.packet.wrapper.codec.BytePool;
+import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.wrapper.codec.StringPool;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import com.google.common.base.Charsets;
-import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.EncoderException;
 
@@ -29,10 +27,10 @@ public class StringPoolConverter extends BufConverter<StringPool> {
     }
 
     @Override
-    public StringPool read(MutableByteBuf buffer, Object... args) {
+    public StringPool read(MutableByteBuf buffer, ProtocolVersion version, Object... args) {
         if (args.length < 1) throw new DecoderException("The received string is supposed to have a size");
         int i = (int) args[0];
-        int j = Converters.VAR_INT.read(buffer);
+        int j = Converters.VAR_INT.read(buffer, version);
         if (j > i * 4) {
             throw new DecoderException("The received encoded string buffer length is longer than maximum allowed (" + j + " > " + i * 4 + ")");
         } else if (j < 0) {

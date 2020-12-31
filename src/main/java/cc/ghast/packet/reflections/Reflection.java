@@ -34,6 +34,7 @@ public final class Reflection {
      * @param target    - the target type.
      * @param name      - the name of the field, or NULL to ignore.
      * @param fieldType - a compatible field type.
+     * @param <T> - Type class to return the value appropriately without weak casting
      * @return The field accessor.
      */
     public static <T> FieldAccessor<T> getField(Class<?> target, String name, Class<T> fieldType) {
@@ -46,6 +47,7 @@ public final class Reflection {
      * @param className - lookup name of the class, see {@link #getClass(String)}.
      * @param name      - the name of the field, or NULL to ignore.
      * @param fieldType - a compatible field type.
+     * @param <T> - Type class to return the value appropriately without weak casting
      * @return The field accessor.
      */
     public static <T> FieldAccessor<T> getField(String className, String name, Class<T> fieldType) {
@@ -58,6 +60,7 @@ public final class Reflection {
      * @param target    - the target type.
      * @param fieldType - a compatible field type.
      * @param index     - the number of compatible fields to skip.
+     * @param <T> - Type class to return the value appropriately without weak casting
      * @return The field accessor.
      */
     public static <T> FieldAccessor<T> getField(Class<?> target, Class<T> fieldType, int index) {
@@ -70,6 +73,7 @@ public final class Reflection {
      * @param className - lookup name of the class, see {@link #getClass(String)}.
      * @param fieldType - a compatible field type.
      * @param index     - the number of compatible fields to skip.
+     * @param <T> - Type class to return the value appropriately without weak casting
      * @return The field accessor.
      */
     public static <T> FieldAccessor<T> getField(String className, Class<T> fieldType, int index) {
@@ -329,7 +333,7 @@ public final class Reflection {
      *
      * @param lookupName - the class name with variables.
      * @return The class.
-     * @see {@link #getClass()} for more information.
+     * @see Object#getClass() for more information.
      */
     public static Class<Object> getUntypedClass(String lookupName) {
         @SuppressWarnings({"rawtypes", "unchecked"})
@@ -341,8 +345,8 @@ public final class Reflection {
      * Retrieve a class from its full name.
      * <p>
      * Strings enclosed with curly brackets - such as {TEXT} - will be replaced according to the following table:
-     * <p>
-     * <table border="1">
+     * <p> Table
+     * <table border="1" summary="Ways to access version dependent classes">
      * <tr>
      * <th>Variable</th>
      * <th>Content</th>
@@ -374,6 +378,7 @@ public final class Reflection {
      *
      * @param name - the name of the class, excluding the package.
      * @throws IllegalArgumentException If the class doesn't exist.
+     * @return param.class grabbed from the NMS package using reflections
      */
     public static Class<?> getMinecraftClass(String name) {
         return getCanonicalClass(NMS_PREFIX + "." + name);
@@ -384,6 +389,7 @@ public final class Reflection {
      *
      * @param name - the name of the class, excluding the package.
      * @throws IllegalArgumentException If the class doesn't exist.
+     * @return param.class grabbed from the CraftBukkit package using reflections
      */
     public static Class<?> getCraftBukkitClass(String name) {
         return getCanonicalClass(OBC_PREFIX + "." + name);
