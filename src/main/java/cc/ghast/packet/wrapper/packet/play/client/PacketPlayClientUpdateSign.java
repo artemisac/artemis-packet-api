@@ -19,7 +19,7 @@ public class PacketPlayClientUpdateSign extends Packet<ClientPacket> implements 
     }
 
     private BlockPosition location;
-    private String[] values;
+    private String[] values = new String[4];
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
