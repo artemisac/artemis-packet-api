@@ -16,19 +16,29 @@ public class PacketPlayClientSettings extends Packet<ClientPacket> implements Re
         super("PacketPlayInSettings", player, version);
     }
 
+    //Client's language
     private String locale;
-    private int idk;
+    //Client's view distance
+    private int viewDistance;
     private PlayerEnums.ChatVisibility visibility;
-    private boolean bool;
-    private int int16;
+    //Chat colors setting on the client
+    private boolean chatColors;
+    private int displayedSkinPartsMask;
+    private PlayerEnums.Hand hand;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
         this.locale = byteBuf.readStringBuf(7);
-        this.idk = byteBuf.readByte();
+        this.viewDistance = byteBuf.readByte();
         this.visibility = PlayerEnums.ChatVisibility.values()[byteBuf.readVarInt()];
-        this.bool = byteBuf.readBoolean();
-        this.int16 = byteBuf.readUnsignedByte();
+        this.chatColors = byteBuf.readBoolean();
+        this.displayedSkinPartsMask = byteBuf.readUnsignedByte();
+        if (version.isBelow(ProtocolVersion.V1_9)) {
+            this.hand = PlayerEnums.Hand.MAIN_HAND;
+        }
+        else {
+            this.hand = PlayerEnums.Hand.values()[byteBuf.readVarInt()];
+        }
     }
 
 
