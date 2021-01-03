@@ -8,6 +8,7 @@ import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.Packet;
 import lombok.Getter;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Getter
@@ -16,15 +17,20 @@ public class PacketPlayClientResourcePackStatus extends Packet<ClientPacket> imp
         super("PacketPlayInResourcePackStatus", player, version);
     }
 
-    private String url;
+    private Optional<String> url;
     private PlayerEnums.ResourcePackStatus status;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-        this.url = byteBuf.readStringBuf(40);
+        if (version.isBelow(ProtocolVersion.V1_10)) {
+            this.url = Optional.of(byteBuf.readStringBuf(40));
+        }
+        else {
+            //Not sent on 1.10 and above
+            this.url = Optional.empty();
+        }
         this.status = PlayerEnums.ResourcePackStatus.values()[byteBuf.readVarInt()];
     }
-
 
 
 }
