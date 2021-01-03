@@ -2,6 +2,7 @@ package cc.ghast.packet.wrapper.packet.play.server;
 
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
+import cc.ghast.packet.wrapper.bukkit.BlockPosition;
 import cc.ghast.packet.wrapper.packet.Packet;
 import cc.ghast.packet.wrapper.packet.ServerPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
@@ -13,8 +14,23 @@ public class PacketPlayServerBlockBreakAnimation extends Packet<ServerPacket> im
         super("PacketPlayOutBlockBreakAnimation", player, version);
     }
 
+    private int entityId;
+    private BlockPosition position;
+    private int destroyStage;
+
     @Override
     public void read(ProtocolByteBuf byteBuf) {
+        this.entityId = byteBuf.readVarInt();
 
+        if (version.isAbove(ProtocolVersion.V1_7_10)) {
+            this.position = byteBuf.readBlockPositionFromLong();
+        } else {
+            int x = byteBuf.readInt();
+            int y = byteBuf.readInt();
+            int z = byteBuf.readInt();
+            this.position = new BlockPosition(x, y, z);
+        }
+        
+        this.destroyStage = byteBuf.readUnsignedByte();
     }
 }
