@@ -35,7 +35,7 @@ public class PacketPlayClientBlockPlace extends Packet<ClientPacket> implements 
     public void read(ProtocolByteBuf byteBuf) {
 
         final boolean legacy = gameVersion.isOrBelow(ProtocolVersion.V1_8_9);
-        final short direction;
+        final int direction;
         if (legacy) {
 
             // 1.6.4 - 1.7.10 version range
@@ -68,9 +68,9 @@ public class PacketPlayClientBlockPlace extends Packet<ClientPacket> implements 
         } else {
             this.position = byteBuf.readBlockPositionFromLong();
             // Direction
-            direction = byteBuf.readUnsignedByte();
+            direction = byteBuf.readVarInt();
 
-            this.directionId = byteBuf.readVarInt();
+            this.directionId = direction;
 
             this.hand = PlayerEnums.Hand.values()[byteBuf.readVarInt()];
 
