@@ -6,7 +6,7 @@ import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.buffer.types.Converters;
 import cc.ghast.packet.wrapper.bukkit.BlockPosition;
 import cc.ghast.packet.wrapper.bukkit.Vector3D;
-import cc.ghast.packet.wrapper.nbt.WrappedItem;
+import cc.ghast.packet.wrapper.mc.PlayerEnums;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.Packet;
@@ -23,20 +23,19 @@ public class PacketPlayClientBlockPlace extends Packet<ClientPacket> implements 
         super(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_11) ? "PacketPlayInBlockPlace"
                 : "PacketPlayInUseItem", player, version);
     }
-
     private Optional<EnumDirection> direction;
-
     @Deprecated
     private int directionId;
-    private ItemStack item;
+    private Optional<ItemStack> item;
     private BlockPosition position;
     private Vector3D vector;
+    private PlayerEnums.Hand hand;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
 
         final boolean legacy = gameVersion.isOrBelow(ProtocolVersion.V1_8_9);
-
+        final short direction;
         if (legacy) {
 
             // 1.6.4 - 1.7.10 version range
@@ -55,32 +54,38 @@ public class PacketPlayClientBlockPlace extends Packet<ClientPacket> implements 
             }
 
             // Direction
-            final short direction = byteBuf.readUnsignedByte();
+            direction = byteBuf.readUnsignedByte();
 
             this.directionId = direction;
 
-            if (direction == 255) {
-                this.direction = Optional.empty();
-            } else {
-                this.direction = Optional.of(EnumDirection.values()[direction]);
-            }
-
             // Item
             try {
-                this.item = Converters.ITEM_STACK.read(byteBuf.getByteBuf());
+                this.item = Optional.of(Converters.ITEM_STACK.read(byteBuf.getByteBuf()));
             } catch (IOException e){
                 e.printStackTrace();
             }
-
-            //
-            float x = (float) byteBuf.readUnsignedByte() / 16.0F;
-            float y = (float) byteBuf.readUnsignedByte() / 16.0F;
-            float z = (float) byteBuf.readUnsignedByte() / 16.0F;
-            this.vector = new Vector3D(x, y, z);
+            this.hand = PlayerEnums.Hand.MAIN_HAND;
         } else {
+            this.position = byteBuf.readBlockPositionFromLong();
+            // Direction
+            direction = byteBuf.readUnsignedByte();
 
+            this.directionId = byteBuf.readVarInt();
+
+            this.hand = PlayerEnums.Hand.values()[byteBuf.readVarInt()];
+
+            this.item = Optional.empty();
         }
 
+        if (direction == 255) {
+            this.direction = Optional.empty();
+        } else {
+            this.direction = Optional.of(EnumDirection.values()[direction]);
+        }
 
+        float x = (float) byteBuf.readUnsignedByte() / 16.0F;
+        float y = (float) byteBuf.readUnsignedByte() / 16.0F;
+        float z = (float) byteBuf.readUnsignedByte() / 16.0F;
+        this.vector = new Vector3D(x, y, z);
     }
 }
