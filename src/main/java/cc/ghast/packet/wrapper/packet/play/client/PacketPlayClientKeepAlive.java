@@ -15,10 +15,14 @@ public class PacketPlayClientKeepAlive extends Packet<ClientPacket> implements R
         super("PacketPlayInKeepAlive", player, version);
     }
 
-    private int id;
+    private long id;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-        this.id = byteBuf.readVarInt();
+        if (version.isBelow(ProtocolVersion.V1_12)) {
+            this.id = byteBuf.readVarInt();
+        } else {
+            this.id = byteBuf.readLong();
+        }
     }
 }
