@@ -2,6 +2,7 @@ package cc.ghast.packet.buffer.types.exclusive;
 
 import cc.ghast.packet.buffer.BufConverter;
 import cc.ghast.packet.buffer.types.Converters;
+import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.wrapper.codec.BytePool;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import io.netty.buffer.ByteBuf;
@@ -19,8 +20,8 @@ public class BytePoolConverter extends BufConverter<BytePool> {
     }
 
     @Override
-    public BytePool read(MutableByteBuf buffer, Object... args) {
-        int varint = Converters.VAR_INT.read(buffer);
+    public BytePool read(MutableByteBuf buffer, ProtocolVersion version, Object... args) {
+        int varint = Converters.VAR_INT.read(buffer, version);
         byte[] abyte = new byte[varint];
         buffer.readBytes(abyte);
         return new BytePool(abyte, varint);

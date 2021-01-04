@@ -3,6 +3,7 @@ package cc.ghast.packet.buffer.types.java;
 import cc.ghast.packet.buffer.BufConverter;
 import cc.ghast.packet.buffer.types.Converters;
 import cc.ghast.packet.exceptions.InvalidByteBufStructureException;
+import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import io.netty.buffer.ByteBuf;
 
@@ -33,8 +34,8 @@ public class StringConverter extends BufConverter<String> {
     }
 
     @Override
-    public String read(MutableByteBuf buffer, Object... args) {
-        int len = Converters.VAR_INT.read(buffer);
+    public String read(MutableByteBuf buffer, ProtocolVersion version, Object... args) {
+        int len = Converters.VAR_INT.read(buffer, version);
 
         if (len >= Short.MAX_VALUE * maxJavaCharUtf8Length) {
             throw new InvalidByteBufStructureException(String.format("Cannot receive string longer than Short.MAX_VALUE * " + maxJavaCharUtf8Length + " bytes (got %s bytes)", len));

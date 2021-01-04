@@ -36,7 +36,7 @@ public class ReflectUtil {
     /*
         Minecraft Server field
      */
-    private static final Class<?> MINECRAFT_SERVER_CLAZZ = Reflection.getMinecraftClass("MinecraftServer");
+    public static final Class<?> MINECRAFT_SERVER_CLAZZ = Reflection.getMinecraftClass("MinecraftServer");
     private static final Class<?> CRAFT_SERVER_CLAZZ = Reflection.getCraftBukkitClass("CraftServer");
     private static final FieldAccessor<?> MINECRAFT_SERVER_FIELD = Reflection.getField(CRAFT_SERVER_CLAZZ, MINECRAFT_SERVER_CLAZZ, 0);
     private static final Object MINECRAFT_SERVER = MINECRAFT_SERVER_FIELD.get(Bukkit.getServer());
@@ -48,6 +48,11 @@ public class ReflectUtil {
     private static final Class<?> SERVER_CONNECTION_CLAZZ = Reflection.getMinecraftClass("ServerConnection");
     private static final FieldAccessor<?> SERVER_CONNECTION_FIELD = Reflection.getField(MINECRAFT_SERVER_CLAZZ, SERVER_CONNECTION_CLAZZ, 0);
     private static final Object SERVER_CONNECTION = SERVER_CONNECTION_FIELD.get(MINECRAFT_SERVER);
+    private static final FieldAccessor<List> CHANNEL_FUTURES_FIELD = Reflection.getField(SERVER_CONNECTION_CLAZZ, List.class, 0);
+
+    public static Object getChannelFuture() {
+        return CHANNEL_FUTURES_FIELD.get(SERVER_CONNECTION).get(0);
+    }
 
     /*
         Minecraft Manager Field

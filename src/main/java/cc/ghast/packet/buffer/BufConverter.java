@@ -1,5 +1,6 @@
 package cc.ghast.packet.buffer;
 
+import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import io.netty.buffer.ByteBuf;
 
@@ -35,5 +36,5 @@ public abstract class BufConverter<T> {
 
     public abstract void write(MutableByteBuf buffer, T value) throws IOException;
 
-    public abstract T read(MutableByteBuf buffer, Object... args) throws IOException;
+    public abstract T read(MutableByteBuf buffer, ProtocolVersion version, Object... args) throws IOException;
 }

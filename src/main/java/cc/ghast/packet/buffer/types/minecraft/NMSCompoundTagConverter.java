@@ -1,6 +1,7 @@
 package cc.ghast.packet.buffer.types.minecraft;
 
 import cc.ghast.packet.buffer.BufConverter;
+import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.reflections.ReflectUtil;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.wrapper.netty.MutableByteBufOutputStream;
@@ -24,7 +25,7 @@ public class NMSCompoundTagConverter extends BufConverter<Object> {
     }
 
     @Override
-    public Object read(MutableByteBuf buffer, Object... args) {
+    public Object read(MutableByteBuf buffer, ProtocolVersion version, Object... args) {
         int index = buffer.readerIndex();
         byte id = buffer.readByte();
 

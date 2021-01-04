@@ -41,9 +41,9 @@ public enum EnumProtocolLegacy implements EnumProtocol {
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerHeldItemSlot.class); // 9
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerBed.class); // 10
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerAnimation.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerNamedEntitySpawn.class);
+            this.addPacket(ProtocolDirection.OUT, PacketPlayServerSpawnNamedEntity.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerCollect.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerSpawnEntity.class);
+            this.addPacket(ProtocolDirection.OUT, PacketPlayServerSpawnEntityWeather.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerSpawnEntityLiving.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerSpawnEntityPainting.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerSpawnEntityExperienceOrb.class);
@@ -56,24 +56,24 @@ public enum EnumProtocolLegacy implements EnumProtocol {
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerEntityTeleport.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerEntityHeadRotation.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerEntityStatus.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerAttachEntity.class);
+            this.addPacket(ProtocolDirection.OUT, PacketPlayServerEntityAttach.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerEntityMetadata.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerEntityEffect.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerExperience.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerUpdateAttributes.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerMapChunk.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerMultiBlockChange.class);
+            this.addPacket(ProtocolDirection.OUT, PacketPlayServerChunkLoad.class);
+            this.addPacket(ProtocolDirection.OUT, PacketPlayServerBlockChangeMulti.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerBlockChange.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerBlockBreakAnimation.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerMapChunkBulk.class);
+            this.addPacket(ProtocolDirection.OUT, PacketPlayServerChunkLoadBulk.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerExplosion.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerWorldEvent.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerNamedSoundEffect.class);
+            this.addPacket(ProtocolDirection.OUT, PacketPlayServerSoundEffectNamed.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerWorldParticles.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerGameStateChange.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerSpawnEntityWeather.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerOpenWindow.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerCloseWindow.class);
+            this.addPacket(ProtocolDirection.OUT, PacketPlayServerWindowOpen.class);
+            this.addPacket(ProtocolDirection.OUT, PacketPlayServerWindowClose.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerSetSlot.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerWindowItems.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerWindowData.class);
@@ -116,7 +116,7 @@ public enum EnumProtocolLegacy implements EnumProtocol {
             this.addPacket(ProtocolDirection.IN, PacketPlayClientArmAnimation.class);
             this.addPacket(ProtocolDirection.IN, PacketPlayClientEntityAction.class);
             this.addPacket(ProtocolDirection.IN, PacketPlayClientSteerVehicle.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientCloseWindow.class);
+            this.addPacket(ProtocolDirection.IN, PacketPlayClientWindowClose.class);
             this.addPacket(ProtocolDirection.IN, PacketPlayClientWindowClick.class);
             this.addPacket(ProtocolDirection.IN, PacketPlayClientTransaction.class);
             this.addPacket(ProtocolDirection.IN, PacketPlayClientSetCreativeSlot.class);
@@ -204,4 +204,11 @@ public enum EnumProtocolLegacy implements EnumProtocol {
     public int getOrdinal() {
         return ordinal();
     }
+
+    @Override
+    public EnumProtocol[] getValues() {
+        return values();
+    }
+
+
 }

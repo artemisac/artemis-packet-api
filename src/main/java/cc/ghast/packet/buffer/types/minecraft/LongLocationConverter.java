@@ -1,6 +1,7 @@
 package cc.ghast.packet.buffer.types.minecraft;
 
 import cc.ghast.packet.buffer.BufConverter;
+import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.wrapper.bukkit.BlockPosition;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import io.netty.buffer.ByteBuf;
@@ -22,12 +23,23 @@ public class LongLocationConverter extends BufConverter<BlockPosition> {
     }
 
     @Override
-    public BlockPosition read(MutableByteBuf buffer, Object... args) {
+    public BlockPosition read(MutableByteBuf buffer, ProtocolVersion version, Object... args) {
         long i = buffer.readLong();
-        int j = (int) (i << 64 - BlockPosition.g - BlockPosition.c >> 64 - BlockPosition.c);
-        int k = (int) (i << 64 - BlockPosition.f - BlockPosition.e >> 64 - BlockPosition.e);
-        int l = (int) (i << 64 - BlockPosition.d >> 64 - BlockPosition.d);
 
-        return new BlockPosition(j, k, l);
+        int x, y, z;
+
+        if (version.isAbove(ProtocolVersion.V1_13_2)) {
+            x = (int) (i >> 38);
+            y = (int) (i & 0xFFF);
+            z = (int) ((i << 38 >> 38) >> 12);
+        } else {
+            x = (int) (i << 64 - BlockPosition.g - BlockPosition.c >> 64 - BlockPosition.c);
+            y = (int) (i << 64 - BlockPosition.f - BlockPosition.e >> 64 - BlockPosition.e);
+            z = (int) (i << 64 - BlockPosition.d >> 64 - BlockPosition.d);
+        }
+
+
+
+        return new BlockPosition(x, y, z);
     }
 }

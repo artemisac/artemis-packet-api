@@ -5,6 +5,7 @@ import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.wrapper.packet.Packet;
 import cc.ghast.packet.wrapper.packet.ServerPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
+import org.bukkit.Bukkit;
 
 import java.util.UUID;
 
@@ -15,6 +16,5 @@ public class PacketPlayServerBlockAction extends Packet<ServerPacket> implements
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-
     }
 }

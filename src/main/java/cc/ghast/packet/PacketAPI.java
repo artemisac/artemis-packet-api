@@ -6,8 +6,10 @@ import cc.ghast.packet.profile.Profile;
 import cc.ghast.packet.wrapper.packet.Packet;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.net.InetAddress;
 import java.util.UUID;
 
 /**
@@ -33,17 +35,11 @@ public class PacketAPI {
         return PacketManager.INSTANCE.getListener().getInjector().getProfile(uuid) != null;
     }
 
-    public static void inject(Player player){
-        if (!isInjected(player.getUniqueId())){
-            AsyncPlayerPreLoginEvent event = new AsyncPlayerPreLoginEvent(player.getName(), player.getAddress().getAddress(), player.getUniqueId());
-            PacketManager.INSTANCE.getListener()
-                    .getInjector()
-                    .inject(event);
-        }
-    }
 
     public static void disinject(Player player){
-        if (isInjected(player.getUniqueId())) PacketManager.INSTANCE.getListener().getInjector().uninject(new PlayerQuitEvent(player, ""));
+        if (isInjected(player.getUniqueId()))
+            PacketManager.INSTANCE.getListener().getInjector()
+                .uninjectPlayer(player.getUniqueId());
     }
 
     public static ProtocolVersion getVersion(UUID uuid) {
@@ -51,6 +47,6 @@ public class PacketAPI {
     }
 
     public static void sendPacket(Player player, Packet<?> packet){
-        PacketManager.INSTANCE.getListener().getInjector().writePacket(player, packet);
+        PacketManager.INSTANCE.getListener().getInjector().writePacket(player.getUniqueId(), packet);
     }
 }

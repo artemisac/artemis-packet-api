@@ -34,7 +34,7 @@ public class ArtemisEncoderLegacy extends MessageToByteEncoder<Packet<?>> {
             throw new InvalidPacketException(packet.getClass());
         }
 
-        ProtocolByteBuf buffer = new ProtocolByteBuf(MutableByteBuf.translate(byteBuf));
+        ProtocolByteBuf buffer = new ProtocolByteBuf(MutableByteBuf.translate(byteBuf), profile.getVersion());
 
         buffer.writeVarInt(packetId);
 

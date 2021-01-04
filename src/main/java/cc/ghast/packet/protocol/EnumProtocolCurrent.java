@@ -54,7 +54,7 @@ public enum EnumProtocolCurrent implements EnumProtocol {
                 new Pair<>(PacketPlayClientArmAnimation.class, new PacketInformation("PacketPlayInArmAnimation")),
                 new Pair<>(PacketPlayClientEntityAction.class, new PacketInformation("PacketPlayInEntityAction")),
                 new Pair<>(PacketPlayClientSteerVehicle.class, new PacketInformation("PacketPlayInSteerVehicle")),
-                new Pair<>(PacketPlayClientCloseWindow.class, new PacketInformation("PacketPlayInCloseWindow")),
+                new Pair<>(PacketPlayClientWindowClose.class, new PacketInformation("PacketPlayInCloseWindow")),
                 new Pair<>(PacketPlayClientWindowClick.class, new PacketInformation("PacketPlayInWindowClick")),
                 new Pair<>(PacketPlayClientTransaction.class, new PacketInformation("PacketPlayInTransaction")),
                 new Pair<>(PacketPlayClientSetCreativeSlot.class, new PacketInformation("PacketPlayInSetCreativeSlot")),
@@ -83,9 +83,9 @@ public enum EnumProtocolCurrent implements EnumProtocol {
                 new Pair<>(PacketPlayServerHeldItemSlot.class, new PacketInformation("PacketPlayOutHeldItemSlot")), // 9
                 new Pair<>(PacketPlayServerBed.class, new PacketInformation("PacketPlayOutBed")), // 10
                 new Pair<>(PacketPlayServerAnimation.class, new PacketInformation("PacketPlayOutAnimation")),
-                new Pair<>(PacketPlayServerNamedEntitySpawn.class, new PacketInformation("PacketPlayOutNamedEntitySpawn")),
+                new Pair<>(PacketPlayServerSpawnNamedEntity.class, new PacketInformation("PacketPlayOutNamedEntitySpawn")),
                 new Pair<>(PacketPlayServerCollect.class, new PacketInformation("PacketPlayOutCollect")),
-                new Pair<>(PacketPlayServerSpawnEntity.class, new PacketInformation("PacketPlayOutSpawnEntity")),
+                new Pair<>(PacketPlayServerSpawnEntityWeather.class, new PacketInformation("PacketPlayOutSpawnEntity")),
                 new Pair<>(PacketPlayServerSpawnEntityLiving.class, new PacketInformation("PacketPlayOutSpawnEntityLiving")),
                 new Pair<>(PacketPlayServerSpawnEntityPainting.class, new PacketInformation("PacketPlayOutSpawnEntityPainting")),
                 new Pair<>(PacketPlayServerSpawnEntityExperienceOrb.class, new PacketInformation("PacketPlayOutSpawnEntityExperienceOrb")),
@@ -98,25 +98,25 @@ public enum EnumProtocolCurrent implements EnumProtocol {
                 new Pair<>(PacketPlayServerEntityTeleport.class, new PacketInformation("PacketPlayOutEntityTeleport")),
                 new Pair<>(PacketPlayServerEntityHeadRotation.class, new PacketInformation("PacketPlayOutEntityHeadRotation")),
                 new Pair<>(PacketPlayServerEntityStatus.class, new PacketInformation("PacketPlayOutEntityStatus")),
-                new Pair<>(PacketPlayServerAttachEntity.class, new PacketInformation("PacketPlayOutAttachEntity")),
+                new Pair<>(PacketPlayServerEntityAttach.class, new PacketInformation("PacketPlayOutAttachEntity")),
                 new Pair<>(PacketPlayServerEntityMetadata.class, new PacketInformation("PacketPlayOutEntityMetadata")),
                 new Pair<>(PacketPlayServerEntityEffect.class, new PacketInformation("PacketPlayOutEntityEffect")),
-                new Pair<>(PacketPlayServerRemoveEntityEffect.class, new PacketInformation("PacketPlayOutRemoveEntityEffect")),
+                new Pair<>(PacketPlayServerEntityEffectRemove.class, new PacketInformation("PacketPlayOutRemoveEntityEffect")),
                 new Pair<>(PacketPlayServerExperience.class, new PacketInformation("PacketPlayOutExperience")),
                 new Pair<>(PacketPlayServerUpdateAttributes.class, new PacketInformation("PacketPlayOutUpdateAttributes")),
-                new Pair<>(PacketPlayServerMapChunk.class, new PacketInformation("PacketPlayOutMapChunk")),
-                new Pair<>(PacketPlayServerMultiBlockChange.class, new PacketInformation("PacketPlayOutMultiBlockChange")),
+                new Pair<>(PacketPlayServerChunkLoad.class, new PacketInformation("PacketPlayOutMapChunk")),
+                new Pair<>(PacketPlayServerBlockChangeMulti.class, new PacketInformation("PacketPlayOutMultiBlockChange")),
                 new Pair<>(PacketPlayServerBlockChange.class, new PacketInformation("PacketPlayOutBlockChange")),
                 new Pair<>(PacketPlayServerBlockBreakAnimation.class, new PacketInformation("PacketPlayOutBlockBreakAnimation")),
-                new Pair<>(PacketPlayServerMapChunkBulk.class, new PacketInformation("PacketPlayOutMapChunkBulk")),
+                new Pair<>(PacketPlayServerChunkLoadBulk.class, new PacketInformation("PacketPlayOutMapChunkBulk")),
                 new Pair<>(PacketPlayServerExplosion.class, new PacketInformation("PacketPlayOutExplosion")),
                 new Pair<>(PacketPlayServerWorldEvent.class, new PacketInformation("PacketPlayOutWorldEvent")),
-                new Pair<>(PacketPlayServerNamedSoundEffect.class, new PacketInformation("PacketPlayOutNamedSoundEffect")),
+                new Pair<>(PacketPlayServerSoundEffectNamed.class, new PacketInformation("PacketPlayOutNamedSoundEffect")),
                 new Pair<>(PacketPlayServerWorldParticles.class, new PacketInformation("PacketPlayOutWorldParticles")),
                 new Pair<>(PacketPlayServerGameStateChange.class, new PacketInformation("PacketPlayOutGameStateChange")),
                 new Pair<>(PacketPlayServerSpawnEntityWeather.class, new PacketInformation("PacketPlayOutSpawnEntityWeather")),
-                new Pair<>(PacketPlayServerOpenWindow.class, new PacketInformation("PacketPlayOutOpenWindow")),
-                new Pair<>(PacketPlayServerCloseWindow.class, new PacketInformation("PacketPlayOutCloseWindow")),
+                new Pair<>(PacketPlayServerWindowOpen.class, new PacketInformation("PacketPlayOutOpenWindow")),
+                new Pair<>(PacketPlayServerWindowClose.class, new PacketInformation("PacketPlayOutCloseWindow")),
                 new Pair<>(PacketPlayServerSetSlot.class, new PacketInformation("PacketPlayOutSetSlot")),
                 new Pair<>(PacketPlayServerWindowItems.class, new PacketInformation("PacketPlayOutWindowItems")),
                 new Pair<>(PacketPlayServerWindowData.class, new PacketInformation("PacketPlayOutWindowData")),
@@ -219,6 +219,10 @@ public enum EnumProtocolCurrent implements EnumProtocol {
         return ordinal();
     }
 
+    @Override
+    public EnumProtocol[] getValues() {
+        return values();
+    }
 
 
     @Override
@@ -230,5 +234,7 @@ public enum EnumProtocolCurrent implements EnumProtocol {
         }
         return null;
     }
+
+
     
 }

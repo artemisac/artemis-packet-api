@@ -2,6 +2,7 @@ package cc.ghast.packet.buffer.types.minecraft;
 
 import cc.ghast.packet.buffer.BufConverter;
 import cc.ghast.packet.buffer.types.Converters;
+import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.reflections.ReflectUtil;
 import cc.ghast.packet.wrapper.nbt.WrappedItem;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
@@ -33,12 +34,12 @@ public class ItemStackConverter extends BufConverter<ItemStack> {
     }
 
     @Override
-    public ItemStack read(MutableByteBuf buffer, Object... args) throws IOException {
+    public ItemStack read(MutableByteBuf buffer, ProtocolVersion version, Object... args) throws IOException {
         short id = buffer.readShort();
         if (id >= 0) {
             byte amount = buffer.readByte();
             short data = buffer.readShort();
-            Object tag = Converters.NMS_NBT.read(buffer);
+            Object tag = Converters.NMS_NBT.read(buffer, version);
             WrappedItem item = new WrappedItem(id, amount, data, tag);
             return ReflectUtil.getItemFromWrapper(item);
         }

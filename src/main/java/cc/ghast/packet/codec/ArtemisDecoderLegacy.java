@@ -85,7 +85,7 @@ public class ArtemisDecoderLegacy extends ChannelDuplexHandler {
         if (in.readableBytes() != 0) {
 
             // Get the var_int packet id of the packet. This is quite important as it's what determines it's type
-            int id = Converters.VAR_INT.read(in);
+            int id = Converters.VAR_INT.read(in, profile.getVersion());
 
             if (debug) {
                 System.out.println("Reader index=" + in.readerIndex());
@@ -97,7 +97,7 @@ public class ArtemisDecoderLegacy extends ChannelDuplexHandler {
 
             if (packet instanceof ReadableBuffer) {
                 ReadableBuffer buffer = (ReadableBuffer) packet;
-                buffer.read(new ProtocolByteBuf(in));
+                buffer.read(new ProtocolByteBuf(in, profile.getVersion()));
             }
 
             // Handle and collect the handshake
@@ -128,7 +128,7 @@ public class ArtemisDecoderLegacy extends ChannelDuplexHandler {
 
     private MutableByteBuf decompress(MutableByteBuf byteBuf) throws DataFormatException {
         if (byteBuf.readableBytes() != 0) {
-            ProtocolByteBuf packetdataserializer = new ProtocolByteBuf(byteBuf);
+            ProtocolByteBuf packetdataserializer = new ProtocolByteBuf(byteBuf, profile.getVersion());
             int i = packetdataserializer.readVarInt();
 
             if (i == 0) {

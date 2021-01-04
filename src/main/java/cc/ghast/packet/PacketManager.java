@@ -1,6 +1,7 @@
 package cc.ghast.packet;
 
 import cc.ghast.packet.chain.ChainManager;
+import cc.ghast.packet.compat.HookManager;
 import cc.ghast.packet.listener.ChannelListener;
 import lombok.Getter;
 import org.bukkit.plugin.Plugin;
@@ -18,18 +19,20 @@ public enum PacketManager {
     private Plugin plugin;
     private ChainManager manager;
     private ChannelListener listener;
+    private HookManager hookManager;
 
     public void init(Plugin plugin) {
         this.plugin = plugin;
         this.manager = new ChainManager();
         this.listener = new ChannelListener(this);
-        System.out.println("[Artemis Test] Enabled Test Decoder");
-;
-    }
-
-    public void onDisable() {
-
+        this.hookManager = new HookManager();
     }
 
 
+    public void info(String log) {
+        plugin.getLogger().info(log);
+    }
+    public void fatal(String log) {
+        plugin.getLogger().severe(log);
+    }
 }

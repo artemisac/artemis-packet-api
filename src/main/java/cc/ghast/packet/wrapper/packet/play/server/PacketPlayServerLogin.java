@@ -21,6 +21,7 @@ public class PacketPlayServerLogin extends Packet<ServerPacket> implements Reada
 
     private int entityId;
     private GameMode gamemode;
+    private boolean hardcoreMode;
     private Dimension dimension;
     private Difficulty difficulty;
     private int maxPlayers;
@@ -34,8 +35,10 @@ public class PacketPlayServerLogin extends Packet<ServerPacket> implements Reada
         this.entityId = byteBuf.readInt();
 
         // Gamemode
-        final short gm = byteBuf.readUnsignedByte();
-        this.gamemode = gm == 0x8 ? GameMode.HARDCORE : GameMode.values()[gm];
+        int i = byteBuf.readUnsignedByte();
+        this.hardcoreMode = (i & 8) == 8;
+        i = i & -9;
+        this.gamemode = GameMode.getById(i);
 
         // Dimension
         this.dimension = Dimension.values()[byteBuf.readByte() + 1];
@@ -47,8 +50,11 @@ public class PacketPlayServerLogin extends Packet<ServerPacket> implements Reada
         this.maxPlayers = byteBuf.readUnsignedByte();
 
         // Level Type
-        this.worldLevelType = WorldType.getByName(byteBuf.readString());
+        this.worldLevelType = WorldType.getByName(byteBuf.readStringBuf(16));
+        if (this.worldLevelType == null) {
+            this.worldLevelType = WorldType.NORMAL;
 
+        }
         // Reduced Debug Info
         this.reducedDebugInfo = byteBuf.readBoolean();
     }
