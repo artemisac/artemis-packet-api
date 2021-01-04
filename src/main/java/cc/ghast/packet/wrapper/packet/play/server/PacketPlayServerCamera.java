@@ -13,8 +13,10 @@ public class PacketPlayServerCamera extends Packet<ServerPacket> implements Read
         super("PacketPlayOutCamera", player, version);
     }
 
+    private int cameraId;
+
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-
+        this.cameraId = byteBuf.readVarInt();
     }
 }
