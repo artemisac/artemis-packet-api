@@ -33,15 +33,17 @@ public class StringPoolConverter extends BufConverter<StringPool> {
         int j = Converters.VAR_INT.read(buffer, version);
         if (j > i * 4) {
             throw new DecoderException("The received encoded string buffer length is longer than maximum allowed (" + j + " > " + i * 4 + ")");
-        } else if (j < 0) {
-            throw new DecoderException("The received encoded string buffer length is less than zero! Weird string!");
-        } else {
-            String s = new String(buffer.readBytes(j).array(), Charsets.UTF_8);
-            if (s.length() > i) {
-                throw new DecoderException("The received string length is longer than maximum allowed (" + j + " > " + i + ")");
-            } else {
-                return new StringPool(s, j);
-            }
         }
+
+        if (j < 0) {
+            throw new DecoderException("The received encoded string buffer length is less than zero! Weird string!");
+        }
+
+        String s = new String(buffer.readBytes(j).array(), Charsets.UTF_8);
+        if (s.length() > i) {
+            throw new DecoderException("The received string length is longer than maximum allowed (" + j + " > " + i + ")");
+        }
+
+        return new StringPool(s, j);
     }
 }

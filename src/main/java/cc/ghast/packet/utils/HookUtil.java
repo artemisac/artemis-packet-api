@@ -14,7 +14,7 @@ public class HookUtil {
 
     static {
         try {
-            new ProtocolLibHook();
+            Class.forName("com.comphenix.protocol.ProtocolLib");
             plib = true;
         } catch (Exception e){
             plib = false;
@@ -34,10 +34,6 @@ public class HookUtil {
     }
 
     public static String getHookForward() {
-        if (plib) {
-            return "protocol_lib_encoder";
-        }
-
         return "encoder";
     }
 

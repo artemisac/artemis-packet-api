@@ -3,6 +3,9 @@ package cc.ghast.packet.codec;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.exceptions.InvalidPacketException;
 import cc.ghast.packet.profile.Profile;
+import cc.ghast.packet.protocol.EnumProtocol;
+import cc.ghast.packet.protocol.EnumProtocolCurrent;
+import cc.ghast.packet.protocol.EnumProtocolLegacy;
 import cc.ghast.packet.protocol.ProtocolDirection;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.wrapper.packet.Packet;
@@ -28,7 +31,7 @@ public class ArtemisEncoderLegacy extends MessageToByteEncoder<Packet<?>> {
     @Override
     protected void encode(ChannelHandlerContext channelHandlerContext, Packet<?> packet, ByteBuf byteBuf) {
 
-        int packetId = profile.getProtocol().getPacketId(ProtocolDirection.OUT, packet);
+        int packetId = EnumProtocolLegacy.values()[profile.getProtocol().ordinal()].getPacketId(ProtocolDirection.OUT, packet);
 
         if (packetId < 0){
             throw new InvalidPacketException(packet.getClass());

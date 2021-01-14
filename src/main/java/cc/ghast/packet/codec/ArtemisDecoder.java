@@ -8,15 +8,8 @@ import cc.ghast.packet.buffer.types.Converters;
 import cc.ghast.packet.profile.Profile;
 import cc.ghast.packet.protocol.EnumProtocol;
 import cc.ghast.packet.protocol.EnumProtocolCurrent;
-import cc.ghast.packet.protocol.EnumProtocolLegacy;
 import cc.ghast.packet.protocol.ProtocolDirection;
-import cc.ghast.packet.protocol.nms.EnumProtocol_107;
-import cc.ghast.packet.protocol.nms.EnumProtocol_110;
-import cc.ghast.packet.protocol.nms.EnumProtocol_47;
-import cc.ghast.packet.protocol.nms.EnumProtocol_5;
-import cc.ghast.packet.utils.Chat;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
-import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.Packet;
 import cc.ghast.packet.wrapper.packet.handshake.PacketHandshakeClientSetProtocol;
@@ -27,8 +20,6 @@ import io.netty.channel.*;
 import io.netty.handler.codec.DecoderException;
 import org.bukkit.Bukkit;
 
-import java.util.Arrays;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.zip.DataFormatException;
@@ -40,18 +31,19 @@ import java.util.zip.Inflater;
  */
 public class ArtemisDecoder extends ChannelDuplexHandler {
 
-    private static final boolean debug = true;
+    private static final boolean debug = false;
 
     private final Profile profile;
     private final Inflater inflater;
     private final ProtocolDirection direction;
     private static final ExecutorService PACKET_SERVICE = Executors.newSingleThreadExecutor();
+    private EnumProtocol protocol;
 
     public ArtemisDecoder(Profile profile, ProtocolDirection direction) {
         this.profile = profile;
         this.inflater = new Inflater();
         this.direction = direction;
-        this.profile.setProtocol(EnumProtocolCurrent.HANDSHAKE);
+        this.protocol = EnumProtocolCurrent.HANDSHAKE;
     }
 
 
@@ -83,7 +75,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
         // Make sure we're receiving a ByteBuf. If a protocol is placed before such, it may screw with the decompression
         if (msg instanceof ByteBuf) {
             // Decode the message and send it off
-            final ByteBuf buffer = Unpooled.unmodifiableBuffer((ByteBuf) msg).retain();
+            final ByteBuf buffer = Unpooled.unmodifiableBuffer((ByteBuf) msg).copy().retain();
             try {
                 final int readIndex = buffer.readerIndex();
                 final boolean cancelled = buffer.isReadable() && decode(MutableByteBuf.translate(buffer));
@@ -117,9 +109,32 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
 
         if (in.readableBytes() != 0) {
-
             // Get the var_int packet id of the packet. This is quite important as it's what determines it's type
-            final int id = Converters.VAR_INT.read(in, profile.getVersion());
+            int id = Converters.VAR_INT.read(in, profile.getVersion());
+
+            final boolean viaVersion = PacketManager.INSTANCE.getHookManager().getViaVersionHook() != null
+                    && !profile.getProtocol().equals(Profile.Protocol.HANDSHAKE)
+                    && direction.equals(ProtocolDirection.IN);
+
+
+            if (viaVersion) {
+
+                in.resetReaderIndex();
+
+                ByteBuf parent = PacketManager.INSTANCE
+                        .getHookManager()
+                        .getViaVersionHook()
+                        .transformPacket(profile.getUuid(), (ByteBuf) in.getParent(), id);
+
+                if (parent == null)
+                    return false;
+
+                in = MutableByteBuf.translate(parent);
+                in.resetReaderIndex();
+                id = Converters.VAR_INT.read(in, ProtocolVersion.getGameVersion());
+            }
+
+
 
             if (debug) {
                 System.out.println("Reader index=" + in.readerIndex());
@@ -131,8 +146,19 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
             protocolByteBuf.setId(id);
 
             // Collect the packet from the enum map. This needs to be rewritten for better accuracy tho
-            Packet<?> packet = profile.getProtocol().getPacket(direction, protocolByteBuf.getId(),
-                    profile.getUuid(), profile.getVersion());
+            Packet<?> packet;
+
+            if (viaVersion) {
+                packet = EnumProtocol
+                        .getProtocolByVersion(ProtocolVersion.getGameVersion())[profile.getProtocol().ordinal()]
+                        .getPacket(direction, protocolByteBuf.getId(),
+                        profile.getUuid(), ProtocolVersion.getGameVersion());
+            } else {
+                packet = EnumProtocol
+                        .getProtocolByVersion(profile.getVersion())[profile.getProtocol().ordinal()]
+                        .getPacket(direction, protocolByteBuf.getId(),
+                        profile.getUuid(), profile.getVersion());
+            }
 
             if (packet != null) {
                 if (packet instanceof ReadableBuffer) {
@@ -144,7 +170,9 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                     }
                 }
 
-                System.out.println("pakcet=" + packet.getRealName());
+                if (debug) {
+                    System.out.println("pakcet=" + packet.getRealName());
+                }
 
                 // Handle and collect the handshake
                 if (packet instanceof PacketHandshakeClientSetProtocol){
@@ -213,18 +241,23 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
     private void handleHandshake(PacketHandshakeClientSetProtocol handshake){
         final ProtocolVersion version = ProtocolVersion.getVersion(handshake.getProtocolVersion());
-        profile.setVersion(version);
+
+        if (PacketManager.INSTANCE.getHookManager().getViaVersionHook() == null) {
+            profile.setVersion(version);
+
+        }
         System.out.println("Version=" + handshake.getVersion());
         PacketHandshakeClientSetProtocol.State state = handshake.getNextState();
-
-        EnumProtocol protocol = state.equals(PacketHandshakeClientSetProtocol.State.STATUS)
-                ? EnumProtocol.getProtocolByVersion(version)[1]
-                : EnumProtocol.getProtocolByVersion(version)[2];
-        this.profile.setProtocol(protocol);
+        this.profile.setProtocol(state.equals(PacketHandshakeClientSetProtocol.State.STATUS)
+                ? Profile.Protocol.STATUS : Profile.Protocol.LOGIN);
     }
 
     private void handleLoginSuccess(PacketLoginServerSuccess loginSuccess) {
-        this.profile.setProtocol(EnumProtocolCurrent.PLAY);
+        this.profile.setProtocol(Profile.Protocol.PLAY);
+
+        if (PacketManager.INSTANCE.getHookManager().getViaVersionHook() != null) {
+            this.profile.setVersion(null);
+        }
     }
 
 

@@ -15,14 +15,14 @@ import java.util.function.Predicate;
  */
 
 @Getter
-public class PacketInfo {
+public class PacketInfo<T> {
     private final int id;
-    private final Class<? extends Packet<?>> clazz;
+    private final Class<? extends Packet<T>> clazz;
     private final String nmsName;
-    private final Constructor<? extends Packet<?>> constructor;
+    private final Constructor<? extends Packet<T>> constructor;
 
     @SneakyThrows
-    public PacketInfo(int id, Class<? extends Packet<?>> clazz, String nmsName) {
+    public PacketInfo(int id, Class<? extends Packet<T>> clazz, String nmsName) {
         this.id = id;
         this.clazz = clazz;
         this.nmsName = nmsName;

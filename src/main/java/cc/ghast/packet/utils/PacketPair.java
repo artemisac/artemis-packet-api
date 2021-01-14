@@ -1,12 +1,11 @@
 package cc.ghast.packet.utils;
 
-import cc.ghast.packet.wrapper.packet.Packet;
-import cc.ghast.packet.wrapper.packet.PacketInfo;
-import cc.ghast.packet.wrapper.packet.PacketInformation;
+import cc.ghast.packet.wrapper.packet.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.SneakyThrows;
 
+import java.rmi.MarshalledObject;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +20,9 @@ import java.util.Map;
 public class PacketPair {
     private final Map<Integer, PacketInfo> client;
     private final Map<Integer, PacketInfo> server;
+    private final Map<Class<? extends Packet<ClientPacket>>, PacketInfo> clientClasses;
+    private final Map<Class<? extends Packet<ServerPacket>>, PacketInfo> serverClasses;
+
 
     /**
      * Packet pair that contains both the client and the server packets. This is used to dynamically allocate
@@ -31,7 +33,7 @@ public class PacketPair {
      * @param server PacketInfo array of every single packet which is sent to the client. Can be empty
      */
     @SneakyThrows
-    public PacketPair(PacketInfo[] client, PacketInfo[] server) {
+    public PacketPair(PacketInfo<ClientPacket>[] client, PacketInfo<ServerPacket>[] server) {
         /*
          * Here we simply initialize the hashmap (not a weak one, we want to conserve this even if the reference is
          * null). We then add as the key the ID of the packet and associate to this key a packet info.
@@ -39,8 +41,9 @@ public class PacketPair {
          * (Client [Game] -> Server [NMS])
          */
         this.client = new HashMap<>();
+        this.clientClasses = new HashMap<>();
 
-        for (PacketInfo packetInfo : client) {
+        for (PacketInfo<ClientPacket> packetInfo : client) {
 
             /*
              * By having a null packet, we run into the risk of breaking and crashing the pipeline when trying
@@ -64,6 +67,7 @@ public class PacketPair {
              * Once we passed every single sanitization checks, we can just add it to the map.
              */
             this.client.put(packetInfo.getId(), packetInfo);
+            this.clientClasses.put(packetInfo.getClazz(), packetInfo);
         }
 
         /*
@@ -73,8 +77,9 @@ public class PacketPair {
          * (Server [NMS] -> Client [Game])
          */
         this.server = new HashMap<>();
+        this.serverClasses = new HashMap<>();
 
-        for (PacketInfo packetInfo : server) {
+        for (PacketInfo<ServerPacket> packetInfo : server) {
             /*
              * By having a null packet, we run into the risk of breaking and crashing the pipeline when trying
              * to process the information. Henceforth, we must preemptively prevent such behavior from happening.
@@ -97,6 +102,7 @@ public class PacketPair {
              * Once we passed every single sanitization checks, we can just add it to the map.
              */
             this.server.put(packetInfo.getId(), packetInfo);
+            this.serverClasses.put(packetInfo.getClazz(), packetInfo);
         }
 
     }

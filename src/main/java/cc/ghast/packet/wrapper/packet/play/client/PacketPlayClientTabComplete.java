@@ -23,7 +23,7 @@ public class PacketPlayClientTabComplete extends Packet<ClientPacket> implements
     public void read(ProtocolByteBuf byteBuf) {
         this.value = byteBuf.readStringBuf(32767);
 
-        boolean flag = byteBuf.readBoolean();
+        final boolean flag = byteBuf.readBoolean();
 
         if (flag) {
             this.blockPosition = byteBuf.readBlockPositionFromLong();

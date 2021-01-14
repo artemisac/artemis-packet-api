@@ -22,16 +22,24 @@ public class Profile {
     private String address;
     private ProtocolVersion version;
     private Object channel;
-    private EnumProtocol protocol;
+    private Protocol protocol;
 
     public Profile(UUID uuid, String address, Object channel) {
         this.uuid = uuid;
         this.address = address;
         this.channel = channel;
+        this.protocol = Protocol.HANDSHAKE;
     }
 
-    public EnumProtocol getProtocol() {
+    public Protocol getProtocol() {
         return protocol;
+    }
+
+    public enum Protocol {
+        HANDSHAKE,
+        PLAY,
+        STATUS,
+        LOGIN
     }
 
     public ProtocolVersion getVersion() {
@@ -70,13 +78,14 @@ public class Profile {
             return ProtocolVersion.getGameVersion();
         }
 
+        System.out.println("[ViaVersion] Caching version of player of UUID " + uuid + " of version " + versionFromVia);
         /*
          * Version is valid, we cache it
          */
         return (version = ProtocolVersion.getVersion(versionFromVia));
     }
 
-    public void setProtocol(EnumProtocol protocol) {
+    public void setProtocol(Protocol protocol) {
         this.protocol = protocol;
     }
 

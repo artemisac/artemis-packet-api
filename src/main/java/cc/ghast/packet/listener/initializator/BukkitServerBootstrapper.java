@@ -49,7 +49,6 @@ public class BukkitServerBootstrapper extends ChannelInitializer<SocketChannel> 
                 new ArtemisDecoder(info, ProtocolDirection.OUT));
         socketChannel.pipeline().addLast(Injector.encoder,
                 new ArtemisEncoder(info));
-        System.out.println(Arrays.toString(socketChannel.pipeline().names().toArray()));
     }
 
     static {

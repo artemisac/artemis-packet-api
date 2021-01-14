@@ -24,7 +24,7 @@ public class PacketPlayServerRespawn extends Packet<ServerPacket> implements Rea
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-        this.id = byteBuf.readInt();
+        this.id = byteBuf.readVarInt();
         this.difficulty = Difficulty.values()[byteBuf.readUnsignedByte()];
         this.gamemode = GameMode.getById(byteBuf.readUnsignedByte());
         this.d = WorldType.getByName(byteBuf.readStringBuf(16).toUpperCase());

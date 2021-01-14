@@ -106,7 +106,9 @@ public class InjectorModern implements Injector {
     @Override
     public void injectPlayer(UUID uuid) {
         Channel channel = (Channel) ReflectUtil.getChannel(uuid, Bukkit.getPlayer(uuid).getAddress().getAddress().getHostAddress());
-        futureProfiles.asMap().entrySet().stream().filter(e -> e.getKey().getChannel().equals(channel)).findFirst().ifPresent(e -> {
+        futureProfiles.asMap().entrySet().stream()
+                .filter(e -> channel != null && ((Channel) e.getKey().getChannel()).remoteAddress()
+                .equals(channel.remoteAddress())).findFirst().ifPresent(e -> {
             Profile profile = e.getKey();
             profile.setUuid(uuid);
             this.profiles.put(uuid, profile);
