@@ -14,7 +14,7 @@ import java.util.function.Predicate;
 @Setter
 public abstract class Packet<D> {
     protected final UUID uuid;
-    protected final ProtocolVersion version;
+    protected ProtocolVersion version;
     protected final static ProtocolVersion gameVersion = ProtocolVersion.getGameVersion();
     protected final Predicate<ProtocolVersion>[] versionPredicate;
     protected final long timestamp;

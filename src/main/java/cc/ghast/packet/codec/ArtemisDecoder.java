@@ -114,8 +114,8 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
             final boolean viaVersion = PacketManager.INSTANCE.getHookManager().getViaVersionHook() != null
                     && !profile.getProtocol().equals(Profile.Protocol.HANDSHAKE)
+                    && !profile.getVersion().equals(ProtocolVersion.getGameVersion())
                     && direction.equals(ProtocolDirection.IN);
-
 
             if (viaVersion) {
 
@@ -133,8 +133,6 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                 in.resetReaderIndex();
                 id = Converters.VAR_INT.read(in, ProtocolVersion.getGameVersion());
             }
-
-
 
             if (debug) {
                 System.out.println("Reader index=" + in.readerIndex());

@@ -29,21 +29,21 @@ public class StringPoolConverter extends BufConverter<StringPool> {
     @Override
     public StringPool read(MutableByteBuf buffer, ProtocolVersion version, Object... args) {
         if (args.length < 1) throw new DecoderException("The received string is supposed to have a size");
-        int i = (int) args[0];
-        int j = Converters.VAR_INT.read(buffer, version);
-        if (j > i * 4) {
-            throw new DecoderException("The received encoded string buffer length is longer than maximum allowed (" + j + " > " + i * 4 + ")");
+        int max = (int) args[0];
+        int length = Converters.VAR_INT.read(buffer, version);
+        if (length > max * 4) {
+            throw new DecoderException("The received encoded string buffer length is longer than maximum allowed (" + length + " > " + max * 4 + ")");
         }
 
-        if (j < 0) {
+        if (length < 0) {
             throw new DecoderException("The received encoded string buffer length is less than zero! Weird string!");
         }
 
-        String s = new String(buffer.readBytes(j).array(), Charsets.UTF_8);
-        if (s.length() > i) {
-            throw new DecoderException("The received string length is longer than maximum allowed (" + j + " > " + i + ")");
+        String s = new String(buffer.readBytes(length).array(), Charsets.UTF_8);
+        if (s.length() > max) {
+            throw new DecoderException("The received string length is longer than maximum allowed (" + length + " > " + max + ")");
         }
 
-        return new StringPool(s, j);
+        return new StringPool(s, length);
     }
 }

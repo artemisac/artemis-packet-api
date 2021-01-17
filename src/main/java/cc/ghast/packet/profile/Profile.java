@@ -19,12 +19,14 @@ import java.util.UUID;
 @Data
 public class Profile {
     private UUID uuid;
+    private final UUID id;
     private String address;
     private ProtocolVersion version;
     private Object channel;
     private Protocol protocol;
 
-    public Profile(UUID uuid, String address, Object channel) {
+    public Profile(UUID id, UUID uuid, String address, Object channel) {
+        this.id = id;
         this.uuid = uuid;
         this.address = address;
         this.channel = channel;

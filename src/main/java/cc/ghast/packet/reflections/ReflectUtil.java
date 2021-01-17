@@ -84,10 +84,10 @@ public class ReflectUtil {
 
     private static final FieldAccessor<Integer> ENUM_DIRECTION_ORDINAL_FIELD = Reflection.getField(ENUM_DIRECTION_CLAZZ, "ordinal", int.class);
 
-    public static Object getChannel(UUID uuid, String address){
+    public static Object getChannel(UUID id, String address){
         List futures = NETWORK_MANAGERS_FIELD.get(SERVER_CONNECTION);
 
-        Object future = futures.parallelStream().filter(ch -> {
+        Object future = futures.stream().filter(ch -> {
             SocketAddress address1 = (SocketAddress) ADDRESS_FIELD.get(ch);
             String parsed = parseAddress(address1);
             return address.equalsIgnoreCase(parsed);
@@ -97,7 +97,11 @@ public class ReflectUtil {
         return null;
     }
 
-    private static String parseAddress(SocketAddress address) {
+    public static List getChannels(){
+        return (List) NETWORK_MANAGERS_FIELD.get(SERVER_CONNECTION);
+    }
+
+    public static String parseAddress(SocketAddress address) {
         return address.toString().split("/")[1].split(":")[0];
     }
 

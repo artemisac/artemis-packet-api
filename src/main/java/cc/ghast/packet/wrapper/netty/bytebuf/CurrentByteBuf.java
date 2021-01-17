@@ -27,11 +27,10 @@ import java.nio.charset.Charset;
 public class CurrentByteBuf implements MutableByteBuf {
     
     private final ByteBuf byteBuf;
-    private final MutableByteBufAllocator allocator;
 
     public CurrentByteBuf(Object object) {
         this.byteBuf = (ByteBuf) object;
-        this.allocator = MutableByteBufAllocator.translate(((ByteBuf) object).alloc());
+        //this.allocator = MutableByteBufAllocator.translate(((ByteBuf) object).alloc());
     }
 
     @Override
@@ -57,7 +56,7 @@ public class CurrentByteBuf implements MutableByteBuf {
 
     @Override
     public MutableByteBufAllocator alloc() {
-        return this.allocator;
+        return MutableByteBufAllocator.translate(((ByteBuf) byteBuf).alloc());
     }
 
     @Override

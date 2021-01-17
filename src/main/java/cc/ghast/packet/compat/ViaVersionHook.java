@@ -66,6 +66,32 @@ public class ViaVersionHook {
         return buf;
     }
 
+    @SneakyThrows
+    public ByteBuf transformPacketSend(UUID uuid, ByteBuf buf, int id) {
+        if (uuid == null
+                || api.getConnectionManager().getConnectedClients() == null
+                || !api.getConnectionManager().getConnectedClients().containsKey(uuid)) {
+            return buf;
+        }
+
+        final UserConnection connection = api.getConnectionManager().getConnectedClient(uuid);
+
+        if (connection == null) {
+            return buf;
+        }
+
+        buf.retain();
+        buf.resetReaderIndex();
+
+        try {
+            connection.transformOutgoing(buf, e -> new CancelException("ViaVersion failed to convert packet (type: " + id + ")", e.getCause()));
+        } catch (CancelException e) {
+            // do literally nothing
+            buf = null;
+        }
+        return buf;
+    }
+
     private State getState(EnumProtocolCurrent protocol) {
         switch (protocol) {
             case STATUS: return State.STATUS;

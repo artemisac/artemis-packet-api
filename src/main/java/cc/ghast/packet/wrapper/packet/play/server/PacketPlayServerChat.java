@@ -5,9 +5,11 @@ import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.wrapper.packet.Packet;
 import cc.ghast.packet.wrapper.packet.ServerPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
+import lombok.Getter;
 
 import java.util.UUID;
 
+@Getter
 public class PacketPlayServerChat extends Packet<ServerPacket> implements ReadableBuffer {
     public PacketPlayServerChat(UUID player, ProtocolVersion version) {
         super("PacketPlayOutChat", player, version);
@@ -19,14 +21,6 @@ public class PacketPlayServerChat extends Packet<ServerPacket> implements Readab
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-        if (version.isBelow(ProtocolVersion.V1_8)) {
-            this.type = ChatMessageType.CHAT;
-        }
-        else {
-            byte position = byteBuf.readByte();
-            this.type = ChatMessageType.getChatMessageType(position);
-        }
-
         final int stringBufArg;
         if (version.isBelow(ProtocolVersion.V1_13)) {
             stringBufArg = 32767;
@@ -35,6 +29,14 @@ public class PacketPlayServerChat extends Packet<ServerPacket> implements Readab
             stringBufArg = 262144;
         }
         this.text = byteBuf.readStringBuf(stringBufArg);
+
+        if (version.isBelow(ProtocolVersion.V1_8)) {
+            this.type = ChatMessageType.CHAT;
+        }
+        else {
+            byte position = byteBuf.readByte();
+            this.type = ChatMessageType.getChatMessageType(position);
+        }
     }
 
     public enum ChatMessageType {
@@ -54,10 +56,8 @@ public class PacketPlayServerChat extends Packet<ServerPacket> implements Readab
 
         public static ChatMessageType getChatMessageType(final byte position) {
             ChatMessageType[] values = values();
-            int length = values.length;
 
-            for (int i = 0; i < length; ++i) {
-                ChatMessageType type = values[i];
+            for (ChatMessageType type : values) {
                 if (position == type.position) {
                     return type;
                 }

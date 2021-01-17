@@ -4,14 +4,18 @@ import cc.ghast.packet.PacketManager;
 import cc.ghast.packet.codec.ArtemisDecoder;
 import cc.ghast.packet.codec.ArtemisEncoder;
 import cc.ghast.packet.listener.injector.Injector;
+import cc.ghast.packet.listener.injector.InjectorModern;
 import cc.ghast.packet.profile.Profile;
 import cc.ghast.packet.protocol.ProtocolDirection;
+import cc.ghast.packet.reflections.ReflectUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.util.AttributeKey;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.UUID;
 
 /**
  * Big credits to Myles; Heavily inspired from the BukkiChannelInitializer from ViaVersion
@@ -20,22 +24,24 @@ import java.util.Arrays;
  * @since 18/08/2020
  * Artemis © 2020
  */
-public class BukkitServerBootstrapper extends ChannelInitializer<SocketChannel> {
+public class BukkitServerBootstrapper extends ChannelInitializer<Channel> {
 
-    private final ChannelInitializer<SocketChannel> original;
+    private final ChannelInitializer<Channel> original;
     private static Method initChannelMethod;
 
-    public BukkitServerBootstrapper(ChannelInitializer<SocketChannel> original) {
+    public BukkitServerBootstrapper(ChannelInitializer<Channel> original) {
         this.original = original;
     }
 
-    public ChannelInitializer<SocketChannel> getOriginal() {
+    public ChannelInitializer<Channel> getOriginal() {
         return original;
     }
 
     @Override
-    protected void initChannel(SocketChannel socketChannel) throws Exception {
-        Profile info = new Profile(null, socketChannel.remoteAddress().getAddress().getHostAddress(), socketChannel);
+    protected void initChannel(Channel socketChannel) throws Exception {
+        final String address = ReflectUtil.parseAddress(socketChannel.remoteAddress());
+        final UUID id = UUID.randomUUID();
+        final Profile info = new Profile(id, null, address, socketChannel);
 
         // Inject the profile
         PacketManager.INSTANCE.getListener().getInjector().injectFuturePlayer(info);
@@ -49,7 +55,13 @@ public class BukkitServerBootstrapper extends ChannelInitializer<SocketChannel> 
                 new ArtemisDecoder(info, ProtocolDirection.OUT));
         socketChannel.pipeline().addLast(Injector.encoder,
                 new ArtemisEncoder(info));
+
+
+        socketChannel.attr(InjectorModern.KEY_IDENTIFIER).set(id);
+
     }
+
+
 
     static {
         try {

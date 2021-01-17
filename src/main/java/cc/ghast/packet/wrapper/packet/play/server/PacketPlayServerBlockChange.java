@@ -6,9 +6,11 @@ import cc.ghast.packet.wrapper.bukkit.BlockPosition;
 import cc.ghast.packet.wrapper.packet.Packet;
 import cc.ghast.packet.wrapper.packet.ServerPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
+import lombok.Getter;
 
 import java.util.UUID;
 
+@Getter
 public class PacketPlayServerBlockChange extends Packet<ServerPacket> implements ReadableBuffer {
     public PacketPlayServerBlockChange(UUID player, ProtocolVersion version) {
         super("PacketPlayOutBlockChange", player, version);
@@ -28,6 +30,6 @@ public class PacketPlayServerBlockChange extends Packet<ServerPacket> implements
             this.position = byteBuf.readBlockPositionFromLong();
         }
 
-        this.blockId =   byteBuf.readVarInt();
+        this.blockId = byteBuf.readVarInt();
     }
 }

@@ -60,7 +60,7 @@ public class PacketPlayClientBlockPlace extends Packet<ClientPacket> implements 
 
             // Item
             try {
-                this.item = Optional.of(Converters.ITEM_STACK.read(byteBuf.getByteBuf()), version);
+                this.item = Optional.ofNullable(Converters.ITEM_STACK.read(byteBuf.getByteBuf(), version));
             } catch (IOException e){
                 e.printStackTrace();
             }

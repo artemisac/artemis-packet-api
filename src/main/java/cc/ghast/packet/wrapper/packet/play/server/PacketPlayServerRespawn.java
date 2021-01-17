@@ -20,16 +20,16 @@ public class PacketPlayServerRespawn extends Packet<ServerPacket> implements Rea
     private int id;
     private Difficulty difficulty;
     private GameMode gamemode;
-    private WorldType d;
+    private WorldType dimension;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-        this.id = byteBuf.readVarInt();
+        this.id = byteBuf.readInt();
         this.difficulty = Difficulty.values()[byteBuf.readUnsignedByte()];
         this.gamemode = GameMode.getById(byteBuf.readUnsignedByte());
-        this.d = WorldType.getByName(byteBuf.readStringBuf(16).toUpperCase());
-        if (this.d == null) {
-            this.d = WorldType.DEFAULT;
+        this.dimension = WorldType.getByName(byteBuf.readStringBuf(16).toUpperCase());
+        if (this.dimension == null) {
+            this.dimension = WorldType.DEFAULT;
         }
     }
 }

@@ -11,6 +11,7 @@ import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.Packet;
 import lombok.Getter;
 import org.bukkit.Location;
+import org.bukkit.World;
 
 import java.util.UUID;
 
@@ -31,23 +32,23 @@ public class PacketPlayClientBlockDig extends Packet<ClientPacket> implements Re
         // Type of the dig
         this.type = PlayerEnums.DigType.values()[byteBuf.readVarInt()];
 
+        final World world = getPlayer() == null ? null : getPlayer().getWorld();
+
         // Position of the block placed
         if (version.isBelow(ProtocolVersion.V1_8)) {
             final int x = byteBuf.readInt();
             final int y = byteBuf.readByte();
             final int z = byteBuf.readInt();
-            this.location = new Location(getPlayer().getWorld(), x, y, z);
+            this.location = new Location(world, x, y, z);
         } else {
-            BlockPosition position = byteBuf.readBlockPositionFromLong();
-            this.location = new Location(getPlayer().getWorld(), position.getX(), position.getY(), position.getZ());
+            final BlockPosition position = byteBuf.readBlockPositionFromLong();
+            this.location = new Location(world, position.getX(), position.getY(), position.getZ());
         }
 
         // Face of the block
         this.direction = byteBuf.readUnsignedByte();
         this.face = EnumDirection.fromType1(direction);
     }
-
-
 
 
 }

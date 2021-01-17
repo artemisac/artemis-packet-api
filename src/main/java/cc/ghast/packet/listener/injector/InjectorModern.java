@@ -9,6 +9,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import io.netty.channel.*;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.util.AttributeKey;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -30,6 +31,8 @@ public class InjectorModern implements Injector {
         System.out.println("[Artemis] Using Modern Encoder");
     }
 
+    public static final AttributeKey<UUID> KEY_IDENTIFIER = AttributeKey.valueOf("artemis_id");
+
     private final ChannelFuture future = (ChannelFuture) ReflectUtil.getChannelFuture();
     private final Map<UUID, Profile> profiles = new WeakHashMap<>();
     private final Cache<Profile, Long> futureProfiles = CacheBuilder
@@ -43,7 +46,7 @@ public class InjectorModern implements Injector {
     @SneakyThrows
     public void injectReader() {
         ChannelHandler serverBootstrap = future.channel().pipeline().first();
-        ChannelInitializer<SocketChannel> serverBootstrapInit = null;
+        ChannelInitializer<Channel> serverBootstrapInit = null;
 
         /*
          * Here we iterate through every single pipeline and attempt to find the one which corresponds to the
@@ -105,15 +108,18 @@ public class InjectorModern implements Injector {
 
     @Override
     public void injectPlayer(UUID uuid) {
-        Channel channel = (Channel) ReflectUtil.getChannel(uuid, Bukkit.getPlayer(uuid).getAddress().getAddress().getHostAddress());
+        // ProtocolLib channel
+        final Channel channel = (Channel) ReflectUtil.getChannel(uuid, Bukkit.getPlayer(uuid).getAddress().getAddress().getHostAddress());
         futureProfiles.asMap().entrySet().stream()
-                .filter(e -> channel != null && ((Channel) e.getKey().getChannel()).remoteAddress()
-                .equals(channel.remoteAddress())).findFirst().ifPresent(e -> {
-            Profile profile = e.getKey();
+                .filter(e -> channel != null
+                        && channel.attr(KEY_IDENTIFIER).get().equals(e.getKey().getId()))
+                .findFirst().ifPresent(e -> {
+            final Profile profile = e.getKey();
             profile.setUuid(uuid);
             this.profiles.put(uuid, profile);
             PacketManager.INSTANCE.info("Successfully injected into user of UUID " + uuid);
         });
+
     }
 
     @Override
