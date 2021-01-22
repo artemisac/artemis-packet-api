@@ -25,8 +25,16 @@ public class PacketPlayServerSpawnEntityWeather extends Packet<ServerPacket> imp
     public void read(ProtocolByteBuf byteBuf) {
         this.entityId = byteBuf.readVarInt();
         this.type = byteBuf.readByte();
-        this.x = byteBuf.readDouble();
-        this.y = byteBuf.readDouble();
-        this.z = byteBuf.readDouble();
+
+        if (version.isAbove(ProtocolVersion.V1_9)) {
+            this.x = byteBuf.readDouble();
+            this.y = byteBuf.readDouble();
+            this.z = byteBuf.readDouble();
+        } else {
+            this.x = byteBuf.readInt();
+            this.y = byteBuf.readInt();
+            this.z = byteBuf.readInt();
+        }
+
     }
 }

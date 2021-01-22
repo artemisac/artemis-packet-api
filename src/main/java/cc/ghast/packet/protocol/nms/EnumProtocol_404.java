@@ -203,7 +203,7 @@ public enum EnumProtocol_404 implements EnumProtocol {
                         new PacketInfo<>(0x51, PacketPlayServerEntityTeleport.class, "PacketPlayOutEntityTeleport"),
                         // Todo find NMS name
                         new PacketInfo<>(0x52, PacketPlayServerAdvancements.class, "PacketPlayOutAdvancements"),
-                        new PacketInfo<>(0x53, PacketPlayServerEntityMetadata.class,  "PacketPlayOutEntityMetadata"),
+                        new PacketInfo<>(0x53, PacketPlayServerUpdateAttributes.class,  "PacketPlayOutUpdateAttributes"),
                         new PacketInfo<>(0x54, PacketPlayServerEntityEffect.class,"PacketPlayOutEntityEffect"),
                         // Todo find NMS name
                         new PacketInfo<>(0x55, PacketPlayServerCraftingRecipeDeclare.class, "PacketPlayOutDeclareRecipes"),

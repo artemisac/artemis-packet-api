@@ -12,20 +12,20 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang3.StringUtils;
 
 public class MinecraftKey implements Comparable<MinecraftKey> {
-    protected final String a;
-    protected final String b;
+    protected final String id;
+    protected final String key;
 
     protected MinecraftKey(String[] var0) {
-        this.a = StringUtils.isEmpty(var0[0]) ? "minecraft" : var0[0];
-        this.b = var0[1];
-        if (!this.a.chars().allMatch((var0x) -> {
+        this.id = StringUtils.isEmpty(var0[0]) ? "minecraft" : var0[0];
+        this.key = var0[1];
+        if (!this.id.chars().allMatch((var0x) -> {
             return var0x == 95 || var0x == 45 || var0x >= 97 && var0x <= 122 || var0x >= 48 && var0x <= 57 || var0x == 46;
         })) {
-            throw new ArtemisDigestException("Non [a-z0-9_.-] character in namespace of location: " + this.a + ':' + this.b);
-        } else if (!this.b.chars().allMatch((var0x) -> {
+            throw new ArtemisDigestException("Non [a-z0-9_.-] character in namespace of location: " + this.id + ':' + this.key);
+        } else if (!this.key.chars().allMatch((var0x) -> {
             return var0x == 95 || var0x == 45 || var0x >= 97 && var0x <= 122 || var0x >= 48 && var0x <= 57 || var0x == 47 || var0x == 46;
         })) {
-            throw new ArtemisDigestException("Non [a-z0-9/._-] character in path of location: " + this.a + ':' + this.b);
+            throw new ArtemisDigestException("Non [a-z0-9/._-] character in path of location: " + this.id + ':' + this.key);
         }
     }
 
@@ -64,15 +64,15 @@ public class MinecraftKey implements Comparable<MinecraftKey> {
     }
 
     public String getKey() {
-        return this.b;
+        return this.key;
     }
 
     public String b() {
-        return this.a;
+        return this.id;
     }
 
     public String toString() {
-        return this.a + ':' + this.b;
+        return this.id + ':' + this.key;
     }
 
     public boolean equals(Object var0) {
@@ -82,18 +82,18 @@ public class MinecraftKey implements Comparable<MinecraftKey> {
             return false;
         } else {
             MinecraftKey var1 = (MinecraftKey)var0;
-            return this.a.equals(var1.a) && this.b.equals(var1.b);
+            return this.id.equals(var1.id) && this.key.equals(var1.key);
         }
     }
 
     public int hashCode() {
-        return 31 * this.a.hashCode() + this.b.hashCode();
+        return 31 * this.id.hashCode() + this.key.hashCode();
     }
 
     public int compareTo(MinecraftKey var0) {
-        int var1 = this.b.compareTo(var0.b);
+        int var1 = this.key.compareTo(var0.key);
         if (var1 == 0) {
-            var1 = this.a.compareTo(var0.a);
+            var1 = this.id.compareTo(var0.id);
         }
 
         return var1;

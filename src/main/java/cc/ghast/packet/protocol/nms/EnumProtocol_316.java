@@ -170,7 +170,7 @@ public enum EnumProtocol_316 implements EnumProtocol {
                         new PacketInfo<>(0x4B, PacketPlayServerEntityTeleport.class, "PacketPlayOutEntityTeleport"),
                         // Todo find NMS name
                         new PacketInfo<>(0x4C, PacketPlayServerAdvancements.class, "PacketPlayOutAdvancements"),
-                        new PacketInfo<>(0x4D, PacketPlayServerEntityMetadata.class,  "PacketPlayOutEntityMetadata"),
+                        new PacketInfo<>(0x4D, PacketPlayServerUpdateAttributes.class,  "PacketPlayOutUpdateAttributes"),
                         new PacketInfo<>(0x4E, PacketPlayServerEntityEffect.class,"PacketPlayOutEntityEffect"),
                 }
             )

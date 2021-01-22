@@ -3,6 +3,7 @@ package cc.ghast.packet.buffer;
 import cc.ghast.packet.exceptions.InvalidByteBufStructureException;
 import cc.ghast.packet.buffer.types.Converters;
 import cc.ghast.packet.nms.ProtocolVersion;
+import cc.ghast.packet.nms.payload.MinecraftKey;
 import cc.ghast.packet.wrapper.bukkit.BlockPosition;
 import cc.ghast.packet.wrapper.codec.StringPool;
 import cc.ghast.packet.wrapper.nbt.WrappedItem;
@@ -87,6 +88,14 @@ public class ProtocolByteBuf {
 
     public void writeStringBuf(String s, int size) {
         Converters.STRING_POOL.write(byteBuf, new StringPool(s, size));
+    }
+
+    public MinecraftKey readMinecraftKey() {
+        return new MinecraftKey(this.readStringBuf(32767));
+    }
+
+    public void readMinecraftKey(MinecraftKey key) {
+        this.writeStringBuf(key.toString(), 32767);
     }
 
     public int capacity() {

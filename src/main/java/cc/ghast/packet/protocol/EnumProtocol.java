@@ -1,10 +1,7 @@
 package cc.ghast.packet.protocol;
 
 import cc.ghast.packet.nms.ProtocolVersion;
-import cc.ghast.packet.protocol.nms.EnumProtocol_107;
-import cc.ghast.packet.protocol.nms.EnumProtocol_110;
-import cc.ghast.packet.protocol.nms.EnumProtocol_47;
-import cc.ghast.packet.protocol.nms.EnumProtocol_5;
+import cc.ghast.packet.protocol.nms.*;
 import cc.ghast.packet.wrapper.packet.Packet;
 
 import java.lang.reflect.InvocationTargetException;
@@ -49,10 +46,27 @@ public interface EnumProtocol {
              */
             case V1_9_4: return EnumProtocol_110.values();
 
+            case V1_10:
+            case V1_10_2:
+            case V1_11: return EnumProtocol_316.values();
+            case V1_12: return EnumProtocol_335.values();
+            case V1_12_1:
+            case V1_12_2: return EnumProtocol_338.values();
+            case V1_13: return EnumProtocol_393.values();
+            case V1_13_1:
+            case V1_13_2: return EnumProtocol_404.values();
+            case V1_14: return EnumProtocol_477.values();
+            case V1_14_1:
+            case V1_14_2:
+            case V1_14_3:
+            case V1_14_4:
+            case V1_15:
+            case V1_15_1:
+            case V1_15_2:
             /*
              * Fallback protocol
              */
-            default: return EnumProtocolCurrent.values();
+            default: return null;
         }
     }
 }

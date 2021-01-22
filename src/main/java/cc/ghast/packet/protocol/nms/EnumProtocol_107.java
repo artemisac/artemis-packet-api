@@ -165,7 +165,7 @@ public enum EnumProtocol_107 implements EnumProtocol {
                         new PacketInfo<>(0x48, PacketPlayServerPlayerListHeaderFooter.class, "PacketPlayOutPlayListHeaderFooter"),
                         new PacketInfo<>(0x49, PacketPlayServerCollect.class, "PacketPlayOutCollect"),
                         new PacketInfo<>(0x4A, PacketPlayServerEntityTeleport.class, "PacketPlayOutEntityTeleport"),
-                        new PacketInfo<>(0x4B, PacketPlayServerEntityMetadata.class,  "PacketPlayOutEntityMetadata"),
+                        new PacketInfo<>(0x4B, PacketPlayServerUpdateAttributes.class,  "PacketPlayOutUpdateAttributes"),
                         new PacketInfo<>(0x4C, PacketPlayServerEntityEffect.class,"PacketPlayOutEntityEffect"),
                 }
             )

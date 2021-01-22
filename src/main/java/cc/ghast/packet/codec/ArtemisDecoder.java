@@ -147,13 +147,29 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
             Packet<?> packet;
 
             if (viaVersion) {
-                packet = EnumProtocol
-                        .getProtocolByVersion(ProtocolVersion.getGameVersion())[profile.getProtocol().ordinal()]
+                final EnumProtocol[] enumProtocols = EnumProtocol
+                        .getProtocolByVersion(ProtocolVersion.getGameVersion());
+
+                if (enumProtocols == null) {
+                    if (profile.getUuid() != null)
+                        PacketManager.INSTANCE.getListener().getInjector().uninjectPlayer(profile.getUuid());
+                    return false;
+                }
+
+                packet = enumProtocols[profile.getProtocol().ordinal()]
                         .getPacket(direction, protocolByteBuf.getId(),
                         profile.getUuid(), ProtocolVersion.getGameVersion());
             } else {
-                packet = EnumProtocol
-                        .getProtocolByVersion(profile.getVersion())[profile.getProtocol().ordinal()]
+                final EnumProtocol[] enumProtocols = EnumProtocol
+                        .getProtocolByVersion(profile.getVersion());
+
+                if (enumProtocols == null) {
+                    if (profile.getUuid() != null)
+                        PacketManager.INSTANCE.getListener().getInjector().uninjectPlayer(profile.getUuid());
+                    return false;
+                }
+
+                packet = enumProtocols[profile.getProtocol().ordinal()]
                         .getPacket(direction, protocolByteBuf.getId(),
                         profile.getUuid(), profile.getVersion());
             }

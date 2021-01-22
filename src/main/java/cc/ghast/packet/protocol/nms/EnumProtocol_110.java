@@ -162,7 +162,7 @@ public enum EnumProtocol_110 implements EnumProtocol {
                         new PacketInfo<>(0x47, PacketPlayServerPlayerListHeaderFooter.class, "PacketPlayOutPlayListHeaderFooter"),
                         new PacketInfo<>(0x48, PacketPlayServerCollect.class, "PacketPlayOutCollect"),
                         new PacketInfo<>(0x49, PacketPlayServerEntityTeleport.class, "PacketPlayOutEntityTeleport"),
-                        new PacketInfo<>(0x4A, PacketPlayServerEntityMetadata.class,  "PacketPlayOutEntityMetadata"),
+                        new PacketInfo<>(0x4A, PacketPlayServerUpdateAttributes.class,  "PacketPlayOutUpdateAttributes"),
                         new PacketInfo<>(0x4B, PacketPlayServerEntityEffect.class,"PacketPlayOutEntityEffect"),
                 }
             )

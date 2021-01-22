@@ -201,7 +201,7 @@ public enum EnumProtocol_393 implements EnumProtocol {
                         new PacketInfo<>(0x50, PacketPlayServerEntityTeleport.class, "PacketPlayOutEntityTeleport"),
                         // Todo find NMS name
                         new PacketInfo<>(0x51, PacketPlayServerAdvancements.class, "PacketPlayOutAdvancements"),
-                        new PacketInfo<>(0x52, PacketPlayServerEntityMetadata.class,  "PacketPlayOutEntityMetadata"),
+                        new PacketInfo<>(0x52, PacketPlayServerUpdateAttributes.class,  "PacketPlayOutUpdateAttributes"),
                         new PacketInfo<>(0x53, PacketPlayServerEntityEffect.class,"PacketPlayOutEntityEffect"),
                         // Todo find NMS name
                         new PacketInfo<>(0x54, PacketPlayServerCraftingRecipeDeclare.class, "PacketPlayOutDeclareRecipes"),

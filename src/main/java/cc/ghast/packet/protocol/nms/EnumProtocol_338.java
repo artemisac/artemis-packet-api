@@ -172,7 +172,7 @@ public enum EnumProtocol_338 implements EnumProtocol {
                         new PacketInfo<>(0x4C, PacketPlayServerEntityTeleport.class, "PacketPlayOutEntityTeleport"),
                         // Todo find NMS name
                         new PacketInfo<>(0x4D, PacketPlayServerAdvancements.class, "PacketPlayOutAdvancements"),
-                        new PacketInfo<>(0x4E, PacketPlayServerEntityMetadata.class,  "PacketPlayOutEntityMetadata"),
+                        new PacketInfo<>(0x4E, PacketPlayServerUpdateAttributes.class,  "PacketPlayOutUpdateAttributes"),
                         new PacketInfo<>(0x4F, PacketPlayServerEntityEffect.class,"PacketPlayOutEntityEffect"),
                 }
             )
