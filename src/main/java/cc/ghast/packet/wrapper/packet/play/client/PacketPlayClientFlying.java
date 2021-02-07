@@ -53,6 +53,10 @@ public class PacketPlayClientFlying extends Packet<ClientPacket> implements Read
             super.read(byteBuf);
         }
 
+        @Override
+        public int hashCode() {
+            return super.hashCode();
+        }
     }
 
     @Getter
@@ -69,6 +73,11 @@ public class PacketPlayClientFlying extends Packet<ClientPacket> implements Read
             super.pitch = byteBuf.readFloat();
             super.hasLook = true;
             super.read(byteBuf);
+        }
+
+        @Override
+        public int hashCode() {
+            return super.hashCode();
         }
 
     }
@@ -93,5 +102,46 @@ public class PacketPlayClientFlying extends Packet<ClientPacket> implements Read
             super.read(byteBuf);
         }
 
+
+        @Override
+        public int hashCode() {
+            return super.hashCode();
+        }
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PacketPlayClientFlying flying = (PacketPlayClientFlying) o;
+
+        if (Double.compare(flying.x, x) != 0) return false;
+        if (Double.compare(flying.y, y) != 0) return false;
+        if (Double.compare(flying.z, z) != 0) return false;
+        if (Float.compare(flying.yaw, yaw) != 0) return false;
+        if (Float.compare(flying.pitch, pitch) != 0) return false;
+        if (onGround != flying.onGround) return false;
+        if (hasPos != flying.hasPos) return false;
+        return hasLook == flying.hasLook;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(x);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(y);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(z);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (yaw != +0.0f ? Float.floatToIntBits(yaw) : 0);
+        result = 31 * result + (pitch != +0.0f ? Float.floatToIntBits(pitch) : 0);
+        result = 31 * result + (onGround ? 1 : 0);
+        result = 31 * result + (hasPos ? 1 : 0);
+        result = 31 * result + (hasLook ? 1 : 0);
+        return result;
     }
 }

@@ -16,15 +16,24 @@ public class PacketPlayServerKeepAlive extends Packet<ServerPacket> implements R
         super("PacketPlayOutKeepAlive", player, version);
     }
 
-    private int id;
+    private long id;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-        this.id = byteBuf.readVarInt();
+        if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_15)) {
+            this.id = byteBuf.readLong();
+        } else {
+            this.id = byteBuf.readVarInt();
+        }
     }
 
     @Override
     public void write(ProtocolByteBuf byteBuf) {
-        byteBuf.writeVarInt(id);
+        if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_15)) {
+            byteBuf.writeLong(id);
+        } else {
+            byteBuf.writeVarInt((int) id);
+        }
+
     }
 }

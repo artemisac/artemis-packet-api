@@ -55,14 +55,14 @@ public interface EnumProtocol {
             case V1_13: return EnumProtocol_393.values();
             case V1_13_1:
             case V1_13_2: return EnumProtocol_404.values();
-            case V1_14: return EnumProtocol_477.values();
+            case V1_14:
             case V1_14_1:
-            case V1_14_2:
+            case V1_14_2: return EnumProtocol_477.values();
             case V1_14_3:
-            case V1_14_4:
+            case V1_14_4: return EnumProtocol_498.values();
             case V1_15:
             case V1_15_1:
-            case V1_15_2:
+            case V1_15_2: return EnumProtocol_578.values();
             /*
              * Fallback protocol
              */

@@ -8,6 +8,7 @@ import cc.ghast.packet.buffer.types.Converters;
 import cc.ghast.packet.profile.Profile;
 import cc.ghast.packet.protocol.EnumProtocol;
 import cc.ghast.packet.protocol.EnumProtocolCurrent;
+import cc.ghast.packet.protocol.EnumProtocolLegacy;
 import cc.ghast.packet.protocol.ProtocolDirection;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
@@ -18,6 +19,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.handler.codec.DecoderException;
+import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 
 import java.util.concurrent.ExecutorService;
@@ -43,7 +45,9 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
         this.profile = profile;
         this.inflater = new Inflater();
         this.direction = direction;
-        this.protocol = EnumProtocolCurrent.HANDSHAKE;
+        this.protocol = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_14)
+                ? EnumProtocolCurrent.HANDSHAKE
+                : EnumProtocolLegacy.HANDSHAKE;
     }
 
 
@@ -57,12 +61,14 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
+        promise.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
         if (direction.equals(ProtocolDirection.OUT)){
             this.handle(ctx, msg);
         }
         super.write(ctx, msg, promise);
     }
 
+    @SneakyThrows
     private void handle(ChannelHandlerContext ctx, Object msg) {
         if (debug) {
             System.out.println("Has decoder: " + (ctx.channel().pipeline().get("decoder") != null));
@@ -83,6 +89,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                 // Nullify if the packet was cancelled
                 buffer.readerIndex(readIndex);
             } catch (Exception e){
+                System.out.println("Error on player of version " + profile.getVersion());
                 e.printStackTrace();
             }
 
@@ -99,7 +106,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                 ((Channel) profile.getChannel()).pipeline().names().contains("compress")) {
             try {
                 in = decompress(in);
-            } catch (DecoderException e){
+            } catch (Exception e){
                 e.printStackTrace();
                 Bukkit.getScheduler().runTask(PacketManager.INSTANCE.getPlugin(), () -> {
                     Bukkit.getPlayer(profile.getUuid()).kickPlayer(e.getMessage());
@@ -180,6 +187,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                     try {
                         buffer.read(protocolByteBuf);
                     } catch (Exception e) {
+                        System.out.println("Error on packet of player of version " + profile.getVersion());
                         e.printStackTrace();
                     }
                 }

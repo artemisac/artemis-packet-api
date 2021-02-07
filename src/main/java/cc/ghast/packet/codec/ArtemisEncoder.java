@@ -34,6 +34,7 @@ public class ArtemisEncoder extends MessageToByteEncoder<Packet<?>> {
     }
 
     @Override
+    @SneakyThrows
     protected void encode(ChannelHandlerContext channelHandlerContext, Packet<?> obj, ByteBuf byteBuf) {
         final int packetId = EnumProtocolCurrent
                 .values()[profile.getProtocol().ordinal()]
@@ -63,6 +64,8 @@ public class ArtemisEncoder extends MessageToByteEncoder<Packet<?>> {
             }
 
             byteBuf.clear().writeBytes((ByteBuf) transformed.getByteBuf().getParent());
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             transformed.release();
         }

@@ -24,9 +24,9 @@ public class PacketPlayServerSpawnNamedEntity extends Packet<ServerPacket> imple
     private int entityId;
     private UUID objectUUID;
     private int type;
-    private double x;
-    private double y;
-    private double z;
+    private int x;
+    private int y;
+    private int z;
     private float pitch;
     private float yaw;
     private int data;
@@ -35,13 +35,31 @@ public class PacketPlayServerSpawnNamedEntity extends Packet<ServerPacket> imple
     public void read(ProtocolByteBuf byteBuf) {
         this.entityId = byteBuf.readVarInt();
         this.objectUUID = byteBuf.readUUID();
-        this.x = byteBuf.readInt() / 32.0D;
-        this.y = byteBuf.readInt() / 32.0D;
-        this.z = byteBuf.readInt() / 32.0D;
-        this.pitch = byteBuf.readByte() / 256.0F * 360.0F;
-        this.yaw = byteBuf.readByte() / 256.0F * 360.0F;
+        this.x = byteBuf.readInt();
+        this.y = byteBuf.readInt();
+        this.z = byteBuf.readInt();
+        this.pitch = byteBuf.readByte();
+        this.yaw = byteBuf.readByte();
         this.type = byteBuf.readShort();
     }
 
+    public double getValueX() {
+        return x / 32.D;
+    }
 
+    public double getValueY() {
+        return y / 32.D;
+    }
+
+    public double getValueZ() {
+        return z / 32.D;
+    }
+
+    public float getValueYaw() {
+        return (yaw * 360.0F / 256.0F);
+    }
+
+    public float getValuePitch() {
+        return (pitch * 360.0F / 256.0F);
+    }
 }

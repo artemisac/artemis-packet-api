@@ -32,7 +32,7 @@ public class PacketPlayServerUpdateAttributes extends Packet<ServerPacket> imple
         for (int i = 0; i < max; ++i) {
             final String name;
 
-            if (version.isAbove(ProtocolVersion.V1_15_2)) {
+            if (version.isAbove(ProtocolVersion.V1_14)) {
                 name = byteBuf.readMinecraftKey().getKey();
             } else {
                 name = byteBuf.readStringBuf(64);

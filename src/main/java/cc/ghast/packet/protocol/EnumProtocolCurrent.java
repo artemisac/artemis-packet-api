@@ -164,7 +164,8 @@ public enum EnumProtocolCurrent implements EnumProtocol {
             // Client
             new Pair[]{
                 new Pair<>(PacketLoginClientStart.class, new PacketInformation("PacketLoginInStart")),
-                new Pair<>(PacketLoginClientEncryptionBegin.class, new PacketInformation("PacketLoginInEncryptionBegin"))
+                new Pair<>(PacketLoginClientEncryptionBegin.class, new PacketInformation("PacketLoginInEncryptionBegin")),
+                new Pair<>(PacketLoginClientPluginRequest.class, new PacketInformation("PacketLoginInCustomPayload")),
             },
 
             // Server

@@ -16,22 +16,42 @@ public class PacketPlayServerEntityTeleport extends Packet<ServerPacket> impleme
     }
 
     private int entityId;
-    private double x;
-    private double y;
-    private double z;
-    private float yaw;
-    private float pitch;
+    private int x;
+    private int y;
+    private int z;
+    private byte yaw;
+    private byte pitch;
     private boolean onGround;
 
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
         this.entityId = byteBuf.readVarInt();
-        this.x = byteBuf.readInt() / 32.D;
-        this.y = byteBuf.readInt() / 32.D;
-        this.z = byteBuf.readInt() / 32.D;
-        this.yaw = (byteBuf.readByte() * 360.0F / 256.0F);
-        this.pitch = (byteBuf.readByte() * 360.0F / 256.0F);
+        this.x = byteBuf.readInt();
+        this.y = byteBuf.readInt();
+        this.z = byteBuf.readInt();
+        this.yaw = byteBuf.readByte();
+        this.pitch = byteBuf.readByte();
         this.onGround = byteBuf.readBoolean();
+    }
+
+    public double getValueX() {
+        return x / 32.D;
+    }
+
+    public double getValueY() {
+        return y / 32.D;
+    }
+
+    public double getValueZ() {
+        return z / 32.D;
+    }
+
+    public float getValueYaw() {
+        return (yaw * 360.0F / 256.0F);
+    }
+
+    public float getValuePitch() {
+        return (pitch * 360.0F / 256.0F);
     }
 }

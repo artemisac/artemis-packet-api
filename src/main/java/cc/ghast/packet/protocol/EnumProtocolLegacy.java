@@ -43,7 +43,7 @@ public enum EnumProtocolLegacy implements EnumProtocol {
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerAnimation.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerSpawnNamedEntity.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerCollect.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerSpawnEntityWeather.class);
+            this.addPacket(ProtocolDirection.OUT, PacketPlayServerSpawnObject.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerSpawnEntityLiving.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerSpawnEntityPainting.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerSpawnEntityExperienceOrb.class);

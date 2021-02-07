@@ -9,6 +9,8 @@ import com.google.common.base.Charsets;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.EncoderException;
 
+import java.nio.charset.StandardCharsets;
+
 
 public class StringPoolConverter extends BufConverter<StringPool> {
     public StringPoolConverter() {
@@ -39,7 +41,15 @@ public class StringPoolConverter extends BufConverter<StringPool> {
             throw new DecoderException("The received encoded string buffer length is less than zero! Weird string!");
         }
 
-        String s = new String(buffer.readBytes(length).array(), Charsets.UTF_8);
+        String s;
+
+        if (version.isAbove(ProtocolVersion.V1_14)) {
+            s = buffer.toString(buffer.readerIndex(), length, StandardCharsets.UTF_8);
+            buffer.readerIndex(buffer.readerIndex() + length);
+        } else {
+            s = new String(buffer.readBytes(length).array(), Charsets.UTF_8);
+        }
+
         if (s.length() > max) {
             throw new DecoderException("The received string length is longer than maximum allowed (" + length + " > " + max + ")");
         }

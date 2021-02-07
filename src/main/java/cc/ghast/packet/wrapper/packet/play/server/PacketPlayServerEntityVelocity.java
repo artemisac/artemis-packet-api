@@ -16,16 +16,28 @@ public class PacketPlayServerEntityVelocity extends Packet<ServerPacket> impleme
     }
 
     private int entityId;
-    private double x;
-    private double y;
-    private double z;
+    private short x;
+    private short y;
+    private short z;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
         this.entityId = byteBuf.readVarInt();
 
-        this.x = (byteBuf.readShort() / 8000.0D);
-        this.y = (byteBuf.readShort() / 8000.0D);
-        this.z = (byteBuf.readShort() / 8000.0D);
+        this.x = byteBuf.readShort();
+        this.y = byteBuf.readShort();
+        this.z = byteBuf.readShort();
+    }
+
+    public double getValueX() {
+        return (x / 8000.D);
+    }
+
+    public double getValueY() {
+        return (y / 8000.D);
+    }
+
+    public double getValueZ() {
+        return (z / 8000.D);
     }
 }

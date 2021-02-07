@@ -56,12 +56,9 @@ public class BukkitServerBootstrapper extends ChannelInitializer<Channel> {
         socketChannel.pipeline().addLast(Injector.encoder,
                 new ArtemisEncoder(info));
 
-
         socketChannel.attr(InjectorModern.KEY_IDENTIFIER).set(id);
 
     }
-
-
 
     static {
         try {

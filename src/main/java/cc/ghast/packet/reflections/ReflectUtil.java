@@ -1,7 +1,7 @@
 package cc.ghast.packet.reflections;
 
+import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.protocol.EnumProtocol;
-import cc.ghast.packet.protocol.EnumProtocolCurrent;
 import cc.ghast.packet.protocol.ProtocolDirection;
 import cc.ghast.packet.wrapper.nbt.WrappedItem;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
@@ -10,6 +10,7 @@ import cc.ghast.packet.wrapper.netty.MutableByteBufOutputStream;
 import cc.ghast.packet.wrapper.netty.input.NettyUtil;
 import cc.ghast.packet.wrapper.packet.Packet;
 import com.google.common.collect.Maps;
+import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.EOFException;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.SocketAddress;
 import java.util.*;
@@ -26,29 +28,30 @@ import java.util.*;
  * @since 17/08/2020
  * Artemis © 2020
  */
+
 public class ReflectUtil {
 
     /**
      * Util designated to help with some random object stuff. Jeez 1.7 is a pain :/
      */
-    private static final NettyUtil NETTY_UTIL = NettyUtil.getInstance();
+    private static NettyUtil NETTY_UTIL;
 
     /*
         Minecraft Server field
      */
     public static final Class<?> MINECRAFT_SERVER_CLAZZ = Reflection.getMinecraftClass("MinecraftServer");
-    private static final Class<?> CRAFT_SERVER_CLAZZ = Reflection.getCraftBukkitClass("CraftServer");
-    private static final FieldAccessor<?> MINECRAFT_SERVER_FIELD = Reflection.getField(CRAFT_SERVER_CLAZZ, MINECRAFT_SERVER_CLAZZ, 0);
-    private static final Object MINECRAFT_SERVER = MINECRAFT_SERVER_FIELD.get(Bukkit.getServer());
+    private static Class<?> CRAFT_SERVER_CLAZZ;
+    private static FieldAccessor<?> MINECRAFT_SERVER_FIELD;
+    private static Object MINECRAFT_SERVER;
 
     /*
         Minecraft Connection Field
      */
 
-    private static final Class<?> SERVER_CONNECTION_CLAZZ = Reflection.getMinecraftClass("ServerConnection");
-    private static final FieldAccessor<?> SERVER_CONNECTION_FIELD = Reflection.getField(MINECRAFT_SERVER_CLAZZ, SERVER_CONNECTION_CLAZZ, 0);
-    private static final Object SERVER_CONNECTION = SERVER_CONNECTION_FIELD.get(MINECRAFT_SERVER);
-    private static final FieldAccessor<List> CHANNEL_FUTURES_FIELD = Reflection.getField(SERVER_CONNECTION_CLAZZ, List.class, 0);
+    private static Class<?> SERVER_CONNECTION_CLAZZ;
+    private static FieldAccessor<?> SERVER_CONNECTION_FIELD;
+    private static Object SERVER_CONNECTION;
+    private static FieldAccessor<List> CHANNEL_FUTURES_FIELD;
 
     public static Object getChannelFuture() {
         return CHANNEL_FUTURES_FIELD.get(SERVER_CONNECTION).get(0);
@@ -57,32 +60,32 @@ public class ReflectUtil {
     /*
         Minecraft Manager Field
      */
-    private static final Class<?> NETWORK_MANAGER_CLAZZ = Reflection.getMinecraftClass("NetworkManager");
-    private static final FieldAccessor<List> NETWORK_MANAGERS_FIELD = Reflection.getField(SERVER_CONNECTION_CLAZZ, List.class, 1);
-    private static final FieldAccessor<?> CHANNEL_FIELD = Reflection.getField(NETWORK_MANAGER_CLAZZ, "channel", 0);
+    private static Class<?> NETWORK_MANAGER_CLAZZ;
+    private static FieldAccessor<List> NETWORK_MANAGERS_FIELD;
+    private static FieldAccessor<?> CHANNEL_FIELD;
     /*
         Socket Field
      */
-    private static final FieldAccessor<SocketAddress> ADDRESS_FIELD = Reflection.getField(NETWORK_MANAGER_CLAZZ, SocketAddress.class, 0);
+    private static FieldAccessor<SocketAddress> ADDRESS_FIELD;
 
 
     /*
         Enum Protocol Class
      */
-    private static final Class<?> ENUM_PROTOCOL_CLAZZ = Reflection.getMinecraftClass("EnumProtocol");
-    private static final Object[] ENUM_PROTOCOLS = ENUM_PROTOCOL_CLAZZ.getEnumConstants();
-    private static final FieldAccessor<Map> PACKET_MAP_FIELD = Reflection.getField(ENUM_PROTOCOL_CLAZZ, Map.class, 1);
+    private static Class<?> ENUM_PROTOCOL_CLAZZ;
+    private static Object[] ENUM_PROTOCOLS;
+    private static FieldAccessor<Map> PACKET_MAP_FIELD;
 
     /*
         Enum Direction Class
      */
-    private static final Class<?> ENUM_DIRECTION_CLAZZ = Reflection.getMinecraftClass("EnumProtocolDirection");
+    private static Class<?> ENUM_DIRECTION_CLAZZ;
 
     // ServerBound = [0] -> To server
     // ClientBound = [1] -> To client
-    private static final Object[] DIRECTIONS = ENUM_DIRECTION_CLAZZ.getEnumConstants();
+    private static Object[] DIRECTIONS;
 
-    private static final FieldAccessor<Integer> ENUM_DIRECTION_ORDINAL_FIELD = Reflection.getField(ENUM_DIRECTION_CLAZZ, "ordinal", int.class);
+    private static FieldAccessor<Integer> ENUM_DIRECTION_ORDINAL_FIELD;
 
     public static Object getChannel(UUID id, String address){
         List futures = NETWORK_MANAGERS_FIELD.get(SERVER_CONNECTION);
@@ -123,33 +126,71 @@ public class ReflectUtil {
             // Get the map from the packet map
             Map map1 = PACKET_MAP_FIELD.get(enumProtocol);
 
-            Map interest = (Map) map1.get(DIRECTIONS[i]);
+            if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_15)) {
+                try {
+                    System.out.println(";) " + i);
+                    Object interest = map1.get(DIRECTIONS[i]);
 
-            // Map can be nullable. Just skip if it is
-            if (interest == null){
+                    if (interest == null){
+                        map.put(direction, packetMap);
+                        continue;
+                    }
+
+                    FieldAccessor<Map> fieldAccessor = Reflection.getField(interest.getClass(), Map.class, 0);
+                    Map iterate = (Map) fieldAccessor.get(interest);
+
+                    // For every value iterated, get the integer and the clazz and match the name
+                    iterate.forEach((clazz, packetId) -> {
+                        // Grab the packet ID
+                        final int packet = (int) packetId;
+
+                        // Grab the class
+                        final Class claz = (Class) clazz;
+
+                        // Convert name to string. This won't unfortunately work with obfuscated spigots. If
+                        // You do obfuscate your spigots and rename the packets, it isn't my problem anymore.
+                        // This API already supports for itself to be obfuscated. Don't be too needy >:(
+                        String packetName = claz.getSimpleName();
+
+                        // Add it to the map
+                        packetMap.put(packet, id.getPacketClass(direction, packetName));
+                    });
+
+                    // Put the packet map in itself
+                    map.put(direction, packetMap);
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Map interest = (Map) map1.get(DIRECTIONS[i]);
+
+                // Map can be nullable. Just skip if it is
+                if (interest == null){
+                    map.put(direction, packetMap);
+                    continue;
+                }
+
+                // For every value iterated, get the integer and the clazz and match the name
+                interest.forEach((packetId, clazz) -> {
+                    // Grab the packet ID
+                    int packet = (int) packetId;
+
+                    // Grab the class
+                    Class claz = (Class) clazz;
+
+                    // Convert name to string. This won't unfortunately work with obfuscated spigots. If
+                    // You do obfuscate your spigots and rename the packets, it isn't my problem anymore.
+                    // This API already supports for itself to be obfuscated. Don't be too needy >:(
+                    String packetName = claz.getSimpleName();
+
+                    // Add it to the map
+                    packetMap.put(packet, id.getPacketClass(direction, packetName));
+                });
+
+                // Put the packet map in itself
                 map.put(direction, packetMap);
-                continue;
             }
 
-            // For every value iterated, get the integer and the clazz and match the name
-            interest.forEach((packetId, clazz) -> {
-                // Grab the packet ID
-                int packet = (int) packetId;
-
-                // Grab the class
-                Class claz = (Class) clazz;
-
-                // Convert name to string. This won't unfortunately work with obfuscated spigots. If
-                // You do obfuscate your spigots and rename the packets, it isn't my problem anymore.
-                // This API already supports for itself to be obfuscated. Don't be too needy >:(
-                String packetName = claz.getSimpleName();
-
-                // Add it to the map
-                packetMap.put(packet, id.getPacketClass(direction, packetName));
-            });
-
-            // Put the packet map in itself
-            map.put(direction, packetMap);
         }
 
         // Return the map
@@ -160,14 +201,13 @@ public class ReflectUtil {
         NBT READING/WRITING
      */
 
-    private static final Class<?> NBT_READ_LIMITER_CLAZZ = Reflection.getMinecraftClass("NBTReadLimiter");
-    private static final ConstructorInvoker NBT_READ_LIMITER_CONSTRUCTOR = Reflection.getConstructor(NBT_READ_LIMITER_CLAZZ, long.class);
+    private static Class<?> NBT_READ_LIMITER_CLAZZ;
+    private static ConstructorInvoker NBT_READ_LIMITER_CONSTRUCTOR;
 
-    private static final Class<?> NBT_TOOLS_CLAZZ = Reflection.getMinecraftClass("NBTCompressedStreamTools");
+    private static Class<?> NBT_TOOLS_CLAZZ;
 
-    private static final Class<?> NBT_COMPOUND_CLAZZ = Reflection.getMinecraftClass("NBTTagCompound");
-    private static final MethodInvoker NBT_COMPOUND_READ_FROM_BYTEBUF = Reflection.getMethod(NBT_TOOLS_CLAZZ, NBT_COMPOUND_CLAZZ,
-            0, DataInput.class, NBT_READ_LIMITER_CLAZZ);
+    private static Class<?> NBT_COMPOUND_CLAZZ;
+    private static MethodInvoker NBT_COMPOUND_READ_FROM_BYTEBUF;
 
     /**
      * Allows users to read compound tags directly from the buffer
@@ -188,34 +228,39 @@ public class ReflectUtil {
         return tag;
     }
 
-    private static final MethodInvoker WRITE_NBT_COMPOUND_TO_BYTEBUF = Reflection.getMethod(NBT_TOOLS_CLAZZ, void.class,
-            0, NBT_COMPOUND_CLAZZ, DataOutput.class);
+    private static MethodInvoker WRITE_NBT_COMPOUND_TO_BYTEBUF;
 
     public static void writeCompoundTag(Object compoundTag, MutableByteBufOutputStream stream){
         WRITE_NBT_COMPOUND_TO_BYTEBUF.invoke(null, compoundTag, stream);
     }
 
-    private static final Class<?> CRAFT_ITEM_CLAZZ = Reflection.getCraftBukkitClass("inventory.CraftItemStack");
-    private static final Class<?> ITEM_NMS_CLAZZ = Reflection.getMinecraftClass("ItemStack");
-    private static final Class<?> ITEM_TYPE_CLAZZ = Reflection.getMinecraftClass("Item");
+    private static Class<?> CRAFT_ITEM_CLAZZ;
+    private static Class<?> ITEM_NMS_CLAZZ;
+    private static Class<?> ITEM_TYPE_CLAZZ;
 
-    private static final MethodInvoker GET_NBT_TAG_FROM_ITEMSTACK_METHOD = Reflection.getMethod(ITEM_NMS_CLAZZ, "getTag");
+    private static MethodInvoker GET_NBT_TAG_FROM_ITEMSTACK_METHOD;
 
-    private static final FieldAccessor<?> GET_HANDLE_ITEM = Reflection.getField(CRAFT_ITEM_CLAZZ, "handle", ITEM_NMS_CLAZZ);
+    private static FieldAccessor<?> GET_HANDLE_ITEM;
 
     public static Object getCompoundTagFromItem(ItemStack stack) {
         Object nms = GET_HANDLE_ITEM.get(stack);
         return GET_NBT_TAG_FROM_ITEMSTACK_METHOD.invoke(stack);
     }
 
-    private static final MethodInvoker GET_ITEM_FROM_ID_METHOD = Reflection.getMethod(ITEM_TYPE_CLAZZ, "getById", int.class);
-    private static final ConstructorInvoker ITEM_NMS_CONSTRUCTOR = Reflection.getConstructor(ITEM_NMS_CLAZZ, ITEM_TYPE_CLAZZ, int.class, int.class);
-    private static final MethodInvoker SET_DATA_METHOD = Reflection.getMethod(ITEM_NMS_CLAZZ, void.class, 0, NBT_COMPOUND_CLAZZ);
-    private static final MethodInvoker AS_BUKKIT_COPY_METHOD = Reflection.getMethod(CRAFT_ITEM_CLAZZ, "asBukkitCopy", ITEM_NMS_CLAZZ);
+    private static MethodInvoker GET_ITEM_FROM_ID_METHOD;
+    private static ConstructorInvoker ITEM_NMS_CONSTRUCTOR;
+    private static MethodInvoker SET_DATA_METHOD;
+    private static MethodInvoker AS_BUKKIT_COPY_METHOD;
 
     public static ItemStack getItemFromWrapper(WrappedItem item){
         Object id = GET_ITEM_FROM_ID_METHOD.invoke(null, item.getId());
-        Object nmsItem = ITEM_NMS_CONSTRUCTOR.invoke(id, item.getAmount(), item.getData());
+        Object nmsItem;
+
+        if (ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_14)) {
+            nmsItem = ITEM_NMS_CONSTRUCTOR.invoke(id, item.getAmount());
+        } else {
+            nmsItem = ITEM_NMS_CONSTRUCTOR.invoke(id, item.getAmount(), item.getData());
+        }
         try {
             SET_DATA_METHOD.invoke(nmsItem, item.getTag());
         } catch (Exception e) {
@@ -228,14 +273,75 @@ public class ReflectUtil {
         Player
      */
 
-    private static final Class<?> CRAFT_PLAYER_CLAZZ = Reflection.getCraftBukkitClass("entity.CraftPlayer");
-    private static final Class<?> NMS_PLAYER_CLAZZ = Reflection.getMinecraftClass("EntityPlayer");
-    private static final MethodInvoker GET_HANDLE_METHOD = Reflection.getMethod(CRAFT_PLAYER_CLAZZ, "getHandle");
-    private static final FieldAccessor<Integer> PING_FIELD = Reflection.getField(NMS_PLAYER_CLAZZ, "ping", int.class);
+    private static Class<?> CRAFT_PLAYER_CLAZZ;
+    private static Class<?> NMS_PLAYER_CLAZZ;
+    private static MethodInvoker GET_HANDLE_METHOD;
+    private static FieldAccessor<Integer> PING_FIELD;
 
     public static int getPing(Player player) {
         Object nmsPlayer = GET_HANDLE_METHOD.invoke(player);
         return PING_FIELD.get(nmsPlayer);
     }
 
+
+    @SneakyThrows
+    public static void init() {
+        NETTY_UTIL = NettyUtil.getInstance();
+        CRAFT_SERVER_CLAZZ = Reflection.getCraftBukkitClass("CraftServer");
+        MINECRAFT_SERVER_FIELD = Reflection.getField(CRAFT_SERVER_CLAZZ, MINECRAFT_SERVER_CLAZZ, 0);
+        MINECRAFT_SERVER = MINECRAFT_SERVER_FIELD.get(Bukkit.getServer());
+
+        SERVER_CONNECTION_CLAZZ = Reflection.getMinecraftClass("ServerConnection");
+        SERVER_CONNECTION_FIELD = Reflection.getField(MINECRAFT_SERVER_CLAZZ, SERVER_CONNECTION_CLAZZ, 0);
+        SERVER_CONNECTION = SERVER_CONNECTION_FIELD.get(MINECRAFT_SERVER);
+        CHANNEL_FUTURES_FIELD = Reflection.getField(SERVER_CONNECTION_CLAZZ, List.class, 0);
+
+        NETWORK_MANAGER_CLAZZ = Reflection.getMinecraftClass("NetworkManager");
+        NETWORK_MANAGERS_FIELD = Reflection.getField(SERVER_CONNECTION_CLAZZ, List.class, 1);
+        CHANNEL_FIELD = Reflection.getField(NETWORK_MANAGER_CLAZZ, "channel", 0);
+
+        ADDRESS_FIELD = Reflection.getField(NETWORK_MANAGER_CLAZZ, SocketAddress.class, 0);
+
+        ENUM_PROTOCOL_CLAZZ = Reflection.getMinecraftClass("EnumProtocol");
+        ENUM_PROTOCOLS = ENUM_PROTOCOL_CLAZZ.getEnumConstants();
+        PACKET_MAP_FIELD = Reflection.getField(ENUM_PROTOCOL_CLAZZ, Map.class, 1);
+
+        ENUM_DIRECTION_CLAZZ = Reflection.getMinecraftClass("EnumProtocolDirection");
+
+        DIRECTIONS = ENUM_DIRECTION_CLAZZ.getEnumConstants();
+
+        NBT_READ_LIMITER_CLAZZ = Reflection.getMinecraftClass("NBTReadLimiter");
+        NBT_READ_LIMITER_CONSTRUCTOR = Reflection.getConstructor(NBT_READ_LIMITER_CLAZZ, long.class);
+        NBT_TOOLS_CLAZZ = Reflection.getMinecraftClass("NBTCompressedStreamTools");
+        NBT_COMPOUND_CLAZZ = Reflection.getMinecraftClass("NBTTagCompound");
+        NBT_COMPOUND_READ_FROM_BYTEBUF = Reflection.getMethod(NBT_TOOLS_CLAZZ, NBT_COMPOUND_CLAZZ,
+                0, DataInput.class, NBT_READ_LIMITER_CLAZZ);
+
+        WRITE_NBT_COMPOUND_TO_BYTEBUF = Reflection.getMethod(NBT_TOOLS_CLAZZ, void.class,
+                0, NBT_COMPOUND_CLAZZ, DataOutput.class);
+        CRAFT_ITEM_CLAZZ = Reflection.getCraftBukkitClass("inventory.CraftItemStack");
+        ITEM_NMS_CLAZZ = Reflection.getMinecraftClass("ItemStack");
+        ITEM_TYPE_CLAZZ = Reflection.getMinecraftClass("Item");
+        GET_NBT_TAG_FROM_ITEMSTACK_METHOD = Reflection.getMethod(ITEM_NMS_CLAZZ, "getTag");
+        GET_HANDLE_ITEM = Reflection.getField(CRAFT_ITEM_CLAZZ, "handle", ITEM_NMS_CLAZZ);
+        GET_ITEM_FROM_ID_METHOD = Reflection.getMethod(ITEM_TYPE_CLAZZ, "getById", int.class);
+
+        if (ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_14)) {
+            ITEM_NMS_CONSTRUCTOR = Reflection.getConstructor(ITEM_NMS_CLAZZ,
+                    Reflection.getMinecraftClass("IMaterial"), int.class);
+        } else {
+            ITEM_NMS_CONSTRUCTOR = Reflection.getConstructor(ITEM_NMS_CLAZZ, ITEM_TYPE_CLAZZ, int.class, int.class);
+        }
+
+        SET_DATA_METHOD = Reflection.getMethod(ITEM_NMS_CLAZZ, void.class, 0, NBT_COMPOUND_CLAZZ);
+        AS_BUKKIT_COPY_METHOD = Reflection.getMethod(CRAFT_ITEM_CLAZZ, "asBukkitCopy", ITEM_NMS_CLAZZ);
+
+        CRAFT_PLAYER_CLAZZ = Reflection.getCraftBukkitClass("entity.CraftPlayer");
+        NMS_PLAYER_CLAZZ = Reflection.getMinecraftClass("EntityPlayer");
+        GET_HANDLE_METHOD = Reflection.getMethod(CRAFT_PLAYER_CLAZZ, "getHandle");
+        PING_FIELD = Reflection.getField(NMS_PLAYER_CLAZZ, "ping", int.class);
+    }
+    static {
+        init();
+    }
 }

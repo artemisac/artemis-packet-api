@@ -21,7 +21,8 @@ public class PacketPlayServerSpawnObject extends Packet<ServerPacket> implements
     }
 
     private int entityId;
-    private byte type;
+    private Optional<UUID> uniqueId;
+    private int type;
     private double x;
     private double y;
     private double z;
@@ -35,10 +36,21 @@ public class PacketPlayServerSpawnObject extends Packet<ServerPacket> implements
     @Override
     public void read(ProtocolByteBuf byteBuf) {
         this.entityId = byteBuf.readVarInt();
-        this.type = byteBuf.readByte();
-        this.x = byteBuf.readInt() / 32.0D;
-        this.y = byteBuf.readInt() / 32.0D;
-        this.z = byteBuf.readInt() / 32.0D;
+
+        if (version.isOrAbove(ProtocolVersion.V1_15_2)) {
+            this.uniqueId = Optional.of(byteBuf.readUUID());
+            this.type = byteBuf.readVarInt();
+            this.x = byteBuf.readDouble();
+            this.y = byteBuf.readDouble();
+            this.z = byteBuf.readDouble();
+        } else {
+            this.uniqueId = Optional.empty();
+            this.type = byteBuf.readByte();
+            this.x = byteBuf.readInt() / 32.0D;
+            this.y = byteBuf.readInt() / 32.0D;
+            this.z = byteBuf.readInt() / 32.0D;
+        }
+
         this.pitch = byteBuf.readByte() / 256.0F * 360.0F;
         this.yaw = byteBuf.readByte() / 256.0F * 360.0F;
         this.data = byteBuf.readInt();
