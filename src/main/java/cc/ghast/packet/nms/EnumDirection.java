@@ -28,8 +28,8 @@ public enum EnumDirection {
             EnumDirection.EnumAxis.X, new BlockPosition(1, 0, 0)),
     ;
 
-    private static final EnumDirection[] n = new EnumDirection[6];
-    private static final EnumDirection[] o = new EnumDirection[4];
+    private static final EnumDirection[] faces = new EnumDirection[6];
+    private static final EnumDirection[] orient = new EnumDirection[4];
     private static final Map<String, EnumDirection> p = Maps.newHashMap();
 
     static {
@@ -37,9 +37,9 @@ public enum EnumDirection {
         int i = aenumdirection.length;
 
         for (EnumDirection enumdirection : aenumdirection) {
-            EnumDirection.n[enumdirection.g] = enumdirection;
+            EnumDirection.faces[enumdirection.x] = enumdirection;
             if (enumdirection.k().c()) {
-                EnumDirection.o[enumdirection.i] = enumdirection;
+                EnumDirection.orient[enumdirection.z] = enumdirection;
             }
 
             EnumDirection.p.put(enumdirection.j().toLowerCase(), enumdirection);
@@ -47,49 +47,47 @@ public enum EnumDirection {
 
     }
 
-    private final int g;
-    private final int h;
-    private final int i;
+    private final int x;
+    private final int y;
+    private final int z;
     private final String j;
-    private final EnumDirection.EnumAxis k;
-    private final EnumDirection.EnumAxisDirection l;
-    private final BlockPosition m;
+    private final EnumDirection.EnumAxis axis;
+    private final EnumDirection.EnumAxisDirection axisDirection;
+    private final BlockPosition blockPosition;
 
-    private EnumDirection(int i, int j, int k, String s, EnumDirection.EnumAxisDirection enumdirection_enumaxisdirection,
-                          EnumDirection.EnumAxis enumdirection_enumaxis, BlockPosition baseblockposition) {
-        this.g = i;
-        this.i = k;
-        this.h = j;
+    EnumDirection(int x, int y, int z, String s, EnumDirection.EnumAxisDirection enumdirection_enumaxisdirection,
+                  EnumDirection.EnumAxis enumdirection_enumaxis, BlockPosition baseblockposition) {
+        this.x = x;
+        this.z = z;
+        this.y = y;
         this.j = s;
-        this.k = enumdirection_enumaxis;
-        this.l = enumdirection_enumaxisdirection;
-        this.m = baseblockposition;
+        this.axis = enumdirection_enumaxis;
+        this.axisDirection = enumdirection_enumaxisdirection;
+        this.blockPosition = baseblockposition;
     }
 
     public static EnumDirection fromType1(int i) {
-        return EnumDirection.n[MathHelper.a(i % EnumDirection.n.length)];
+        return EnumDirection.faces[MathHelper.a(i % EnumDirection.faces.length)];
     }
 
     public static EnumDirection fromType2(int i) {
-        return EnumDirection.o[MathHelper.a(i % EnumDirection.o.length)];
+        return EnumDirection.orient[MathHelper.a(i % EnumDirection.orient.length)];
     }
 
     public static EnumDirection fromAngle(double d0) {
         return fromType2(MathHelper.floor(d0 / 90.0D + 0.5D) & 3);
     }
 
-    public static EnumDirection a(Random random) {
+    public static EnumDirection getX(Random random) {
         return values()[random.nextInt(values().length)];
     }
 
-    public static EnumDirection a(EnumDirection.EnumAxisDirection enumdirection_enumaxisdirection, EnumDirection.EnumAxis enumdirection_enumaxis) {
+    public static EnumDirection getX(EnumDirection.EnumAxisDirection enumdirection_enumaxisdirection, EnumDirection.EnumAxis enumdirection_enumaxis) {
         EnumDirection[] aenumdirection = values();
         int i = aenumdirection.length;
 
-        for (int j = 0; j < i; ++j) {
-            EnumDirection enumdirection = aenumdirection[j];
-
-            if (enumdirection.c() == enumdirection_enumaxisdirection && enumdirection.k() == enumdirection_enumaxis) {
+        for (EnumDirection enumdirection : aenumdirection) {
+            if (enumdirection.getAxisDirection() == enumdirection_enumaxisdirection && enumdirection.k() == enumdirection_enumaxis) {
                 return enumdirection;
             }
         }
@@ -97,23 +95,23 @@ public enum EnumDirection {
         throw new IllegalArgumentException("No such direction: " + enumdirection_enumaxisdirection + " " + enumdirection_enumaxis);
     }
 
-    public int a() {
-        return this.g;
+    public int getX() {
+        return this.x;
     }
 
-    public int b() {
-        return this.i;
+    public int getZ() {
+        return this.z;
     }
 
-    public EnumDirection.EnumAxisDirection c() {
-        return this.l;
+    public EnumDirection.EnumAxisDirection getAxisDirection() {
+        return this.axisDirection;
     }
 
     public EnumDirection opposite() {
-        return fromType1(this.h);
+        return fromType1(this.z);
     }
 
-    public EnumDirection e() {
+    public EnumDirection getDirectionY() {
         switch (EnumDirection.SyntheticClass_1.b[this.ordinal()]) {
             case 1:
                 return EnumDirection.EAST;
@@ -132,7 +130,7 @@ public enum EnumDirection {
         }
     }
 
-    public EnumDirection f() {
+    public EnumDirection getDirectionCCW() {
         switch (EnumDirection.SyntheticClass_1.b[this.ordinal()]) {
             case 1:
                 return EnumDirection.WEST;
@@ -152,15 +150,15 @@ public enum EnumDirection {
     }
 
     public int getAdjacentX() {
-        return this.k == EnumDirection.EnumAxis.X ? this.l.a() : 0;
+        return this.axis == EnumDirection.EnumAxis.X ? this.axisDirection.a() : 0;
     }
 
     public int getAdjacentY() {
-        return this.k == EnumDirection.EnumAxis.Y ? this.l.a() : 0;
+        return this.axis == EnumDirection.EnumAxis.Y ? this.axisDirection.a() : 0;
     }
 
     public int getAdjacentZ() {
-        return this.k == EnumDirection.EnumAxis.Z ? this.l.a() : 0;
+        return this.axis == EnumDirection.EnumAxis.Z ? this.axisDirection.a() : 0;
     }
 
     public String j() {
@@ -168,7 +166,7 @@ public enum EnumDirection {
     }
 
     public EnumDirection.EnumAxis k() {
-        return this.k;
+        return this.axis;
     }
 
     public String toString() {
@@ -179,11 +177,11 @@ public enum EnumDirection {
         return this.j;
     }
 
-    public static enum EnumDirectionLimit implements Predicate<EnumDirection>, Iterable<EnumDirection> {
+    public enum EnumDirectionLimit implements Predicate<EnumDirection>, Iterable<EnumDirection> {
 
         HORIZONTAL, VERTICAL;
 
-        private EnumDirectionLimit() {
+        EnumDirectionLimit() {
         }
 
         public EnumDirection[] a() {
@@ -232,14 +230,14 @@ public enum EnumDirection {
         }
     }
 
-    public static enum EnumAxisDirection {
+    public enum EnumAxisDirection {
 
         POSITIVE(1, "Towards positive"), NEGATIVE(-1, "Towards negative");
 
         private final int c;
         private final String d;
 
-        private EnumAxisDirection(int i, String s) {
+        EnumAxisDirection(int i, String s) {
             this.c = i;
             this.d = s;
         }
@@ -253,9 +251,11 @@ public enum EnumDirection {
         }
     }
 
-    public static enum EnumAxis implements Predicate<EnumDirection> {
+    public enum EnumAxis implements Predicate<EnumDirection> {
 
-        X("x", EnumDirection.EnumDirectionLimit.HORIZONTAL), Y("y", EnumDirection.EnumDirectionLimit.VERTICAL), Z("z", EnumDirection.EnumDirectionLimit.HORIZONTAL);
+        X("x", EnumDirection.EnumDirectionLimit.HORIZONTAL),
+        Y("y", EnumDirection.EnumDirectionLimit.VERTICAL),
+        Z("z", EnumDirection.EnumDirectionLimit.HORIZONTAL);
 
         private static final Map<String, EnumDirection.EnumAxis> d = Maps.newHashMap();
 
@@ -263,10 +263,8 @@ public enum EnumDirection {
             EnumDirection.EnumAxis[] aenumdirection_enumaxis = values();
             int i = aenumdirection_enumaxis.length;
 
-            for (int j = 0; j < i; ++j) {
-                EnumDirection.EnumAxis enumdirection_enumaxis = aenumdirection_enumaxis[j];
-
-                EnumDirection.EnumAxis.d.put(enumdirection_enumaxis.a().toLowerCase(), enumdirection_enumaxis);
+            for (EnumAxis enumdirection_enumaxis : aenumdirection_enumaxis) {
+                EnumAxis.d.put(enumdirection_enumaxis.a().toLowerCase(), enumdirection_enumaxis);
             }
 
         }
@@ -274,7 +272,7 @@ public enum EnumDirection {
         private final String e;
         private final EnumDirection.EnumDirectionLimit f;
 
-        private EnumAxis(String s, EnumDirection.EnumDirectionLimit enumdirection_enumdirectionlimit) {
+        EnumAxis(String s, EnumDirection.EnumDirectionLimit enumdirection_enumdirectionlimit) {
             this.e = s;
             this.f = enumdirection_enumdirectionlimit;
         }

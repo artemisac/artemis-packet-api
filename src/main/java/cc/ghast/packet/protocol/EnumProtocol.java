@@ -16,12 +16,12 @@ public interface EnumProtocol {
 
     static EnumProtocol[] getProtocolByVersion(ProtocolVersion version) {
         /*
-         * These protocol versions are named by floored versions. By such I define the lowest version with a change
+         * These protocol versions are named by floored versions. By such I define the lowest version with getX change
          * This means that for example, if 1.8 changes the packets and 1.8.8 has the same implementation, the version
          * name of the class will correspond to 1.8's, not 1.8.8's as 1.8.8 just uses the previous protocol.
          *
          * /!\ As of now, only *major* protocols are supported. If you wish for there to be experimental protocols
-         * to be implemented, please do it yourself and open a Pull Request on github. It's really not hard.
+         * to be implemented, please do it yourself and open getX Pull Request on github. It's really not hard.
          */
         switch (version) {
             /*
@@ -30,7 +30,7 @@ public interface EnumProtocol {
             case V1_7_10: return EnumProtocol_5.values();
             /*
              * All protocol versions between 1.8 and 1.8.9 have the same protocol. Such protocol
-             * is almost identical to 1.7.10 (5) however this one contains a couple new packets.
+             * is almost identical to 1.7.10 (5) however this one contains getX couple new packets.
              */
             case V1_8:
             case V1_8_5:

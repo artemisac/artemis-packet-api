@@ -215,7 +215,14 @@ public enum EnumProtocol_338 implements EnumProtocol {
     @SneakyThrows
     public Packet<?> getPacket(ProtocolDirection direction, int id, UUID playerId, ProtocolVersion version) {
         final Map<Integer, PacketInfo> packets = direction.equals(ProtocolDirection.IN) ? packetPair.getClient() : packetPair.getServer();
-        final Constructor<? extends Packet<?>> packetConstructor = packets.get(id).getConstructor();
+
+        final PacketInfo<?> clazz = packets.get(id);
+
+        if (clazz == null) {
+            throw new IllegalStateException(playerId + " -> Packet of id " + id + " had no associated packet info (dir: " + direction + " ver:" + version + ")");
+        }
+
+        final Constructor<? extends Packet<?>> packetConstructor = clazz.getConstructor();
 
         if (packetConstructor == null) {
             throw new IllegalStateException(playerId + " -> Packet of id " + id + " had no associated constructor (dir: " + direction + " ver:" + version + ")");
@@ -226,7 +233,8 @@ public enum EnumProtocol_338 implements EnumProtocol {
 
     @Override
     public int getPacketId(ProtocolDirection direction, Packet<?> packet) {
-        final Map<Integer, PacketInfo> packets = direction.equals(ProtocolDirection.IN) ? packetPair.getClient() : packetPair.getServer();
+        final Map<Integer, PacketInfo> packets = direction.equals(ProtocolDirection.IN)
+                ? packetPair.getClient() : packetPair.getServer();
         return packets.values()
                 .stream()
                 .filter(packetInfo -> packetInfo.getClazz().equals(packet.getClass()))

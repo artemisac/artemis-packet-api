@@ -28,7 +28,7 @@ public class PacketPlayClientAbilities extends Packet<ClientPacket> implements R
     @Override
     public void read(ProtocolByteBuf byteBuf) {
 
-        // These are under a bit mask, see https://stackoverflow.com/questions/31575691/what-is-a-bitmask-and-a-mask
+        // These are under getX bit mask, see https://stackoverflow.com/questions/31575691/what-is-a-bitmask-and-a-mask
         byte flags = byteBuf.readByte();
 
         /*
@@ -39,7 +39,7 @@ public class PacketPlayClientAbilities extends Packet<ClientPacket> implements R
          ------------------
             For those who don't understand why this works, basically we're reading binary: 0000 0001, 0000 0010
             The '&' symbol merges two bytes and UNIQUELY keeps the common bytes. If we take this into what's being done
-            Here, basically we are placing a 1 on different scales. If the one is here, it's true. Simple yet complex.
+            Here, basically we are placing getX 1 on different scales. If the one is here, it's true. Simple yet complex.
 
         */
 

@@ -1,6 +1,7 @@
 package cc.ghast.packet;
 
 import cc.ghast.packet.chain.PacketListener;
+import cc.ghast.packet.listener.callback.LoginCallback;
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.profile.Profile;
 import cc.ghast.packet.wrapper.packet.Packet;
@@ -48,5 +49,13 @@ public class PacketAPI {
 
     public static void sendPacket(Player player, Packet<?> packet){
         PacketManager.INSTANCE.getListener().getInjector().writePacket(player.getUniqueId(), packet);
+    }
+
+    public static void addLoginCallback(LoginCallback loginCallback) {
+        PacketManager.INSTANCE.getListener().getInjector().addLoginCallback(loginCallback);
+    }
+
+    public static void removeLoginCallback(LoginCallback loginCallback) {
+        PacketManager.INSTANCE.getListener().getInjector().removeLoginCallback(loginCallback);
     }
 }

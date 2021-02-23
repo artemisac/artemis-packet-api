@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 @Getter
 @Setter
 public abstract class Packet<D> {
-    protected final UUID uuid;
+    protected UUID uuid;
     protected ProtocolVersion version;
     protected final static ProtocolVersion gameVersion = ProtocolVersion.getGameVersion();
     protected final Predicate<ProtocolVersion>[] versionPredicate;
@@ -30,11 +30,12 @@ public abstract class Packet<D> {
     }
 
     public Packet(String realName, UUID player, ProtocolVersion version) {
-        this.realName = realName;
-        this.versionPredicate = new Predicate[0];
-        this.uuid = player;
-        this.version = version;
-        this.timestamp = System.currentTimeMillis();
+        this(realName, player, version, new Predicate[0]);
+    }
+
+
+    public Packet(String realName) {
+        this(realName, null, null);
     }
 
     public Player getPlayer() {

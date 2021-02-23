@@ -30,7 +30,7 @@ public class StringPoolConverter extends BufConverter<StringPool> {
 
     @Override
     public StringPool read(MutableByteBuf buffer, ProtocolVersion version, Object... args) {
-        if (args.length < 1) throw new DecoderException("The received string is supposed to have a size");
+        if (args.length < 1) throw new DecoderException("The received string is supposed to have getX size");
         int max = (int) args[0];
         int length = Converters.VAR_INT.read(buffer, version);
         if (length > max * 4) {

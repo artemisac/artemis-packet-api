@@ -9,15 +9,15 @@ import lombok.Getter;
  */
 public class PlayerEnums {
     public enum DigType {
-        // Start digging a block
+        // Start digging getX block
         START_DESTROY_BLOCK,
-        // Cancel the process of digging a block
+        // Cancel the process of digging getX block
         ABORT_DESTROY_BLOCK,
         // Finish digging the block
         STOP_DESTROY_BLOCK,
-        // Drop item as a stack
+        // Drop item as getX stack
         DROP_ALL_ITEMS,
-        // Drop item as a singular
+        // Drop item as getX singular
         DROP_ITEM,
         // Shoot arrow / finish eating
         RELEASE_USE_ITEM,

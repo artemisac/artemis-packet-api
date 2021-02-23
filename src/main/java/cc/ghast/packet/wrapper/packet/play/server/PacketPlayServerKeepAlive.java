@@ -9,6 +9,7 @@ import cc.ghast.packet.wrapper.packet.WriteableBuffer;
 import lombok.Getter;
 
 import java.util.UUID;
+import java.util.function.Predicate;
 
 @Getter
 public class PacketPlayServerKeepAlive extends Packet<ServerPacket> implements ReadableBuffer, WriteableBuffer {
@@ -16,11 +17,16 @@ public class PacketPlayServerKeepAlive extends Packet<ServerPacket> implements R
         super("PacketPlayOutKeepAlive", player, version);
     }
 
+    public PacketPlayServerKeepAlive(long id) {
+        super("PacketPlayOutKeepAlive");
+        this.id = id;
+    }
+
     private long id;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-        if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_15)) {
+        if (version.isOrAbove(ProtocolVersion.V1_12_2)) {
             this.id = byteBuf.readLong();
         } else {
             this.id = byteBuf.readVarInt();
@@ -29,7 +35,7 @@ public class PacketPlayServerKeepAlive extends Packet<ServerPacket> implements R
 
     @Override
     public void write(ProtocolByteBuf byteBuf) {
-        if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_15)) {
+        if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_12_2)) {
             byteBuf.writeLong(id);
         } else {
             byteBuf.writeVarInt((int) id);

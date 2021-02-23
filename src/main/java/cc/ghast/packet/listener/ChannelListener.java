@@ -37,8 +37,7 @@ public class ChannelListener implements Listener {
 
     @EventHandler
     public void onLogin(PlayerJoinEvent e) {
-        this.injector.injectPlayer(e.getPlayer().getUniqueId());
-        Bukkit.getConsoleSender().sendMessage(Chat.translate("&r[&bPacket&r] &aSuccessfully &binjected&a into player &r" + e.getPlayer().getName()));
+        //this.injector.injectPlayer(e.getPlayer().getUniqueId());
     }
 
     @EventHandler

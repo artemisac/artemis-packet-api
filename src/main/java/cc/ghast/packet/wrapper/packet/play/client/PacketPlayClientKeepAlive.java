@@ -19,7 +19,7 @@ public class PacketPlayClientKeepAlive extends Packet<ClientPacket> implements R
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-        if (version.isBelow(ProtocolVersion.V1_12)) {
+        if (version.isBelow(ProtocolVersion.V1_12_2)) {
             this.id = byteBuf.readVarInt();
         } else {
             this.id = byteBuf.readLong();

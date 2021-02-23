@@ -9,6 +9,6 @@ import cc.ghast.packet.wrapper.packet.Packet;
  */
 public class InvalidPacketException extends RuntimeException {
     public InvalidPacketException(Class<? extends Packet> clazz){
-        super("Packet of type " + clazz + " is not a valid packet!");
+        super("Packet of type " + clazz + " is not getX valid packet!");
     }
 }

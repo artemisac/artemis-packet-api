@@ -10,6 +10,7 @@ import cc.ghast.packet.protocol.EnumProtocol;
 import cc.ghast.packet.protocol.EnumProtocolCurrent;
 import cc.ghast.packet.protocol.EnumProtocolLegacy;
 import cc.ghast.packet.protocol.ProtocolDirection;
+import cc.ghast.packet.utils.Chat;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.Packet;
@@ -78,7 +79,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
         }
 
-        // Make sure we're receiving a ByteBuf. If a protocol is placed before such, it may screw with the decompression
+        // Make sure we're receiving getX ByteBuf. If getX protocol is placed before such, it may screw with the decompression
         if (msg instanceof ByteBuf) {
             // Decode the message and send it off
             final ByteBuf buffer = Unpooled.unmodifiableBuffer((ByteBuf) msg).copy().retain();
@@ -94,7 +95,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
             }
 
         } else {
-            // If the message is not a ByteBuf, there's obviously an issue with the pipeline, so disinject and throw error
+            // If the message is not getX ByteBuf, there's obviously an issue with the pipeline, so disinject and throw error
             new IncompatiblePipelineException(msg.getClass()).printStackTrace();
         }
     }
@@ -120,7 +121,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
             int id = Converters.VAR_INT.read(in, profile.getVersion());
 
             final boolean viaVersion = PacketManager.INSTANCE.getHookManager().getViaVersionHook() != null
-                    && !profile.getProtocol().equals(Profile.Protocol.HANDSHAKE)
+                    && profile.getProtocol().equals(Profile.Protocol.PLAY)
                     && !profile.getVersion().equals(ProtocolVersion.getGameVersion())
                     && direction.equals(ProtocolDirection.IN);
 
@@ -214,7 +215,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                 }
             }
 
-            // Reset the reader index to prevent following pipelines to have a sort of issue. Normally it doesn't, I'm
+            // Reset the reader index to prevent following pipelines to have getX sort of issue. Normally it doesn't, I'm
             // Still new to Netty. I'll need to investigate. More can be seen @ https://netty.io/4.0/api/io/netty/buffer/ByteBuf.html
             in.resetReaderIndex();
 
@@ -272,14 +273,16 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
         PacketHandshakeClientSetProtocol.State state = handshake.getNextState();
         this.profile.setProtocol(state.equals(PacketHandshakeClientSetProtocol.State.STATUS)
                 ? Profile.Protocol.STATUS : Profile.Protocol.LOGIN);
+        this.profile.setVersion(version);
     }
 
     private void handleLoginSuccess(PacketLoginServerSuccess loginSuccess) {
         this.profile.setProtocol(Profile.Protocol.PLAY);
-
-        if (PacketManager.INSTANCE.getHookManager().getViaVersionHook() != null) {
-            this.profile.setVersion(null);
-        }
+        this.profile.setUuid(loginSuccess.getGameProfile().getId());
+        PacketManager.INSTANCE.getListener().getInjector().callLoginCallbacks(profile);
+        PacketManager.INSTANCE.getListener().getInjector().injectPlayer(profile);
+        Bukkit.getConsoleSender().sendMessage(Chat.translate("&r[&bPacket&r] &aSuccessfully &binjected into player &r"
+                + loginSuccess.getGameProfile().getName()));
     }
 
 

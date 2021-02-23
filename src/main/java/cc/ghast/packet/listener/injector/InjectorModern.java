@@ -1,6 +1,7 @@
 package cc.ghast.packet.listener.injector;
 
 import cc.ghast.packet.PacketManager;
+import cc.ghast.packet.listener.callback.LoginCallback;
 import cc.ghast.packet.listener.initializator.BukkitServerBootstrapper;
 import cc.ghast.packet.profile.Profile;
 import cc.ghast.packet.reflections.ReflectUtil;
@@ -19,7 +20,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Massive credits to Myles. InjectReader is pretty much a paste of his solution with a lot changed around to
+ * Massive credits to Myles. InjectReader is pretty much getX paste of his solution with getX lot changed around to
  * look nicer and more adequate; MIT license software ftw I guess.
  * @author Ghast, Myles
  * @since 18/08/2020
@@ -34,6 +35,7 @@ public class InjectorModern implements Injector {
     public static final AttributeKey<UUID> KEY_IDENTIFIER = AttributeKey.valueOf("artemis_id");
 
     private final ChannelFuture future = (ChannelFuture) ReflectUtil.getChannelFuture();
+    private final List<LoginCallback> callbacks = new ArrayList<>();
     private final Map<UUID, Profile> profiles = new WeakHashMap<>();
     private final Cache<Profile, Long> futureProfiles = CacheBuilder
             .newBuilder()
@@ -50,7 +52,7 @@ public class InjectorModern implements Injector {
 
         /*
          * Here we iterate through every single pipeline and attempt to find the one which corresponds to the
-         * server bootstrap. Such one will contain a childHandler.
+         * server bootstrap. Such one will contain getX childHandler.
          */
         for (Map.Entry<String, ChannelHandler> stringChannelHandlerEntry : future.channel().pipeline()) {
             final ChannelHandler handler = stringChannelHandlerEntry.getValue();
@@ -103,23 +105,15 @@ public class InjectorModern implements Injector {
     @Override
     public void uninjectReader() {
         PacketManager.INSTANCE.fatal("We failed to inject ViaVersion, have you got late-bind enabled with something else?");
-        //e.printStackTrace();
+        //getDirectionY.printStackTrace();
     }
 
     @Override
-    public void injectPlayer(UUID uuid) {
+    public void injectPlayer(Profile profile) {
         // ProtocolLib channel
-        final Channel channel = (Channel) ReflectUtil.getChannel(uuid, Bukkit.getPlayer(uuid).getAddress().getAddress().getHostAddress());
-        futureProfiles.asMap().entrySet().stream()
-                .filter(e -> channel != null
-                        && channel.attr(KEY_IDENTIFIER).get().equals(e.getKey().getId()))
-                .findFirst().ifPresent(e -> {
-            final Profile profile = e.getKey();
-            profile.setUuid(uuid);
-            this.profiles.put(uuid, profile);
-            PacketManager.INSTANCE.info("Successfully injected into user of UUID " + uuid);
-        });
-
+        this.profiles.put(profile.getUuid(), profile);
+        uninjectFuturePlayer(profile);
+        PacketManager.INSTANCE.info("Successfully injected into user of UUID " + profile.getUuid());
     }
 
     @Override
@@ -153,8 +147,12 @@ public class InjectorModern implements Injector {
     }
 
     @Override
-    public void uninjectFuturePlayer(Object channel) {
-        new HashSet<>(this.futureProfiles.asMap().entrySet()).stream().filter(e -> e.getKey().getChannel().equals(channel)).findFirst().ifPresent(e -> {
+    public void uninjectFuturePlayer(Profile profile) {
+        new HashSet<>(this.futureProfiles.asMap().entrySet())
+                .stream()
+                .filter(e -> ((Channel) e.getKey().getChannel()).attr(KEY_IDENTIFIER).get().equals(profile.getId()))
+                .findFirst()
+                .ifPresent(e -> {
             futureProfiles.asMap().remove(e.getKey());
         });
     }
@@ -162,6 +160,21 @@ public class InjectorModern implements Injector {
     @Override
     public Profile getProfile(UUID uuid) {
         return this.profiles.get(uuid);
+    }
+
+    @Override
+    public void addLoginCallback(LoginCallback loginCallback) {
+        this.callbacks.add(loginCallback);
+    }
+
+    @Override
+    public void removeLoginCallback(LoginCallback loginCallback) {
+        this.callbacks.remove(loginCallback);
+    }
+
+    @Override
+    public void callLoginCallbacks(Profile profile) {
+        this.callbacks.forEach(e -> e.onLogin(profile));
     }
 
     @Override
@@ -176,8 +189,12 @@ public class InjectorModern implements Injector {
         final Channel channel = (Channel) profile.getChannel();
 
         if (channel == null) {
-            throw new IllegalStateException("Attempt to send packet to a profile without a channel (uuid: "
+            throw new IllegalStateException("Attempt to send packet to getX profile without getX channel (uuid: "
                     + target + " packet: " + packet.getRealName());
+        }
+
+        if (!channel.isOpen()) {
+            return;
         }
 
         final ChannelFuture channelfuture = channel.writeAndFlush(packet);

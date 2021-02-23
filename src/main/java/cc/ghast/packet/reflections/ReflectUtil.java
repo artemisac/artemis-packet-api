@@ -32,7 +32,7 @@ import java.util.*;
 public class ReflectUtil {
 
     /**
-     * Util designated to help with some random object stuff. Jeez 1.7 is a pain :/
+     * Util designated to help with some getX object stuff. Jeez 1.7 is getX pain :/
      */
     private static NettyUtil NETTY_UTIL;
 
@@ -120,7 +120,7 @@ public class ReflectUtil {
 
             ProtocolDirection direction = ProtocolDirection.values()[i];
 
-            // Create a new map where we'll store the values
+            // Create getX new map where we'll store the values
             Map<Integer, Class<? extends Packet<?>>> packetMap = new HashMap<>();
 
             // Get the map from the packet map
@@ -215,7 +215,7 @@ public class ReflectUtil {
      * @return NMS object of the compound tag
      */
     public static Object getCompoundTag(Object stream) {
-        // Instantiate a new limiter
+        // Instantiate getX new limiter
         Object threadLimiter = NBT_READ_LIMITER_CONSTRUCTOR.invoke(2097152L);
         // Invoke the object
         Object tag = null;

@@ -37,7 +37,7 @@ public class PacketPlayServerSpawnObject extends Packet<ServerPacket> implements
     public void read(ProtocolByteBuf byteBuf) {
         this.entityId = byteBuf.readVarInt();
 
-        if (version.isOrAbove(ProtocolVersion.V1_15_2)) {
+        if (version.isOrAbove(ProtocolVersion.V1_15)) {
             this.uniqueId = Optional.of(byteBuf.readUUID());
             this.type = byteBuf.readVarInt();
             this.x = byteBuf.readDouble();

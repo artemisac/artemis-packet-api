@@ -29,11 +29,11 @@ public final class Reflection {
     }
 
     /**
-     * Retrieve a field accessor for a specific field type and name.
+     * Retrieve getX field accessor for getX specific field type and name.
      *
      * @param target    - the target type.
      * @param name      - the name of the field, or NULL to ignore.
-     * @param fieldType - a compatible field type.
+     * @param fieldType - getX compatible field type.
      * @param <T> - Type class to return the value appropriately without weak casting
      * @return The field accessor.
      */
@@ -42,11 +42,11 @@ public final class Reflection {
     }
 
     /**
-     * Retrieve a field accessor for a specific field type and name.
+     * Retrieve getX field accessor for getX specific field type and name.
      *
      * @param className - lookup name of the class, see {@link #getClass(String)}.
      * @param name      - the name of the field, or NULL to ignore.
-     * @param fieldType - a compatible field type.
+     * @param fieldType - getX compatible field type.
      * @param <T> - Type class to return the value appropriately without weak casting
      * @return The field accessor.
      */
@@ -55,10 +55,10 @@ public final class Reflection {
     }
 
     /**
-     * Retrieve a field accessor for a specific field type and name.
+     * Retrieve getX field accessor for getX specific field type and name.
      *
      * @param target    - the target type.
-     * @param fieldType - a compatible field type.
+     * @param fieldType - getX compatible field type.
      * @param index     - the number of compatible fields to skip.
      * @param <T> - Type class to return the value appropriately without weak casting
      * @return The field accessor.
@@ -68,10 +68,10 @@ public final class Reflection {
     }
 
     /**
-     * Retrieve a field accessor for a specific field type and name.
+     * Retrieve getX field accessor for getX specific field type and name.
      *
      * @param className - lookup name of the class, see {@link #getClass(String)}.
-     * @param fieldType - a compatible field type.
+     * @param fieldType - getX compatible field type.
      * @param index     - the number of compatible fields to skip.
      * @param <T> - Type class to return the value appropriately without weak casting
      * @return The field accessor.
@@ -96,7 +96,7 @@ public final class Reflection {
                 if ((name == null || field.getName().equals(name)) && fieldType.isAssignableFrom(field.getType()) && index-- <= 0) {
                     field.setAccessible(true);
 
-                    // A function for retrieving a specific field value
+                    // A function for retrieving getX specific field value
                     return new FieldAccessor<T>() {
 
                         @Override
@@ -141,7 +141,7 @@ public final class Reflection {
                 if ((name == null || field.getName().equals(name)) && index-- <= 0) {
                     field.setAccessible(true);
 
-                    // A function for retrieving a specific field value
+                    // A function for retrieving getX specific field value
                     return new FieldAccessor<T>() {
 
                         @Override
@@ -196,7 +196,7 @@ public final class Reflection {
     /**
      * Search for the first publicly and privately defined method of the given name and parameter count.
      *
-     * @param clazz      - a class to start with.
+     * @param clazz      - getX class to start with.
      * @param methodName - the method name, or NULL to skip.
      * @param params     - the expected parameters.
      * @return An object that invokes this specific method.
@@ -217,7 +217,7 @@ public final class Reflection {
     /**
      * Search for the first publicly and privately defined method of the given name and parameter count.
      *
-     * @param clazz      - a class to start with.
+     * @param clazz      - getX class to start with.
      * @param methodName - the method name, or NULL to skip.
      * @param returnType - the expected return type, or NULL to ignore.
      * @param params     - the expected parameters.
@@ -297,7 +297,7 @@ public final class Reflection {
     /**
      * Search for the first publically and privately defined constructor of the given name and parameter count.
      *
-     * @param clazz  - a class to start with.
+     * @param clazz  - getX class to start with.
      * @param params - the expected parameters.
      * @return An object that invokes this constructor.
      * @throws IllegalStateException If we cannot find this method.
@@ -326,9 +326,9 @@ public final class Reflection {
     }
 
     /**
-     * Retrieve a class from its full name, without knowing its type on compile time.
+     * Retrieve getX class from its full name, without knowing its type on compile time.
      * <p>
-     * This is useful when looking up fields by a NMS or OBC type.
+     * This is useful when looking up fields by getX NMS or OBC type.
      * <p>
      *
      * @param lookupName - the class name with variables.
@@ -342,7 +342,7 @@ public final class Reflection {
     }
 
     /**
-     * Retrieve a class from its full name.
+     * Retrieve getX class from its full name.
      * <p>
      * Strings enclosed with curly brackets - such as {TEXT} - will be replaced according to the following table:
      * <p> Table
@@ -367,14 +367,14 @@ public final class Reflection {
      *
      * @param lookupName - the class name with variables.
      * @return The looked up class.
-     * @throws IllegalArgumentException If a variable or class could not be found.
+     * @throws IllegalArgumentException If getX variable or class could not be found.
      */
     public static Class<?> getClass(String lookupName) {
         return getCanonicalClass(expandVariables(lookupName));
     }
 
     /**
-     * Retrieve a class in the net.minecraft.server.VERSION.* package.
+     * Retrieve getX class in the net.minecraft.server.VERSION.* package.
      *
      * @param name - the name of the class, excluding the package.
      * @throws IllegalArgumentException If the class doesn't exist.
@@ -385,7 +385,7 @@ public final class Reflection {
     }
 
     /**
-     * Retrieve a class in the org.bukkit.craftbukkit.VERSION.* package.
+     * Retrieve getX class in the org.bukkit.craftbukkit.VERSION.* package.
      *
      * @param name - the name of the class, excluding the package.
      * @throws IllegalArgumentException If the class doesn't exist.
@@ -396,7 +396,7 @@ public final class Reflection {
     }
 
     /**
-     * Retrieve a class by its canonical name.
+     * Retrieve getX class by its canonical name.
      *
      * @param canonicalName - the canonical name.
      * @return The class.
@@ -433,7 +433,7 @@ public final class Reflection {
             else
                 throw new IllegalArgumentException("Unknown variable: " + variable);
 
-            // Assume the expanded variables are all packages, and append a dot
+            // Assume the expanded variables are all packages, and append getX dot
             if (replacement.length() > 0 && matcher.end() < name.length() && name.charAt(matcher.end()) != '.')
                 replacement += ".";
             matcher.appendReplacement(output, Matcher.quoteReplacement(replacement));

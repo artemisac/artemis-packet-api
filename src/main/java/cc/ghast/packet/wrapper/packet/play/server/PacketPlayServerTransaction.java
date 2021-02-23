@@ -23,6 +23,13 @@ public class PacketPlayServerTransaction extends Packet<ServerPacket> implements
         this.accepted = accepted;
     }
 
+    public PacketPlayServerTransaction(byte windowId, short actionNumber, boolean accepted) {
+        super("PacketPlayOutTransaction");
+        this.windowId = windowId;
+        this.actionNumber = actionNumber;
+        this.accepted = accepted;
+    }
+
     private byte windowId;
     private short actionNumber;
     private boolean accepted;

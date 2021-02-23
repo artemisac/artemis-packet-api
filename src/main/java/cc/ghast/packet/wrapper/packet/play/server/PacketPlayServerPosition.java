@@ -39,7 +39,6 @@ public class PacketPlayServerPosition extends Packet<ServerPacket> implements Re
 
 
 
-    @AllArgsConstructor
     @Getter
     public enum PlayerTeleportFlags {
         X(0),
@@ -48,26 +47,32 @@ public class PacketPlayServerPosition extends Packet<ServerPacket> implements Re
         Y_ROT(3),
         X_ROT(4);
 
-        private int id;
+        private final int bit;
 
-        private int suppose() {
-            return 1 << this.id;
+        PlayerTeleportFlags(int bit)
+        {
+            this.bit = bit;
         }
 
-        private boolean match(int var1) {
-            return (var1 & this.suppose()) == this.suppose();
+        private int operand()
+        {
+            return 1 << this.bit;
         }
 
-        public static Set<PlayerTeleportFlags> readFlags(int var0) {
-            Set<PlayerTeleportFlags> var1 = EnumSet.noneOf(PlayerTeleportFlags.class);
+        private boolean matches(int flag) {
+            return (flag & this.operand()) == this.operand();
+        }
 
-            for (PlayerTeleportFlags flag : values()) {
-                if (flag.match(var0)) {
-                    var1.add(flag);
+        public static Set<PlayerTeleportFlags> readFlags(int flag) {
+            final Set<PlayerTeleportFlags> set = EnumSet.noneOf(PlayerTeleportFlags.class);
+
+            for (PlayerTeleportFlags enumFlag : values()) {
+                if (enumFlag.matches(flag)) {
+                    set.add(enumFlag);
                 }
             }
 
-            return var1;
+            return set;
         }
     }
 }

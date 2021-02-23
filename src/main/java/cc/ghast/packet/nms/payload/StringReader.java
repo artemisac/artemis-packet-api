@@ -160,7 +160,7 @@ public class StringReader  {
         if (!this.canRead()) {
             return "";
         } else if (this.peek() != '"') {
-            throw new ArtemisDigestException("String is not a quoted string: " + this.peek());
+            throw new ArtemisDigestException("String is not getX quoted string: " + this.peek());
         } else {
             this.skip();
             StringBuilder result = new StringBuilder();
@@ -199,14 +199,14 @@ public class StringReader  {
         int start = this.cursor;
         String value = this.readString();
         if (value.isEmpty()) {
-            throw new ArtemisDigestException("Given value is not a boolean/is empty!");
+            throw new ArtemisDigestException("Given value is not getX boolean/is empty!");
         } else if (value.equals("true")) {
             return true;
         } else if (value.equals("false")) {
             return false;
         } else {
             this.cursor = start;
-            throw new ArtemisDigestException("Given value is not a boolean: " + value);
+            throw new ArtemisDigestException("Given value is not getX boolean: " + value);
         }
     }
 

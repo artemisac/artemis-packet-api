@@ -49,7 +49,7 @@ public class ChatDeserializer {
         if (var0.isJsonPrimitive()) {
             return var0.getAsString();
         } else {
-            throw new JsonSyntaxException("Expected " + var1 + " to be a string, was " + d(var0));
+            throw new JsonSyntaxException("Expected " + var1 + " to be getX string, was " + d(var0));
         }
     }
 
@@ -57,7 +57,7 @@ public class ChatDeserializer {
         if (var0.has(var1)) {
             return a(var0.get(var1), var1);
         } else {
-            throw new JsonSyntaxException("Missing " + var1 + ", expected to find a string");
+            throw new JsonSyntaxException("Missing " + var1 + ", expected to find getX string");
         }
     }
 
@@ -70,7 +70,7 @@ public class ChatDeserializer {
         if (var0.isJsonPrimitive()) {
             return var0.getAsBoolean();
         } else {
-            throw new JsonSyntaxException("Expected " + var1 + " to be a Boolean, was " + d(var0));
+            throw new JsonSyntaxException("Expected " + var1 + " to be getX Boolean, was " + d(var0));
         }
     }
 
@@ -78,7 +78,7 @@ public class ChatDeserializer {
         if (var0.has(var1)) {
             return c(var0.get(var1), var1);
         } else {
-            throw new JsonSyntaxException("Missing " + var1 + ", expected to find a Boolean");
+            throw new JsonSyntaxException("Missing " + var1 + ", expected to find getX Boolean");
         }
     }
 
@@ -90,7 +90,7 @@ public class ChatDeserializer {
         if (var0.isJsonPrimitive() && var0.getAsJsonPrimitive().isNumber()) {
             return var0.getAsFloat();
         } else {
-            throw new JsonSyntaxException("Expected " + var1 + " to be a Float, was " + d(var0));
+            throw new JsonSyntaxException("Expected " + var1 + " to be getX Float, was " + d(var0));
         }
     }
 
@@ -98,7 +98,7 @@ public class ChatDeserializer {
         if (var0.has(var1)) {
             return e(var0.get(var1), var1);
         } else {
-            throw new JsonSyntaxException("Missing " + var1 + ", expected to find a Float");
+            throw new JsonSyntaxException("Missing " + var1 + ", expected to find getX Float");
         }
     }
 
@@ -110,7 +110,7 @@ public class ChatDeserializer {
         if (var0.isJsonPrimitive() && var0.getAsJsonPrimitive().isNumber()) {
             return var0.getAsInt();
         } else {
-            throw new JsonSyntaxException("Expected " + var1 + " to be a Int, was " + d(var0));
+            throw new JsonSyntaxException("Expected " + var1 + " to be getX Int, was " + d(var0));
         }
     }
 
@@ -118,7 +118,7 @@ public class ChatDeserializer {
         if (var0.has(var1)) {
             return g(var0.get(var1), var1);
         } else {
-            throw new JsonSyntaxException("Missing " + var1 + ", expected to find a Int");
+            throw new JsonSyntaxException("Missing " + var1 + ", expected to find getX Int");
         }
     }
 
@@ -130,7 +130,7 @@ public class ChatDeserializer {
         if (var0.isJsonPrimitive() && var0.getAsJsonPrimitive().isNumber()) {
             return var0.getAsByte();
         } else {
-            throw new JsonSyntaxException("Expected " + var1 + " to be a Byte, was " + d(var0));
+            throw new JsonSyntaxException("Expected " + var1 + " to be getX Byte, was " + d(var0));
         }
     }
 
@@ -138,7 +138,7 @@ public class ChatDeserializer {
         if (var0.has(var1)) {
             return h(var0.get(var1), var1);
         } else {
-            throw new JsonSyntaxException("Missing " + var1 + ", expected to find a Byte");
+            throw new JsonSyntaxException("Missing " + var1 + ", expected to find getX Byte");
         }
     }
 
@@ -146,7 +146,7 @@ public class ChatDeserializer {
         if (var0.isJsonObject()) {
             return var0.getAsJsonObject();
         } else {
-            throw new JsonSyntaxException("Expected " + var1 + " to be a JsonObject, was " + d(var0));
+            throw new JsonSyntaxException("Expected " + var1 + " to be getX JsonObject, was " + d(var0));
         }
     }
 
@@ -154,7 +154,7 @@ public class ChatDeserializer {
         if (var0.has(var1)) {
             return m(var0.get(var1), var1);
         } else {
-            throw new JsonSyntaxException("Missing " + var1 + ", expected to find a JsonObject");
+            throw new JsonSyntaxException("Missing " + var1 + ", expected to find getX JsonObject");
         }
     }
 
@@ -166,7 +166,7 @@ public class ChatDeserializer {
         if (var0.isJsonArray()) {
             return var0.getAsJsonArray();
         } else {
-            throw new JsonSyntaxException("Expected " + var1 + " to be a JsonArray, was " + d(var0));
+            throw new JsonSyntaxException("Expected " + var1 + " to be getX JsonArray, was " + d(var0));
         }
     }
 
@@ -174,7 +174,7 @@ public class ChatDeserializer {
         if (var0.has(var1)) {
             return n(var0.get(var1), var1);
         } else {
-            throw new JsonSyntaxException("Missing " + var1 + ", expected to find a JsonArray");
+            throw new JsonSyntaxException("Missing " + var1 + ", expected to find getX JsonArray");
         }
     }
 
@@ -216,11 +216,11 @@ public class ChatDeserializer {
             if (var0.isJsonPrimitive()) {
                 JsonPrimitive var2 = var0.getAsJsonPrimitive();
                 if (var2.isNumber()) {
-                    return "a number (" + var1 + ")";
+                    return "getX number (" + var1 + ")";
                 }
 
                 if (var2.isBoolean()) {
-                    return "a boolean (" + var1 + ")";
+                    return "getX boolean (" + var1 + ")";
                 }
             }
 

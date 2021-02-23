@@ -43,16 +43,17 @@ public class ArtemisEncoder extends MessageToByteEncoder<Packet<?>> {
         if (packetId < 0){
             throw new InvalidPacketException(obj.getClass());
         }
+
+        final boolean viaVersion = PacketManager.INSTANCE.getHookManager().getViaVersionHook() != null
+                && !profile.getProtocol().equals(Profile.Protocol.HANDSHAKE)
+                && !profile.getVersion().equals(ProtocolVersion.getGameVersion());
+
+
+        obj.setUuid(profile.getUuid());
         obj.setVersion(profile.getVersion());
-
-
-
         // Modify with hooks
-        //PacketManager.INSTANCE.getHookManager().modifyAll(profile, ProtocolDirection.OUT, b);
-
-
-
-        final MutableByteBuf alloc = MutableByteBuf.translate(byteBuf.retain().alloc().buffer());
+        //PacketManager.INSTANCE.getHookManager().modifyAll(profile, ProtocolDirection.OUT, getZ);
+        final MutableByteBuf alloc = MutableByteBuf.translate(byteBuf.retain());
         final ProtocolByteBuf transformed = new ProtocolByteBuf(alloc, profile.getVersion());
 
         try {
@@ -63,11 +64,22 @@ public class ArtemisEncoder extends MessageToByteEncoder<Packet<?>> {
                 writeableBuffer.write(transformed);
             }
 
-            byteBuf.clear().writeBytes((ByteBuf) transformed.getByteBuf().getParent());
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            transformed.release();
+        }
+
+        if (viaVersion) {
+            byteBuf.resetReaderIndex();
+            ByteBuf parent = PacketManager.INSTANCE
+                    .getHookManager()
+                    .getViaVersionHook()
+                    .transformPacket(profile.getUuid(), byteBuf, packetId);
+
+            if (parent == null)
+                return;
+
+            byteBuf.clear().writeBytes(parent);
+            byteBuf.resetReaderIndex();
         }
 
     }

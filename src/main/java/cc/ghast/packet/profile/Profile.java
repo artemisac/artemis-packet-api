@@ -47,7 +47,7 @@ public class Profile {
     public ProtocolVersion getVersion() {
 
         if (uuid == null) {
-            return ProtocolVersion.getGameVersion();
+            return version == null ? ProtocolVersion.getGameVersion() : version;
         }
         /*
          * If the version is null, lets attempt to cache it. In this scenario, it is already cached, hence
@@ -61,7 +61,7 @@ public class Profile {
 
         /*
          * The ViaVersion protocol is null, this means we can cache the game version
-         * This will *not* work very well with ProtocolSupport. But f*ck protocolsupport for now.
+         * This will *not* work very well with ProtocolSupport. But getDirectionCCW*ck protocolsupport for now.
          */
         if (!viaVersion) {
             return ProtocolVersion.getGameVersion();
