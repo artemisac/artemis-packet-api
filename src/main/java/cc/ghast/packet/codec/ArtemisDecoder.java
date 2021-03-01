@@ -76,7 +76,6 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
             System.out.println("Has decompresser: " + (ctx.channel().pipeline().get("decompress") != null));
             System.out.println("Structure: " + ctx.channel().pipeline().toMap());
             System.out.println(msg.toString());
-
         }
 
         // Make sure we're receiving getX ByteBuf. If getX protocol is placed before such, it may screw with the decompression
@@ -90,7 +89,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                 // Nullify if the packet was cancelled
                 buffer.readerIndex(readIndex);
             } catch (Exception e){
-                System.out.println("Error on player of version " + profile.getVersion());
+                System.out.println("[!] Error on player of version " + profile.getVersion());
                 e.printStackTrace();
             }
 
@@ -101,10 +100,14 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
     }
 
     protected boolean decode(MutableByteBuf in) throws Exception {
+        final Channel channel = (Channel) profile.getChannel();
+        final boolean isCompressor = channel.pipeline().names().contains("decompress") ||
+                channel.pipeline().names().contains("compress");
 
-        // If there's no readable bytes, the packet is empty. Don't worry, such can happen
-        if (((Channel) profile.getChannel()).pipeline().names().contains("decompress") ||
-                ((Channel) profile.getChannel()).pipeline().names().contains("compress")) {
+        /*
+         * Why
+         */
+        if (isCompressor) {
             try {
                 in = decompress(in);
             } catch (Exception e){
@@ -152,7 +155,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
             protocolByteBuf.setId(id);
 
             // Collect the packet from the enum map. This needs to be rewritten for better accuracy tho
-            Packet<?> packet;
+            final Packet<?> packet;
 
             if (viaVersion) {
                 final EnumProtocol[] enumProtocols = EnumProtocol
@@ -269,8 +272,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
             profile.setVersion(version);
 
         }
-        System.out.println("Version=" + handshake.getVersion());
-        PacketHandshakeClientSetProtocol.State state = handshake.getNextState();
+        final PacketHandshakeClientSetProtocol.State state = handshake.getNextState();
         this.profile.setProtocol(state.equals(PacketHandshakeClientSetProtocol.State.STATUS)
                 ? Profile.Protocol.STATUS : Profile.Protocol.LOGIN);
         this.profile.setVersion(version);

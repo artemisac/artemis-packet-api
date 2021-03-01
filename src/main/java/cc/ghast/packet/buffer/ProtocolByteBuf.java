@@ -555,8 +555,8 @@ public class ProtocolByteBuf {
         return this.byteBuf.bytesBefore(i, i1, b);
     }
 
-    public MutableByteBuf copy() {
-        return this.byteBuf.copy();
+    public ProtocolByteBuf copy() {
+        return new ProtocolByteBuf(this.byteBuf.copy(), version);
     }
 
     public MutableByteBuf copy(final int i, final int i1) {
