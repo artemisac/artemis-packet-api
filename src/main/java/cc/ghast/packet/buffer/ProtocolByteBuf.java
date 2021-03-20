@@ -10,6 +10,9 @@ import cc.ghast.packet.wrapper.nbt.WrappedItem;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.wrapper.netty.MutableByteBufAllocator;
 import cc.ghast.packet.wrapper.netty.MutableByteProcessor;
+import com.github.steveice10.opennbt.tag.builtin.CompoundTag;
+import lombok.Getter;
+import lombok.SneakyThrows;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
@@ -23,6 +26,7 @@ import java.nio.channels.ScatteringByteChannel;
 import java.nio.charset.Charset;
 import java.util.UUID;
 
+@Getter
 public class ProtocolByteBuf {
     private final MutableByteBuf byteBuf;
     private final ProtocolVersion version;
@@ -92,6 +96,16 @@ public class ProtocolByteBuf {
 
     public MinecraftKey readMinecraftKey() {
         return new MinecraftKey(this.readStringBuf(32767));
+    }
+
+    @SneakyThrows
+    public CompoundTag readTag() {
+        return Converters.NBT.read(byteBuf, version);
+    }
+
+    @SneakyThrows
+    public void writeTag(CompoundTag compoundTag) {
+        Converters.NBT.write(byteBuf, compoundTag);
     }
 
     public void readMinecraftKey(MinecraftKey key) {

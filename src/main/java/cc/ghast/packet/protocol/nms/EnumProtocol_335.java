@@ -59,10 +59,10 @@ public enum EnumProtocol_335 implements EnumProtocol {
                         new PacketInfo<>(0x0A, PacketPlayClientCustomPayload.class,"PacketPlayInCustomPayload"),
                         new PacketInfo<>(0x0B, PacketPlayClientUseEntity.class, "PacketPlayInUseEntity"),
                         new PacketInfo<>(0x0C, PacketPlayClientKeepAlive.class, "PacketPlayInKeepAlive"),
-                        new PacketInfo<>(0x0D, PacketPlayClientFlying.PacketPlayClientPosition.class,"PacketPlayInPosition"),
-                        new PacketInfo<>(0x0E, PacketPlayClientFlying.PacketPlayClientPositionLook.class,"PacketPlayInPositionLook"),
-                        new PacketInfo<>(0x0F, PacketPlayClientFlying.PacketPlayClientLook.class,"PacketPlayInLook"),
-                        new PacketInfo<>(0x10, PacketPlayClientFlying.class, "PacketPlayInFlying"),
+                        new PacketInfo<>(0x0D, PacketPlayClientFlying.class, "PacketPlayInFlying"),
+                        new PacketInfo<>(0x0E, PacketPlayClientFlying.PacketPlayClientPosition.class,"PacketPlayInPosition"),
+                        new PacketInfo<>(0x0F, PacketPlayClientFlying.PacketPlayClientPositionLook.class,"PacketPlayInPositionLook"),
+                        new PacketInfo<>(0x10, PacketPlayClientFlying.PacketPlayClientLook.class,"PacketPlayInLook"),
                         new PacketInfo<>(0x11, PacketPlayClientVehicleMove.class,"PacketPlayInVehicleMove"),
                         new PacketInfo<>(0x12, PacketPlayClientBoatMove.class, "PacketPlayInSteerBoat"),
                         new PacketInfo<>(0x13, PacketPlayClientAbilities.class,"PacketPlayInAbilities"),
@@ -213,10 +213,19 @@ public enum EnumProtocol_335 implements EnumProtocol {
     @SneakyThrows
     public Packet<?> getPacket(ProtocolDirection direction, int id, UUID playerId, ProtocolVersion version) {
         final Map<Integer, PacketInfo> packets = direction.equals(ProtocolDirection.IN) ? packetPair.getClient() : packetPair.getServer();
-        final Constructor<? extends Packet<?>> packetConstructor = packets.get(id).getConstructor();
+
+        final PacketInfo packetInfo = packets.get(id);
+
+        if (packetInfo == null) {
+            throw new IllegalStateException(playerId + " -> Packet of id " + id + " had no associated information (dir: "
+                    + direction + " ver: " + version + " type: " + ordinal() + ")");
+        }
+
+        final Constructor<? extends Packet<?>> packetConstructor = packetInfo.getConstructor();
 
         if (packetConstructor == null) {
-            throw new IllegalStateException(playerId + " -> Packet of id " + id + " had no associated constructor (dir: " + direction + " ver:" + version + ")");
+            throw new IllegalStateException(playerId + " -> Packet of id " + id
+                    + " had no associated constructor (dir: " + direction + " ver: " + version + " type: " + ordinal() + ")");
         }
 
         return packetConstructor.newInstance(playerId, version);

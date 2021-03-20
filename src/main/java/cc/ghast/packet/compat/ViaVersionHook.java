@@ -80,7 +80,6 @@ public class ViaVersionHook {
             return buf;
         }
 
-        buf.retain();
         buf.resetReaderIndex();
 
         try {

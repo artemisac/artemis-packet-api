@@ -182,10 +182,19 @@ public enum EnumProtocol_5 implements EnumProtocol {
     @SneakyThrows
     public Packet<?> getPacket(ProtocolDirection direction, int id, UUID playerId, ProtocolVersion version) {
         final Map<Integer, PacketInfo> packets = direction.equals(ProtocolDirection.IN) ? packetPair.getClient() : packetPair.getServer();
-        final Constructor<? extends Packet<?>> packetConstructor = packets.get(id).getConstructor();
+
+        final PacketInfo packetInfo = packets.get(id);
+
+        if (packetInfo == null) {
+            throw new IllegalStateException(playerId + " -> Packet of id " + id + " had no associated information (dir: "
+                    + direction + " ver: " + version + " type: " + ordinal() + ")");
+        }
+
+        final Constructor<? extends Packet<?>> packetConstructor = packetInfo.getConstructor();
 
         if (packetConstructor == null) {
-            throw new IllegalStateException(playerId + " -> Packet of id " + id + " had no associated constructor (dir: " + direction + " ver:" + version + ")");
+            throw new IllegalStateException(playerId + " -> Packet of id " + id
+                    + " had no associated constructor (dir: " + direction + " ver: " + version + " type: " + ordinal() + ")");
         }
 
         return packetConstructor.newInstance(playerId, version);

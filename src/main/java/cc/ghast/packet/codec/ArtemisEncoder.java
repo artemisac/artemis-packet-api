@@ -25,7 +25,7 @@ import java.awt.*;
  * @since 30/08/2020
  * Artemis © 2020
  */
-public class ArtemisEncoder extends MessageToByteEncoder<Packet<?>> {
+public class ArtemisEncoder extends MessageToByteEncoder<Packet> {
 
     private final Profile profile;
 
@@ -35,7 +35,7 @@ public class ArtemisEncoder extends MessageToByteEncoder<Packet<?>> {
 
     @Override
     @SneakyThrows
-    protected void encode(ChannelHandlerContext channelHandlerContext, Packet<?> obj, ByteBuf byteBuf) {
+    protected void encode(ChannelHandlerContext channelHandlerContext, Packet obj, ByteBuf byteBuf) {
         final int packetId = EnumProtocolCurrent
                 .values()[profile.getProtocol().ordinal()]
                 .getPacketId(ProtocolDirection.OUT, obj);
@@ -44,9 +44,7 @@ public class ArtemisEncoder extends MessageToByteEncoder<Packet<?>> {
             throw new InvalidPacketException(obj.getClass());
         }
 
-        final boolean viaVersion = PacketManager.INSTANCE.getHookManager().getViaVersionHook() != null
-                && !profile.getProtocol().equals(Profile.Protocol.HANDSHAKE)
-                && !profile.getVersion().equals(ProtocolVersion.getGameVersion());
+        final boolean viaVersion = PacketManager.INSTANCE.getHookManager().getViaVersionHook() != null;
 
 
         obj.setUuid(profile.getUuid());
@@ -70,17 +68,24 @@ public class ArtemisEncoder extends MessageToByteEncoder<Packet<?>> {
 
         if (viaVersion) {
             byteBuf.resetReaderIndex();
-            ByteBuf parent = PacketManager.INSTANCE
+            final ByteBuf parent = PacketManager.INSTANCE
                     .getHookManager()
                     .getViaVersionHook()
-                    .transformPacket(profile.getUuid(), byteBuf, packetId);
+                    .transformPacketSend(profile.getUuid(), byteBuf, packetId);
 
-            if (parent == null)
+            if (parent == null) {
+                byteBuf.clear().resetReaderIndex();
+                System.out.println("Via version hates me");
                 return;
+            }
 
-            byteBuf.clear().writeBytes(parent);
-            byteBuf.resetReaderIndex();
+            System.out.println("Via version loves me daddy");
+        } else {
+            System.out.println("No via???");
         }
+
+        //System.out.println("Sending packet of id " + new ProtocolByteBuf(MutableByteBuf.translate(byteBuf), profile.getVersion()).readVarInt() + " of class " + obj.getClass().getName());
+        byteBuf.resetReaderIndex();
 
     }
 

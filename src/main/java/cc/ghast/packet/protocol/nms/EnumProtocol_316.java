@@ -47,22 +47,21 @@ public enum EnumProtocol_316 implements EnumProtocol {
             new PacketPair(
                 new PacketInfo[] {
                         new PacketInfo<>(0x00, PacketPlayClientConfirmTeleport.class, "PacketPlayInTeleportAccept"),
-                        new PacketInfo<>(0x01, PacketPlayClientCraftingPrepareGrid.class, "PacketPlayInCraftingPrepareGrid"),
-                        new PacketInfo<>(0x02, PacketPlayClientTabComplete.class, "PacketPlayInTabComplete"),
-                        new PacketInfo<>(0x03, PacketPlayClientChat.class, "PacketPlayInChat"),
-                        new PacketInfo<>(0x04, PacketPlayClientClientCommand.class,"PacketPlayInClientCommand"),
-                        new PacketInfo<>(0x05, PacketPlayClientSettings.class,"PacketPlayInSettings"),
-                        new PacketInfo<>(0x06, PacketPlayClientTransaction.class,"PacketPlayInTransaction"),
-                        new PacketInfo<>(0x07, PacketPlayClientEnchantItem.class,"PacketPlayInEnchantItem"),
-                        new PacketInfo<>(0x08, PacketPlayClientWindowClick.class,"PacketPlayInWindowClick"),
-                        new PacketInfo<>(0x09, PacketPlayClientWindowClose.class,"PacketPlayInCloseWindow"),
-                        new PacketInfo<>(0x0A, PacketPlayClientCustomPayload.class,"PacketPlayInCustomPayload"),
-                        new PacketInfo<>(0x0B, PacketPlayClientUseEntity.class, "PacketPlayInUseEntity"),
-                        new PacketInfo<>(0x0C, PacketPlayClientKeepAlive.class, "PacketPlayInKeepAlive"),
-                        new PacketInfo<>(0x0D, PacketPlayClientFlying.PacketPlayClientPosition.class,"PacketPlayInPosition"),
-                        new PacketInfo<>(0x0E, PacketPlayClientFlying.PacketPlayClientPositionLook.class,"PacketPlayInPositionLook"),
-                        new PacketInfo<>(0x0F, PacketPlayClientFlying.PacketPlayClientLook.class,"PacketPlayInLook"),
-                        new PacketInfo<>(0x10, PacketPlayClientFlying.class, "PacketPlayInFlying"),
+                        new PacketInfo<>(0x01, PacketPlayClientTabComplete.class, "PacketPlayInTabComplete"),
+                        new PacketInfo<>(0x02, PacketPlayClientChat.class, "PacketPlayInChat"),
+                        new PacketInfo<>(0x03, PacketPlayClientClientCommand.class,"PacketPlayInClientCommand"),
+                        new PacketInfo<>(0x04, PacketPlayClientSettings.class,"PacketPlayInSettings"),
+                        new PacketInfo<>(0x05, PacketPlayClientTransaction.class,"PacketPlayInTransaction"),
+                        new PacketInfo<>(0x06, PacketPlayClientEnchantItem.class,"PacketPlayInEnchantItem"),
+                        new PacketInfo<>(0x07, PacketPlayClientWindowClick.class,"PacketPlayInWindowClick"),
+                        new PacketInfo<>(0x08, PacketPlayClientWindowClose.class,"PacketPlayInCloseWindow"),
+                        new PacketInfo<>(0x09, PacketPlayClientCustomPayload.class,"PacketPlayInCustomPayload"),
+                        new PacketInfo<>(0x0A, PacketPlayClientUseEntity.class, "PacketPlayInUseEntity"),
+                        new PacketInfo<>(0x0B, PacketPlayClientKeepAlive.class, "PacketPlayInKeepAlive"),
+                        new PacketInfo<>(0x0C, PacketPlayClientFlying.PacketPlayClientPosition.class,"PacketPlayInPosition"),
+                        new PacketInfo<>(0x0D, PacketPlayClientFlying.PacketPlayClientPositionLook.class,"PacketPlayInPositionLook"),
+                        new PacketInfo<>(0x0E, PacketPlayClientFlying.PacketPlayClientLook.class,"PacketPlayInLook"),
+                        new PacketInfo<>(0x0F, PacketPlayClientFlying.class, "PacketPlayInFlying"),
                         new PacketInfo<>(0x11, PacketPlayClientVehicleMove.class,"PacketPlayInVehicleMove"),
                         new PacketInfo<>(0x12, PacketPlayClientBoatMove.class, "PacketPlayInSteerBoat"),
                         new PacketInfo<>(0x13, PacketPlayClientAbilities.class,"PacketPlayInAbilities"),
@@ -139,39 +138,36 @@ public enum EnumProtocol_316 implements EnumProtocol {
                         new PacketInfo<>(0x2D, PacketPlayServerPlayerInfo.class, "PacketPlayOutPlayerInfo"),
                         new PacketInfo<>(0x2E, PacketPlayServerPosition.class, "PacketPlayOutPosition"),
                         new PacketInfo<>(0x2F, PacketPlayServerBed.class, "PacketPlayOutBed"),
-                        new PacketInfo<>(0x30, PacketPlayServerCraftingRecipeUnlock.class, "PacketPlayOutUnlockRecipe"),
-                        new PacketInfo<>(0x31, PacketPlayServerEntityDestroy.class, "PacketPlayOutEntityDestroy"),
-                        new PacketInfo<>(0x32, PacketPlayServerEntityEffectRemove.class, "PacketPlayOutRemoveEntityEffect"),
-                        new PacketInfo<>(0x33, PacketPlayServerResourcePackSend.class, "PacketPlayOutResourcePackSend"),
-                        new PacketInfo<>(0x34, PacketPlayServerRespawn.class, "PacketPlayOutRespawn"),
-                        new PacketInfo<>(0x35, PacketPlayServerEntityHeadRotation.class, "PacketPlayOutEntityHeadRotation"),
+                        new PacketInfo<>(0x30, PacketPlayServerEntityDestroy.class, "PacketPlayOutEntityDestroy"),
+                        new PacketInfo<>(0x31, PacketPlayServerEntityEffectRemove.class, "PacketPlayOutRemoveEntityEffect"),
+                        new PacketInfo<>(0x32, PacketPlayServerResourcePackSend.class, "PacketPlayOutResourcePackSend"),
+                        new PacketInfo<>(0x33, PacketPlayServerRespawn.class, "PacketPlayOutRespawn"),
+                        new PacketInfo<>(0x34, PacketPlayServerEntityHeadRotation.class, "PacketPlayOutEntityHeadRotation"),
                         // Todo figure out the NMS name for this
-                        new PacketInfo<>(0x36, PacketPlayServerAdvancementProgress.class, "PacketPlayOutAdvancementProgress"),
-                        new PacketInfo<>(0x37, PacketPlayServerWorldBorder.class, "PacketPlayOutWorldBorder"),
-                        new PacketInfo<>(0x38, PacketPlayServerCamera.class, "PacketPlayOutCamera"),
-                        new PacketInfo<>(0x39, PacketPlayServerHeldItemSlot.class, "PacketPlayOutHeldItemSlot"),
-                        new PacketInfo<>(0x3A, PacketPlayServerScoreboardDisplayObjective.class, "PacketPlayOutScoreboardDisplayObjective"),
-                        new PacketInfo<>(0x3B, PacketPlayServerEntityMetadata.class, "PacketPlayOutEntityMetadata"),
-                        new PacketInfo<>(0x3C, PacketPlayServerEntityAttach.class, "PacketPlayOutAttachEntity"),
-                        new PacketInfo<>(0x3D, PacketPlayServerEntityVelocity.class, "PacketPlayOutEntityVelocity"),
-                        new PacketInfo<>(0x3E, PacketPlayServerEntityEquipment.class, "PacketPlayOutEntityEquipment"),
-                        new PacketInfo<>(0x3F, PacketPlayServerExperience.class, "PacketPlayOutExperience"),
-                        new PacketInfo<>(0x40, PacketPlayServerUpdateHealth.class, "PacketPlayOutUpdateHealth"),
-                        new PacketInfo<>(0x41, PacketPlayServerScoreboardObjective.class, "PacketPlayOutScoreboardObjective"),
-                        new PacketInfo<>(0x42, PacketPlayServerSetPassengers.class, "PacketPlayOutMount"),
-                        new PacketInfo<>(0x43, PacketPlayServerScoreboardTeam.class, "PacketPlayOutScoreboardTeam"),
-                        new PacketInfo<>(0x44, PacketPlayServerScoreboardScore.class, "PacketPlayOutScoreboardScore"),
-                        new PacketInfo<>(0x45, PacketPlayServerSpawnPosition.class, "PacketPlayOutSpawnPosition"),
-                        new PacketInfo<>(0x46, PacketPlayServerUpdateTime.class, "PacketPlayOutUpdateTime"),
-                        new PacketInfo<>(0x47, PacketPlayServerTitle.class, "PacketPlayOutTitle"),
-                        new PacketInfo<>(0x48, PacketPlayServerSoundEffectCustom.class, "PacketPlayOutCustomSoundEffect"),
-                        new PacketInfo<>(0x49, PacketPlayServerPlayerListHeaderFooter.class, "PacketPlayOutPlayListHeaderFooter"),
-                        new PacketInfo<>(0x4A, PacketPlayServerCollect.class, "PacketPlayOutCollect"),
-                        new PacketInfo<>(0x4B, PacketPlayServerEntityTeleport.class, "PacketPlayOutEntityTeleport"),
+                        new PacketInfo<>(0x35, PacketPlayServerWorldBorder.class, "PacketPlayOutWorldBorder"),
+                        new PacketInfo<>(0x36, PacketPlayServerCamera.class, "PacketPlayOutCamera"),
+                        new PacketInfo<>(0x37, PacketPlayServerHeldItemSlot.class, "PacketPlayOutHeldItemSlot"),
+                        new PacketInfo<>(0x38, PacketPlayServerScoreboardDisplayObjective.class, "PacketPlayOutScoreboardDisplayObjective"),
+                        new PacketInfo<>(0x39, PacketPlayServerEntityMetadata.class, "PacketPlayOutEntityMetadata"),
+                        new PacketInfo<>(0x3A, PacketPlayServerEntityAttach.class, "PacketPlayOutAttachEntity"),
+                        new PacketInfo<>(0x3B, PacketPlayServerEntityVelocity.class, "PacketPlayOutEntityVelocity"),
+                        new PacketInfo<>(0x3C, PacketPlayServerEntityEquipment.class, "PacketPlayOutEntityEquipment"),
+                        new PacketInfo<>(0x3D, PacketPlayServerExperience.class, "PacketPlayOutExperience"),
+                        new PacketInfo<>(0x3E, PacketPlayServerUpdateHealth.class, "PacketPlayOutUpdateHealth"),
+                        new PacketInfo<>(0x3F, PacketPlayServerScoreboardObjective.class, "PacketPlayOutScoreboardObjective"),
+                        new PacketInfo<>(0x40, PacketPlayServerSetPassengers.class, "PacketPlayOutMount"),
+                        new PacketInfo<>(0x41, PacketPlayServerScoreboardTeam.class, "PacketPlayOutScoreboardTeam"),
+                        new PacketInfo<>(0x42, PacketPlayServerScoreboardScore.class, "PacketPlayOutScoreboardScore"),
+                        new PacketInfo<>(0x43, PacketPlayServerSpawnPosition.class, "PacketPlayOutSpawnPosition"),
+                        new PacketInfo<>(0x44, PacketPlayServerUpdateTime.class, "PacketPlayOutUpdateTime"),
+                        new PacketInfo<>(0x45, PacketPlayServerTitle.class, "PacketPlayOutTitle"),
+                        new PacketInfo<>(0x46, PacketPlayServerSoundEffectCustom.class, "PacketPlayOutCustomSoundEffect"),
+                        new PacketInfo<>(0x47, PacketPlayServerPlayerListHeaderFooter.class, "PacketPlayOutPlayListHeaderFooter"),
+                        new PacketInfo<>(0x48, PacketPlayServerCollect.class, "PacketPlayOutCollect"),
+                        new PacketInfo<>(0x49, PacketPlayServerEntityTeleport.class, "PacketPlayOutEntityTeleport"),
                         // Todo find NMS name
-                        new PacketInfo<>(0x4C, PacketPlayServerAdvancements.class, "PacketPlayOutAdvancements"),
-                        new PacketInfo<>(0x4D, PacketPlayServerUpdateAttributes.class,  "PacketPlayOutUpdateAttributes"),
-                        new PacketInfo<>(0x4E, PacketPlayServerEntityEffect.class,"PacketPlayOutEntityEffect"),
+                        new PacketInfo<>(0x4A, PacketPlayServerUpdateAttributes.class,  "PacketPlayOutUpdateAttributes"),
+                        new PacketInfo<>(0x4B, PacketPlayServerEntityEffect.class,"PacketPlayOutEntityEffect"),
                 }
             )
     ),
@@ -213,10 +209,19 @@ public enum EnumProtocol_316 implements EnumProtocol {
     @SneakyThrows
     public Packet<?> getPacket(ProtocolDirection direction, int id, UUID playerId, ProtocolVersion version) {
         final Map<Integer, PacketInfo> packets = direction.equals(ProtocolDirection.IN) ? packetPair.getClient() : packetPair.getServer();
-        final Constructor<? extends Packet<?>> packetConstructor = packets.get(id).getConstructor();
+
+        final PacketInfo packetInfo = packets.get(id);
+
+        if (packetInfo == null) {
+            throw new IllegalStateException(playerId + " -> Packet of id " + id + " had no associated information (dir: "
+                    + direction + " ver: " + version + " type: " + ordinal() + ")");
+        }
+
+        final Constructor<? extends Packet<?>> packetConstructor = packetInfo.getConstructor();
 
         if (packetConstructor == null) {
-            throw new IllegalStateException(playerId + " -> Packet of id " + id + " had no associated constructor (dir: " + direction + " ver:" + version + ")");
+            throw new IllegalStateException(playerId + " -> Packet of id " + id
+                    + " had no associated constructor (dir: " + direction + " ver: " + version + " type: " + ordinal() + ")");
         }
 
         return packetConstructor.newInstance(playerId, version);

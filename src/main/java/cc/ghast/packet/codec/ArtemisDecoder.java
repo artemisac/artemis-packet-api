@@ -119,7 +119,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
         }
 
 
-        if (in.readableBytes() != 0) {
+        if (in.readableBytes() > 0) {
             // Get the var_int packet id of the packet. This is quite important as it's what determines it's type
             int id = Converters.VAR_INT.read(in, profile.getVersion());
 
@@ -157,33 +157,41 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
             // Collect the packet from the enum map. This needs to be rewritten for better accuracy tho
             final Packet<?> packet;
 
-            if (viaVersion) {
-                final EnumProtocol[] enumProtocols = EnumProtocol
-                        .getProtocolByVersion(ProtocolVersion.getGameVersion());
+            try {
+                if (viaVersion) {
+                    final EnumProtocol[] enumProtocols = EnumProtocol
+                            .getProtocolByVersion(ProtocolVersion.getGameVersion());
 
-                if (enumProtocols == null) {
-                    if (profile.getUuid() != null)
-                        PacketManager.INSTANCE.getListener().getInjector().uninjectPlayer(profile.getUuid());
-                    return false;
+                    if (enumProtocols == null) {
+                        if (profile.getUuid() != null)
+                            PacketManager.INSTANCE.getListener().getInjector().uninjectPlayer(profile.getUuid());
+                        return false;
+                    }
+
+                    packet = enumProtocols[profile.getProtocol().ordinal()]
+                            .getPacket(direction, protocolByteBuf.getId(),
+                                    profile.getUuid(), ProtocolVersion.getGameVersion());
+                } else {
+                    final EnumProtocol[] enumProtocols = EnumProtocol
+                            .getProtocolByVersion(profile.getVersion());
+
+                    if (enumProtocols == null) {
+                        if (profile.getUuid() != null)
+                            PacketManager.INSTANCE.getListener().getInjector().uninjectPlayer(profile.getUuid());
+                        return false;
+                    }
+
+                    packet = enumProtocols[profile.getProtocol().ordinal()]
+                            .getPacket(direction, id, profile.getUuid(), profile.getVersion());
                 }
-
-                packet = enumProtocols[profile.getProtocol().ordinal()]
-                        .getPacket(direction, protocolByteBuf.getId(),
-                        profile.getUuid(), ProtocolVersion.getGameVersion());
-            } else {
-                final EnumProtocol[] enumProtocols = EnumProtocol
-                        .getProtocolByVersion(profile.getVersion());
-
-                if (enumProtocols == null) {
-                    if (profile.getUuid() != null)
-                        PacketManager.INSTANCE.getListener().getInjector().uninjectPlayer(profile.getUuid());
-                    return false;
-                }
-
-                packet = enumProtocols[profile.getProtocol().ordinal()]
-                        .getPacket(direction, protocolByteBuf.getId(),
-                        profile.getUuid(), profile.getVersion());
+            } catch (Exception e) {
+                System.out.println("Error on packet of id " + id + " of user of UUID " + profile.getUuid()
+                        + " (ver: " + profile.getVersion() + " dir:" + direction + ")");
+                e.printStackTrace();
+                in.resetReaderIndex();
+                return false;
             }
+
 
             if (packet != null) {
                 if (packet instanceof ReadableBuffer) {
@@ -265,6 +273,22 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
         return byteBuf;
     }
 
+    private MutableByteBuf prepend(MutableByteBuf byteBuf) {
+        final int readableBytes = byteBuf.readableBytes();
+        final int size = prependData(readableBytes);
+        if (size > 3) {
+            throw new IllegalArgumentException("unable to fit " + readableBytes + " into " + 3);
+        }
+        final ProtocolByteBuf packetDataSerializer = new ProtocolByteBuf(
+                MutableByteBuf.translate(((ByteBuf)byteBuf.getByteBuf().getParent()).alloc().buffer()),
+                profile.getVersion()
+        );
+        packetDataSerializer.ensureWritable(size + readableBytes);
+        packetDataSerializer.writeVarInt(readableBytes);
+        packetDataSerializer.writeBytes(byteBuf, byteBuf.readerIndex(), readableBytes);
+        return packetDataSerializer.getByteBuf();
+    }
+
     private void handleHandshake(PacketHandshakeClientSetProtocol handshake){
         final ProtocolVersion version = ProtocolVersion.getVersion(handshake.getProtocolVersion());
 
@@ -287,5 +311,12 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                 + loginSuccess.getGameProfile().getName()));
     }
 
-
+    public static int prependData(final int i) {
+        for (int j = 1; j < 5; ++j) {
+            if ((i & -1 << j * 7) == 0x0) {
+                return j;
+            }
+        }
+        return 5;
+    }
 }

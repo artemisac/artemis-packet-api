@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Ghast
@@ -26,9 +27,12 @@ public class HookManager {
     }
 
     public void init() {
-        final boolean viaversion = Bukkit.getPluginManager().isPluginEnabled("ViaVersion");
-
-        if (viaversion) viaVersionHook = new ViaVersionHook();
+        try {
+            viaVersionHook = new ViaVersionHook();
+            viaVersionHook.getVersion(UUID.randomUUID());
+        } catch (Throwable e) {
+            viaVersionHook = null;
+        }
     }
 
     public void modifyAll(Profile profile, ProtocolDirection direction, ProtocolByteBuf byteBuf, int packetId) {

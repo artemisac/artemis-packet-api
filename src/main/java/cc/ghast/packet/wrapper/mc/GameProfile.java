@@ -14,7 +14,7 @@ public class GameProfile {
     private boolean legacy;
 
     /**
-     * Constructs a new Game Profile with the specified ID and name.
+     * Constructs prependData new Game Profile with the specified ID and name.
      *
      * Either ID or name may be null/empty, but at least one must be filled.
      *

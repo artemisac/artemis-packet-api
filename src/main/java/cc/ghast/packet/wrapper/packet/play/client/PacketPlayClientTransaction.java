@@ -23,6 +23,12 @@ public class PacketPlayClientTransaction extends Packet<ClientPacket> implements
     public void read(ProtocolByteBuf byteBuf) {
         this.windowId = byteBuf.readByte();
         this.actionNumber = byteBuf.readShort();
-        this.accepted = byteBuf.readBoolean();
+
+        if (version.isBelow(ProtocolVersion.V1_12)) {
+            this.accepted = byteBuf.readBoolean();
+        } else {
+            this.accepted = byteBuf.readByte() != 0;
+        }
+
     }
 }
