@@ -75,13 +75,10 @@ public class ArtemisEncoder extends MessageToByteEncoder<Packet> {
 
             if (parent == null) {
                 byteBuf.clear().resetReaderIndex();
-                System.out.println("Via version hates me");
                 return;
             }
 
-            System.out.println("Via version loves me daddy");
         } else {
-            System.out.println("No via???");
         }
 
         //System.out.println("Sending packet of id " + new ProtocolByteBuf(MutableByteBuf.translate(byteBuf), profile.getVersion()).readVarInt() + " of class " + obj.getClass().getName());

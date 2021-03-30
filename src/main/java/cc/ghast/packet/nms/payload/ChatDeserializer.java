@@ -182,7 +182,7 @@ public class ChatDeserializer {
         return var0.has(var1) ? n(var0.get(var1), var1) : var2;
     }
 
-    public static <T> T a(@Nullable JsonElement var0, String var1, JsonDeserializationContext var2, Class<? extends T> var3) {
+    public static <T> T a(JsonElement var0, String var1, JsonDeserializationContext var2, Class<? extends T> var3) {
         if (var0 != null) {
             return var2.deserialize(var0, var3);
         } else {

@@ -225,7 +225,7 @@ public enum EnumDirection {
 
 
         @Override
-        public boolean apply(@Nullable EnumDirection enumDirection) {
+        public boolean apply(EnumDirection enumDirection) {
             return this.a(enumDirection);
         }
     }
@@ -306,7 +306,7 @@ public enum EnumDirection {
         }
 
         @Override
-        public boolean apply(@Nullable EnumDirection enumDirection) {
+        public boolean apply(EnumDirection enumDirection) {
             return this.a(enumDirection);
         }
     }

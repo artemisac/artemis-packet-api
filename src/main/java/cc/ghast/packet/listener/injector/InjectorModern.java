@@ -200,4 +200,9 @@ public class InjectorModern implements Injector {
         final ChannelFuture channelfuture = channel.writeAndFlush(packet);
         channelfuture.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
     }
+
+    @Override
+    public boolean contains(Profile profile) {
+        return this.profiles.containsValue(profile);
+    }
 }

@@ -1,6 +1,10 @@
 package cc.ghast.packet.wrapper.mc;
 
+import cc.ghast.packet.nms.ProtocolVersion;
 import lombok.Getter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Ghast
@@ -43,11 +47,13 @@ public class PlayerEnums {
     public enum PlayerAction {
         START_SNEAKING,
         STOP_SNEAKING,
-        LEAVE_BED,
+        STOP_SLEEPING,
         START_SPRINTING,
         STOP_SPRINTING,
-        JUMP_HORSE,
-        OPEN_RIDE_INVENTORY
+        START_RIDING_JUMP,
+        STOP_RIDING_JUMP,
+        OPEN_INVENTORY,
+        START_FALL_FLYING;
     }
 
     public enum ResourcePackStatus {

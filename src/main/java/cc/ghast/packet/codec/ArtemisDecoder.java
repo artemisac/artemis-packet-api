@@ -217,7 +217,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                     handleLoginSuccess((PacketLoginServerSuccess) packet);
                 }
 
-                if (profile.getUuid() != null) {
+                if (profile.getUuid() != null && PacketManager.INSTANCE.getListener().getInjector().contains(profile)) {
                     PacketManager.INSTANCE.getManager().callPacket(profile, packet);
                 }
 
@@ -305,10 +305,11 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
     private void handleLoginSuccess(PacketLoginServerSuccess loginSuccess) {
         this.profile.setProtocol(Profile.Protocol.PLAY);
         this.profile.setUuid(loginSuccess.getGameProfile().getId());
-        PacketManager.INSTANCE.getListener().getInjector().callLoginCallbacks(profile);
         PacketManager.INSTANCE.getListener().getInjector().injectPlayer(profile);
-        Bukkit.getConsoleSender().sendMessage(Chat.translate("&r[&bPacket&r] &aSuccessfully &binjected into player &r"
-                + loginSuccess.getGameProfile().getName()));
+        PacketManager.INSTANCE.getListener().getInjector().callLoginCallbacks(profile);
+        Bukkit.getConsoleSender().sendMessage(
+                Chat.translate("&r[&bPacket&r] &aSuccessfully &binjected into player &r"
+                + loginSuccess.getGameProfile().getName() + " &b of UUID &r" + loginSuccess.getGameProfile().getId()));
     }
 
     public static int prependData(final int i) {

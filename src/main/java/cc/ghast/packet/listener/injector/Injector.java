@@ -28,6 +28,7 @@ public interface Injector {
     void injectPlayer(Profile uuid);
     void uninjectPlayer(UUID uuid);
     Profile getProfile(UUID uuid);
+    boolean contains(Profile profile);
 
     void addLoginCallback(LoginCallback loginCallback);
     void removeLoginCallback(LoginCallback loginCallback);
