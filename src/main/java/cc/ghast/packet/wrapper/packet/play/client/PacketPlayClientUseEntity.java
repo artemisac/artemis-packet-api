@@ -51,7 +51,7 @@ public class PacketPlayClientUseEntity extends Packet<ClientPacket> implements R
     }
 
     public Entity getEntity() {
-        return Bukkit.getPlayer(uuid).getWorld().getEntities().parallelStream().filter(e-> e.getEntityId() == entityId).findFirst().orElse(null);
+        return Bukkit.getPlayer(uuid).getWorld().getLivingEntities().parallelStream().filter(e-> e.getEntityId() == entityId).findFirst().orElse(null);
     }
 
 

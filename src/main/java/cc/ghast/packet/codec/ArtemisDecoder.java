@@ -46,7 +46,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
         this.profile = profile;
         this.inflater = new Inflater();
         this.direction = direction;
-        this.protocol = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_14)
+        this.protocol = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8_9)
                 ? EnumProtocolCurrent.HANDSHAKE
                 : EnumProtocolLegacy.HANDSHAKE;
     }
@@ -163,8 +163,10 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                             .getProtocolByVersion(ProtocolVersion.getGameVersion());
 
                     if (enumProtocols == null) {
-                        if (profile.getUuid() != null)
+                        if (profile.getUuid() != null) {
+                            System.out.println("No version available for " + profile.getUuid() + " of protocolversion " + ProtocolVersion.getGameVersion());
                             PacketManager.INSTANCE.getListener().getInjector().uninjectPlayer(profile.getUuid());
+                        }
                         return false;
                     }
 
@@ -176,8 +178,10 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                             .getProtocolByVersion(profile.getVersion());
 
                     if (enumProtocols == null) {
-                        if (profile.getUuid() != null)
+                        if (profile.getUuid() != null) {
+                            System.out.println("No version available for " + profile.getUuid() + " of protocolversion " + profile.getVersion());
                             PacketManager.INSTANCE.getListener().getInjector().uninjectPlayer(profile.getUuid());
+                        }
                         return false;
                     }
 

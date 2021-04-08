@@ -32,7 +32,11 @@ public class PacketPlayServerEntityMetadata extends Packet<ServerPacket> impleme
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-        this.entityId = byteBuf.readVarInt();
+        if (version.isOrBelow(ProtocolVersion.V1_7_10)) {
+            this.entityId = byteBuf.readInt();
+        } else {
+            this.entityId = byteBuf.readVarInt();
+        }
         this.buffer = byteBuf.copy();
     }
 

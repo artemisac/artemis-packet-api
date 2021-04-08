@@ -9,14 +9,15 @@ import cc.ghast.packet.wrapper.packet.Packet;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import io.netty.channel.*;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.util.AttributeKey;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -45,7 +46,6 @@ public class InjectorModern implements Injector {
     private ChannelFuture serverBoot;
 
     @Override
-    @SneakyThrows
     public void injectReader() {
         ChannelHandler serverBootstrap = future.channel().pipeline().first();
         ChannelInitializer<Channel> serverBootstrapInit = null;
@@ -87,13 +87,17 @@ public class InjectorModern implements Injector {
             field.setAccessible(true);
             field.set(serverBootstrap, newBootstrapper);
             this.serverBoot = future;
-        } catch (NoSuchFieldException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             // let's find who to blame!
             final ClassLoader cl = serverBootstrap.getClass().getClassLoader();
             final boolean isPlugin = cl.getClass().getName().equals("org.bukkit.plugin.java.PluginClassLoader");
             if (isPlugin) {
-                PluginDescriptionFile yaml = (PluginDescriptionFile) cl.getClass().getField("description").get(cl);
-                throw new IllegalStateException("Unable to inject, due to " + serverBootstrap.getClass().getName() + ", try without the plugin " + yaml.getName() + "?");
+                try {
+                    PluginDescriptionFile yaml = (PluginDescriptionFile) cl.getClass().getField("description").get(cl);
+                    throw new IllegalStateException("Unable to inject, due to " + serverBootstrap.getClass().getName() + ", try without the plugin " + yaml.getName() + "?");
+                } catch (NoSuchFieldException | IllegalAccessException ex) {
+                    ex.printStackTrace();
+                }
             }
 
             else {
@@ -122,19 +126,23 @@ public class InjectorModern implements Injector {
             final Profile profile = profiles.get(uuid);
             final Channel channel = (Channel) profile.getChannel();
 
-            if (channel.pipeline() != null) {
-                if (channel.pipeline().get(clientBound) != null) {
-                    channel.pipeline().remove(clientBound);
-                }
+            CompletableFuture.runAsync(() -> {
+                if (channel.pipeline() != null && channel.isOpen() && channel.isActive()) {
 
-                if (channel.pipeline().get(serverBound) != null) {
-                    channel.pipeline().remove(serverBound);
-                }
+                    ChannelHandler handler;
+                    if ((handler = channel.pipeline().get(clientBound)) != null) {
+                        channel.pipeline().remove(handler);
+                    }
 
-                if (channel.pipeline().get(encoder) != null) {
-                    channel.pipeline().remove(encoder);
+                    if ((handler = channel.pipeline().get(serverBound)) != null) {
+                        channel.pipeline().remove(handler);
+                    }
+
+                    if ((handler = channel.pipeline().get(encoder)) != null) {
+                        channel.pipeline().remove(handler);
+                    }
                 }
-            }
+            });
 
             this.profiles.remove(uuid);
         }
@@ -184,6 +192,7 @@ public class InjectorModern implements Injector {
         if (profile == null) {
             throw new IllegalStateException("Attempt to send packet to an unregistered profile (uuid: "
                     + target + " packet: " + packet.getRealName());
+
         }
 
         final Channel channel = (Channel) profile.getChannel();

@@ -1,8 +1,5 @@
 package cc.ghast.packet.utils;
 
-import cc.ghast.packet.utils.hook.ProtocolLibHook;
-import org.bukkit.Bukkit;
-
 /**
  * @author Ghast
  * @since 15/08/2020

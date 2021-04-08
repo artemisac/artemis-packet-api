@@ -27,7 +27,7 @@ public class PacketPlayServerUpdateAttributes extends Packet<ServerPacket> imple
         this.entityId = byteBuf.readVarInt();
         this.attributes = new ArrayList<>();
 
-        int max = byteBuf.readInt();
+        final int max = byteBuf.readInt();
 
         for (int i = 0; i < max; ++i) {
             final String name;
