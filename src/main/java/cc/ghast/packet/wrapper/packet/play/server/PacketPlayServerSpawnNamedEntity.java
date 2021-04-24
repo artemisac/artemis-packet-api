@@ -36,7 +36,7 @@ public class PacketPlayServerSpawnNamedEntity extends Packet<ServerPacket> imple
         this.entityId = byteBuf.readVarInt();
         this.objectUUID = byteBuf.readUUID();
 
-        if (version.isBelow(ProtocolVersion.V1_15)) {
+        if (version.isBelow(ProtocolVersion.V1_9)) {
             this.x = byteBuf.readInt() / 32.D;
             this.y = byteBuf.readInt() / 32.D;
             this.z = byteBuf.readInt() / 32.D;
