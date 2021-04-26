@@ -43,7 +43,7 @@ public class StringPoolConverter extends BufConverter<StringPool> {
 
         String s;
 
-        if (version.isAbove(ProtocolVersion.V1_14)) {
+        if (version.isOrAbove(ProtocolVersion.V1_12)) {
             s = buffer.toString(buffer.readerIndex(), length, StandardCharsets.UTF_8);
             buffer.readerIndex(buffer.readerIndex() + length);
         } else {
