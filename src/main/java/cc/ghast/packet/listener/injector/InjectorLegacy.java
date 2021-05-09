@@ -2,23 +2,22 @@ package cc.ghast.packet.listener.injector;
 
 import cc.ghast.packet.PacketManager;
 import cc.ghast.packet.listener.callback.LoginCallback;
+import cc.ghast.packet.listener.initializator.BukkitLegacyServerBootstrapper;
 import cc.ghast.packet.listener.initializator.BukkitServerBootstrapper;
 import cc.ghast.packet.profile.Profile;
 import cc.ghast.packet.reflections.ReflectUtil;
 import cc.ghast.packet.utils.PacketCallback;
 import cc.ghast.packet.wrapper.packet.Packet;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import io.netty.channel.*;
-import io.netty.util.AttributeKey;
-import lombok.SneakyThrows;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import net.minecraft.util.com.google.common.cache.Cache;
+import net.minecraft.util.com.google.common.cache.CacheBuilder;
+import net.minecraft.util.io.netty.channel.*;
+import net.minecraft.util.io.netty.util.AttributeKey;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.RunnableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
@@ -29,9 +28,9 @@ import java.util.function.Consumer;
  * @since 18/08/2020
  * Artemis © 2020
  */
-public class InjectorModern implements Injector {
+public class InjectorLegacy implements Injector {
 
-    public InjectorModern() {
+    public InjectorLegacy() {
         System.out.println("[Artemis] Using Modern Encoder");
     }
 
@@ -84,7 +83,7 @@ public class InjectorModern implements Injector {
         }
 
         try {
-            ChannelInitializer<?> newBootstrapper = new BukkitServerBootstrapper(serverBootstrapInit);
+            ChannelInitializer<?> newBootstrapper = new BukkitLegacyServerBootstrapper(serverBootstrapInit);
             Field field = serverBootstrap.getClass().getDeclaredField("childHandler");
             field.setAccessible(true);
             field.set(serverBootstrap, newBootstrapper);
@@ -220,6 +219,7 @@ public class InjectorModern implements Injector {
                 }
             });
         }
+
     }
 
     @Override

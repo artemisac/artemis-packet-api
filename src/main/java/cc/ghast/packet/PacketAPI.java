@@ -4,6 +4,7 @@ import cc.ghast.packet.chain.PacketListener;
 import cc.ghast.packet.listener.callback.LoginCallback;
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.profile.Profile;
+import cc.ghast.packet.utils.PacketCallback;
 import cc.ghast.packet.wrapper.packet.Packet;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -12,6 +13,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.net.InetAddress;
 import java.util.UUID;
+import java.util.concurrent.RunnableFuture;
+import java.util.function.Consumer;
 
 /**
  * @author Ghast
@@ -48,7 +51,11 @@ public class PacketAPI {
     }
 
     public static void sendPacket(Player player, Packet<?> packet){
-        PacketManager.INSTANCE.getListener().getInjector().writePacket(player.getUniqueId(), packet);
+        sendPacket(player, packet, null);
+    }
+
+    public static void sendPacket(Player player, Packet<?> packet, Consumer<PacketCallback> callback){
+        PacketManager.INSTANCE.getListener().getInjector().writePacket(player.getUniqueId(), packet, callback);
     }
 
     public static void addLoginCallback(LoginCallback loginCallback) {

@@ -3,6 +3,7 @@ package cc.ghast.packet.listener.injector;
 import cc.ghast.packet.listener.callback.LoginCallback;
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.profile.Profile;
+import cc.ghast.packet.utils.PacketCallback;
 import cc.ghast.packet.wrapper.packet.Packet;
 import lombok.SneakyThrows;
 import org.bukkit.entity.Player;
@@ -14,6 +15,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.WeakHashMap;
+import java.util.concurrent.RunnableFuture;
+import java.util.function.Consumer;
 
 public interface Injector {
 
@@ -34,5 +37,5 @@ public interface Injector {
     void removeLoginCallback(LoginCallback loginCallback);
     void callLoginCallbacks(Profile profile);
 
-    void writePacket(UUID target, Packet<?> packet);
+    void writePacket(UUID target, Packet<?> packet, Consumer<PacketCallback> callback);
 }

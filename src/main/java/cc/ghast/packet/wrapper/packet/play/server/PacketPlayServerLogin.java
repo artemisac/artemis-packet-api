@@ -55,7 +55,10 @@ public class PacketPlayServerLogin extends Packet<ServerPacket> implements Reada
             this.worldLevelType = WorldType.NORMAL;
 
         }
-        // Reduced Debug Info
-        this.reducedDebugInfo = byteBuf.readBoolean();
+
+        if (version.isOrAbove(ProtocolVersion.V1_8)) {
+            // Reduced Debug Info
+            this.reducedDebugInfo = byteBuf.readBoolean();
+        }
     }
 }
