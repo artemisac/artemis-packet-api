@@ -1,2 +1,4 @@
-package ac.artemis.packet.wrapper.client;public interface PacketPlayClientLook {
+package ac.artemis.packet.wrapper.client;
+
+public interface PacketPlayClientLook extends PacketPlayClientFlying {
 }

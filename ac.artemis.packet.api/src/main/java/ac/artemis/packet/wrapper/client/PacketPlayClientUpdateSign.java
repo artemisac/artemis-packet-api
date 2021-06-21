@@ -2,5 +2,5 @@ package ac.artemis.packet.wrapper.client;
 
 import ac.artemis.packet.wrapper.PacketClient;
 
-public interface PacketPlayClientUpdateJigsawBlock extends PacketClient {
+public interface PacketPlayClientUpdateSign extends PacketClient {
 }

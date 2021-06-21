@@ -13,9 +13,9 @@ import java.util.UUID;
 public class PacketPlayServerEntity extends Packet<ServerPacket> implements ReadableBuffer {
 
     protected int entityId;
-    protected byte x;
-    protected byte y;
-    protected byte z;
+    protected short x;
+    protected short y;
+    protected short z;
     protected byte yaw;
     protected byte pitch;
     protected boolean onGround;
@@ -43,9 +43,15 @@ public class PacketPlayServerEntity extends Packet<ServerPacket> implements Read
         public void read(ProtocolByteBuf byteBuf) {
             super.read(byteBuf);
 
-            this.x = byteBuf.readByte();
-            this.y = byteBuf.readByte();
-            this.z = byteBuf.readByte();
+            if (version.isBelow(ProtocolVersion.V1_16)) {
+                this.x = byteBuf.readByte();
+                this.y = byteBuf.readByte();
+                this.z = byteBuf.readByte();
+            } else {
+                this.x = byteBuf.readShort();
+                this.y = byteBuf.readShort();
+                this.z = byteBuf.readShort();
+            }
 
             this.onGround = byteBuf.readBoolean();
             this.hasPos = true;
@@ -76,9 +82,16 @@ public class PacketPlayServerEntity extends Packet<ServerPacket> implements Read
         @Override
         public void read(ProtocolByteBuf byteBuf) {
             super.read(byteBuf);
-            this.x = byteBuf.readByte();
-            this.y = byteBuf.readByte();
-            this.z = byteBuf.readByte();
+            if (version.isBelow(ProtocolVersion.V1_16)) {
+                this.x = byteBuf.readByte();
+                this.y = byteBuf.readByte();
+                this.z = byteBuf.readByte();
+            } else {
+                this.x = byteBuf.readShort();
+                this.y = byteBuf.readShort();
+                this.z = byteBuf.readShort();
+            }
+
             this.yaw = byteBuf.readByte();
             this.pitch = byteBuf.readByte();
             this.onGround = byteBuf.readBoolean();

@@ -6,10 +6,10 @@ import cc.ghast.packet.buffer.types.exclusive.VarLongConverter;
 import cc.ghast.packet.buffer.types.exclusive.StringPoolConverter;
 import cc.ghast.packet.buffer.types.java.*;
 import cc.ghast.packet.buffer.types.minecraft.*;
-import packet.buffer.types.minecraft.*;
+import cc.ghast.packet.buffer.types.minecraft.*;
 import cc.ghast.packet.protocol.EnumProtocolLegacy;
 import io.netty.util.AttributeKey;
-import packet.buffer.types.java.*;
+import cc.ghast.packet.buffer.types.java.*;
 
 /**
  * @author Ghast

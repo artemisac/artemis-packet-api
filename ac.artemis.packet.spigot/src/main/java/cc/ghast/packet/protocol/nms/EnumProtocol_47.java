@@ -17,9 +17,9 @@ import cc.ghast.packet.wrapper.packet.status.PacketStatusServerPing;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import packet.wrapper.packet.login.*;
-import packet.wrapper.packet.play.client.*;
-import packet.wrapper.packet.play.server.*;
+import cc.ghast.packet.wrapper.packet.login.*;
+import cc.ghast.packet.wrapper.packet.play.client.*;
+import cc.ghast.packet.wrapper.packet.play.server.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

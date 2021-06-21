@@ -1,4 +1,4 @@
-package cc.ghast.packet.reflections;
+package ac.artemis.packet.generator.reflections;
 
 import org.bukkit.Bukkit;
 

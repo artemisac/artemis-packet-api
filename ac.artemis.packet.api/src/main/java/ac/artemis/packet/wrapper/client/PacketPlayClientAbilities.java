@@ -1,2 +1,6 @@
-package ac.artemis.packet.wrapper.client;public class PacketPlayClientAbilities {
+package ac.artemis.packet.wrapper.client;
+
+import ac.artemis.packet.wrapper.PacketClient;
+
+public interface PacketPlayClientAbilities extends PacketClient {
 }
