@@ -1,0 +1,6 @@
+name: ArtemisSpigotApi
+version: ${project.version}
+main: ac.artemis.packet.spigot.ArtemisSpigotApi
+authors: [ Ghast ]
+description: Packet api implementation for the Spigot api
+website: https://artemis.ac

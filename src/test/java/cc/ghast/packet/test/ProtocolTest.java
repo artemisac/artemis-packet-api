@@ -1,6 +1,5 @@
 package cc.ghast.packet.test;
 
-import cc.ghast.packet.protocol.nms.*;
 import org.junit.Test;
 
 /**
