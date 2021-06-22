@@ -29,69 +29,69 @@ public enum EnumProtocolLegacy implements EnumProtocol {
     PLAY(0) {;
         {
             // Server
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerKeepAlive.class); // 0
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerLogin.class); // 1
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerChat.class); // 2
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerKeepAlive.class); // 0
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerLogin.class); // 1
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerChat.class); // 2
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerUpdateTime.class); // 3
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerEntityEquipment.class); // 4
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerEntityEquipment.class); // 4
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerSpawnPosition.class); // 5
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerUpdateHealth.class); // 6
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerRespawn.class); // 7
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerPosition.class); // 8
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerHeldItemSlot.class); // 9
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerBed.class); // 10
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerAnimation.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerSpawnNamedEntity.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerRespawn.class); // 7
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerPosition.class); // 8
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerHeldItemSlot.class); // 9
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerBed.class); // 10
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerAnimation.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerSpawnNamedEntity.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerCollect.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerSpawnObject.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerSpawnObject.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerSpawnEntityLiving.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerSpawnEntityPainting.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerSpawnEntityExperienceOrb.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerEntityVelocity.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerEntityDestroy.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerEntity.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerEntity.PacketPlayServerRelEntityMove.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerEntity.PacketPlayServerEntityLook.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerEntity.PacketPlayServerRelEntityMoveLook.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerEntityTeleport.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerEntityHeadRotation.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerEntityStatus.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerEntityAttach.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerEntityMetadata.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerEntityEffect.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerEntityVelocity.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerEntityDestroy.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerEntity.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerEntity.GPacketPlayServerRelEntityMove.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerEntity.GPacketPlayServerEntityLook.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerEntity.GPacketPlayServerRelEntityMoveLook.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerEntityTeleport.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerEntityHeadRotation.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerEntityStatus.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerEntityAttach.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerEntityMetadata.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerEntityEffect.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerExperience.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerUpdateAttributes.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerChunkLoad.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerBlockChangeMulti.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerBlockChange.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerBlockBreakAnimation.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerChunkLoadBulk.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerExplosion.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerUpdateAttributes.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerChunkLoad.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerBlockChangeMulti.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerBlockChange.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerBlockBreakAnimation.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerChunkLoadBulk.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerExplosion.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerWorldEvent.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerSoundEffectNamed.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerWorldParticles.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerGameStateChange.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerSpawnEntityWeather.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerWindowOpen.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerWindowClose.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerSpawnEntityWeather.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerWindowOpen.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerWindowClose.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerSetSlot.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerWindowItems.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerWindowData.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerTransaction.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerTransaction.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerUpdateSign.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerMap.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerTileEntityData.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerOpenSignEditor.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerStatistic.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerPlayerInfo.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerAbilities.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerTabComplete.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerAbilities.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerTabComplete.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerScoreboardObjective.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerScoreboardScore.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerScoreboardDisplayObjective.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerScoreboardTeam.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerCustomPayload.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerKickDisconnect.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerCustomPayload.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerKickDisconnect.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerServerDifficulty.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerCombatEvent.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerCamera.class);
@@ -99,7 +99,7 @@ public enum EnumProtocolLegacy implements EnumProtocol {
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerTitle.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerSetCompression.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerPlayerListHeaderFooter.class);
-            this.addPacket(ProtocolDirection.OUT, PacketPlayServerResourcePackSend.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketPlayServerResourcePackSend.class);
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerUpdateEntityNBT.class);
 
             // Client

@@ -1,0 +1,59 @@
+package cc.ghast.packet.wrapper.packet.play.server;
+
+import ac.artemis.packet.spigot.protocol.PacketLink;
+import ac.artemis.packet.wrapper.server.PacketPlayServerEntityTeleport;
+import cc.ghast.packet.nms.ProtocolVersion;
+import cc.ghast.packet.buffer.ProtocolByteBuf;
+import ac.artemis.packet.spigot.wrappers.GPacket;
+import cc.ghast.packet.wrapper.packet.ReadableBuffer;
+import lombok.Getter;
+
+import java.util.UUID;
+
+@Getter
+@PacketLink(PacketPlayServerEntityTeleport.class)
+public class GPacketPlayServerEntityTeleport extends GPacket implements ReadableBuffer {
+    public GPacketPlayServerEntityTeleport(UUID player, ProtocolVersion version) {
+        super("PacketPlayOutEntityTeleport", player, version);
+    }
+
+    private int entityId;
+    private int x;
+    private int y;
+    private int z;
+    private byte yaw;
+    private byte pitch;
+    private boolean onGround;
+
+
+    @Override
+    public void read(ProtocolByteBuf byteBuf) {
+        this.entityId = byteBuf.readVarInt();
+        this.x = byteBuf.readInt();
+        this.y = byteBuf.readInt();
+        this.z = byteBuf.readInt();
+        this.yaw = byteBuf.readByte();
+        this.pitch = byteBuf.readByte();
+        this.onGround = byteBuf.readBoolean();
+    }
+
+    public double getValueX() {
+        return x / 32.D;
+    }
+
+    public double getValueY() {
+        return y / 32.D;
+    }
+
+    public double getValueZ() {
+        return z / 32.D;
+    }
+
+    public float getValueYaw() {
+        return (yaw * 360.0F / 256.0F);
+    }
+
+    public float getValuePitch() {
+        return (pitch * 360.0F / 256.0F);
+    }
+}
