@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Getter
 @PacketLink(PacketPlayClientArmAnimation.class)
-public class GPacketPlayClientArmAnimation extends GPacket implements ReadableBuffer {
+public class GPacketPlayClientArmAnimation extends GPacket implements PacketPlayClientArmAnimation, ReadableBuffer {
     public GPacketPlayClientArmAnimation(UUID player, ProtocolVersion version) {
         super("PacketPlayInArmAnimation", player, version);
     }

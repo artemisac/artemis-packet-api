@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Getter
 @PacketLink(PacketPlayClientResourcePackStatus.class)
-public class GPacketPlayClientResourcePackStatus extends GPacket implements ReadableBuffer {
+public class GPacketPlayClientResourcePackStatus extends GPacket implements PacketPlayClientResourcePackStatus, ReadableBuffer {
     public GPacketPlayClientResourcePackStatus(UUID player, ProtocolVersion version) {
         super("PacketPlayInResourcePackStatus", player, version);
     }

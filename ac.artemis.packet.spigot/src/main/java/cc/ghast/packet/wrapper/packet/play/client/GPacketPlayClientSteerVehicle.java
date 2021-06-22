@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Getter
 @PacketLink(PacketPlayClientSteerVehicle.class)
-public class GPacketPlayClientSteerVehicle extends GPacket implements ReadableBuffer {
+public class GPacketPlayClientSteerVehicle extends GPacket implements PacketPlayClientSteerVehicle, ReadableBuffer {
     public GPacketPlayClientSteerVehicle(UUID player, ProtocolVersion version) {
         super("PacketPlayInSteerVehicle", player, version);
     }

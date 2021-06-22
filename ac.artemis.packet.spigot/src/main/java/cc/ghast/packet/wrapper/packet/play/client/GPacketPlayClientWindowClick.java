@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Getter
 @PacketLink(PacketPlayClientWindowClick.class)
-public class GPacketPlayClientWindowClick extends GPacket implements ReadableBuffer {
+public class GPacketPlayClientWindowClick extends GPacket implements PacketPlayClientWindowClick, ReadableBuffer {
     public GPacketPlayClientWindowClick(UUID player, ProtocolVersion version) {
         super("PacketPlayInWindowClick", player, version);
     }

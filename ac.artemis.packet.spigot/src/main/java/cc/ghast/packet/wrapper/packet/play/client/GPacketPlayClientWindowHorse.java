@@ -17,7 +17,7 @@ import java.util.UUID;
  */
 @Getter
 @PacketLink(PacketPlayClientWindowHorse.class)
-public class GPacketPlayClientWindowHorse extends GPacket implements ReadableBuffer {
+public class GPacketPlayClientWindowHorse extends GPacket implements PacketPlayClientWindowHorse, ReadableBuffer {
     public GPacketPlayClientWindowHorse(UUID player, ProtocolVersion version) {
         super("PacketPlayInOpenHorseWindow", player, version, e -> e.isOrAbove(ProtocolVersion.V1_13));
     }

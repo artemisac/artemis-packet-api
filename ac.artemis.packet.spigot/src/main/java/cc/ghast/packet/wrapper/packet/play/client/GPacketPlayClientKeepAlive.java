@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Getter
 @PacketLink(PacketPlayClientKeepAlive.class)
-public class GPacketPlayClientKeepAlive extends GPacket implements ReadableBuffer {
+public class GPacketPlayClientKeepAlive extends GPacket implements PacketPlayClientKeepAlive, ReadableBuffer {
     public GPacketPlayClientKeepAlive(UUID player, ProtocolVersion version) {
         super("PacketPlayInKeepAlive", player, version);
     }

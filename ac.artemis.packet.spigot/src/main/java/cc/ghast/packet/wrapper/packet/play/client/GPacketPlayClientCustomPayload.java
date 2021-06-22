@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Getter
 @PacketLink(PacketPlayServerCustomPayload.class)
-public class GPacketPlayClientCustomPayload extends GPacket implements ReadableBuffer {
+public class GPacketPlayClientCustomPayload extends GPacket implements PacketPlayServerCustomPayload, ReadableBuffer {
     public GPacketPlayClientCustomPayload(UUID player, ProtocolVersion version) {
         super("PacketPlayInCustomPayload", player, version);
     }
