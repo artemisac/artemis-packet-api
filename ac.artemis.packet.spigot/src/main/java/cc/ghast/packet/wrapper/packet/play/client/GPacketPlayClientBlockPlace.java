@@ -1,15 +1,15 @@
 package cc.ghast.packet.wrapper.packet.play.client;
 
+import ac.artemis.packet.protocol.ProtocolVersion;
 import ac.artemis.packet.spigot.protocol.PacketLink;
+import ac.artemis.packet.spigot.utils.ServerUtil;
 import ac.artemis.packet.wrapper.client.PacketPlayClientBlockPlace;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.buffer.types.Converters;
 import cc.ghast.packet.nms.EnumDirection;
-import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.wrapper.bukkit.BlockPosition;
 import cc.ghast.packet.wrapper.bukkit.Vector3D;
 import cc.ghast.packet.wrapper.mc.PlayerEnums;
-import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import ac.artemis.packet.spigot.wrappers.GPacket;
 import lombok.Getter;
@@ -23,7 +23,7 @@ import java.util.UUID;
 @PacketLink(PacketPlayClientBlockPlace.class)
 public class GPacketPlayClientBlockPlace extends GPacket implements ReadableBuffer {
     public GPacketPlayClientBlockPlace(UUID player, ProtocolVersion version) {
-        super(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_11) ? "PacketPlayInBlockPlace"
+        super(ServerUtil.getGameVersion().isBelow(ProtocolVersion.V1_11) ? "PacketPlayInBlockPlace"
                 : "PacketPlayInUseItem", player, version);
     }
     private Optional<EnumDirection> direction;

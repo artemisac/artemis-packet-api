@@ -1,5 +1,7 @@
 package cc.ghast.packet;
 
+import ac.artemis.packet.spigot.ArtemisSpigotApi;
+import ac.artemis.packet.spigot.protocol.ProtocolRepository;
 import cc.ghast.packet.compat.HookManager;
 import cc.ghast.packet.chain.ChainManager;
 import cc.ghast.packet.listener.ChannelListener;
@@ -20,14 +22,32 @@ public enum PacketManager {
     private ChainManager manager;
     private ChannelListener listener;
     private HookManager hookManager;
+    private ProtocolRepository repository;
+    private ArtemisSpigotApi api;
 
     public void init(Plugin plugin) {
         this.plugin = plugin;
+
+        // Plugin startup logic
+        this.repository = new ProtocolRepository(plugin);
+        this.api = new ArtemisSpigotApi(plugin);
+
         this.manager = new ChainManager();
         this.listener = new ChannelListener(this);
         this.hookManager = new HookManager();
+
+        repository.create();
+        api.create();
     }
 
+    public void destroy() {
+        // Plugin shutdown logic
+        repository.dispose();
+        api.dispose();
+
+        this.repository = null;
+        this.api = null;
+    }
 
     public void info(String log) {
         plugin.getLogger().info(log);

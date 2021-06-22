@@ -1,7 +1,7 @@
 package cc.ghast.packet.compat;
 
-import cc.ghast.packet.profile.Profile;
-import cc.ghast.packet.protocol.ProtocolDirection;
+import cc.ghast.packet.profile.ArtemisProfile;
+import ac.artemis.packet.protocol.ProtocolDirection;
 import cc.ghast.packet.utils.Chat;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import lombok.Getter;
@@ -34,7 +34,7 @@ public class HookManager {
         }
     }
 
-    public void modifyAll(Profile profile, ProtocolDirection direction, ProtocolByteBuf byteBuf, int packetId) {
+    public void modifyAll(ArtemisProfile profile, ProtocolDirection direction, ProtocolByteBuf byteBuf, int packetId) {
         modifiers.forEach(e -> e.modify(profile, direction, byteBuf, packetId));
     }
 

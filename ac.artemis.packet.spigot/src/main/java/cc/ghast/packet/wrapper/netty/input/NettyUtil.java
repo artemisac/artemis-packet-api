@@ -1,11 +1,12 @@
 package cc.ghast.packet.wrapper.netty.input;
 
-import cc.ghast.packet.nms.ProtocolVersion;
+import ac.artemis.packet.protocol.ProtocolVersion;
+import ac.artemis.packet.spigot.utils.ServerUtil;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 
 public interface NettyUtil {
 
-    NettyUtil instance = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8) ? new ModernUtil() : new LegacyUtil();
+    NettyUtil instance = ServerUtil.getGameVersion().isOrAbove(ProtocolVersion.V1_8) ? new ModernUtil() : new LegacyUtil();
 
     static NettyUtil getInstance() {
         return instance;

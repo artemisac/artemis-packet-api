@@ -1,7 +1,7 @@
 package cc.ghast.packet.buffer.types.minecraft;
 
+import ac.artemis.packet.protocol.ProtocolVersion;
 import cc.ghast.packet.buffer.BufConverter;
-import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.wrapper.netty.MutableByteBufOutputStream;
 import cc.ghast.packet.wrapper.netty.input.NettyUtil;

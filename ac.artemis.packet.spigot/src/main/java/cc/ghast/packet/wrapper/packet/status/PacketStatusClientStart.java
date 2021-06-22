@@ -1,8 +1,7 @@
 package cc.ghast.packet.wrapper.packet.status;
 
+import ac.artemis.packet.protocol.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
-import cc.ghast.packet.nms.ProtocolVersion;
-import cc.ghast.packet.wrapper.packet.ClientPacket;
 import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 

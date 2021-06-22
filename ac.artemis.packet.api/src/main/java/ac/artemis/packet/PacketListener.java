@@ -5,4 +5,8 @@ import ac.artemis.packet.wrapper.Packet;
 
 public interface PacketListener {
     void onPacket(Profile profile, Packet packet);
+
+    default boolean isAsync() {
+        return false;
+    }
 }

@@ -1,10 +1,9 @@
 package cc.ghast.packet.buffer.types.minecraft;
 
+import ac.artemis.packet.protocol.ProtocolVersion;
 import cc.ghast.packet.buffer.BufConverter;
-import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.wrapper.bukkit.BlockPosition;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
-import io.netty.buffer.ByteBuf;
 
 public class LongLocationConverter extends BufConverter<BlockPosition> {
 

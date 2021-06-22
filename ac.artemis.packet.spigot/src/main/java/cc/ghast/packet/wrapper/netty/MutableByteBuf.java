@@ -1,8 +1,9 @@
 package cc.ghast.packet.wrapper.netty;
 
+import ac.artemis.packet.protocol.ProtocolVersion;
+import ac.artemis.packet.spigot.utils.ServerUtil;
 import cc.ghast.packet.wrapper.netty.bytebuf.CurrentByteBuf;
 import cc.ghast.packet.wrapper.netty.bytebuf.LegacyByteBuf;
-import cc.ghast.packet.nms.ProtocolVersion;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,11 +15,11 @@ import java.nio.channels.ScatteringByteChannel;
 import java.nio.charset.Charset;
 
 public interface MutableByteBuf {
-    
+
     Object getParent();
     
     static MutableByteBuf translate(Object byteBuf) {
-        return ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8) ? new CurrentByteBuf(byteBuf) : new LegacyByteBuf(byteBuf);
+        return ServerUtil.getGameVersion().isOrAbove(ProtocolVersion.V1_8) ? new CurrentByteBuf(byteBuf) : new LegacyByteBuf(byteBuf);
     }
 
     int capacity() ;

@@ -1,7 +1,7 @@
 package cc.ghast.packet.wrapper.packet;
 
+import ac.artemis.packet.protocol.ProtocolVersion;
 import ac.artemis.packet.spigot.wrappers.GPacket;
-import cc.ghast.packet.nms.ProtocolVersion;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
@@ -17,12 +17,12 @@ import java.util.UUID;
 @Getter
 public class PacketInfo<T> {
     private final int id;
-    private final Class<? extends GPacket<T>> clazz;
+    private final Class<? extends GPacket> clazz;
     private final String nmsName;
-    private final Constructor<? extends GPacket<T>> constructor;
+    private final Constructor<? extends GPacket> constructor;
 
     @SneakyThrows
-    public PacketInfo(int id, Class<? extends GPacket<T>> clazz, String nmsName) {
+    public PacketInfo(int id, Class<? extends GPacket> clazz, String nmsName) {
         this.id = id;
         this.clazz = clazz;
         this.nmsName = nmsName;

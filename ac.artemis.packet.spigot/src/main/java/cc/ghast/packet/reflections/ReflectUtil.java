@@ -1,8 +1,9 @@
 package cc.ghast.packet.reflections;
 
-import cc.ghast.packet.nms.ProtocolVersion;
+import ac.artemis.packet.protocol.ProtocolVersion;
+import ac.artemis.packet.spigot.utils.ServerUtil;
 import cc.ghast.packet.protocol.EnumProtocol;
-import cc.ghast.packet.protocol.ProtocolDirection;
+import ac.artemis.packet.protocol.ProtocolDirection;
 import cc.ghast.packet.wrapper.nbt.WrappedItem;
 import cc.ghast.packet.wrapper.netty.MutableByteBufOutputStream;
 import cc.ghast.packet.wrapper.netty.input.NettyUtil;
@@ -120,7 +121,7 @@ public class ReflectUtil {
             // Get the map from the packet map
             Map map1 = PACKET_MAP_FIELD.get(enumProtocol);
 
-            if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_15)) {
+            if (ServerUtil.getGameVersion().isOrAbove(ProtocolVersion.V1_15)) {
                 try {
                     System.out.println(";) " + i);
                     Object interest = map1.get(DIRECTIONS[i]);
@@ -250,7 +251,7 @@ public class ReflectUtil {
         Object id = GET_ITEM_FROM_ID_METHOD.invoke(null, item.getId());
         Object nmsItem;
 
-        if (ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_14)) {
+        if (ServerUtil.getGameVersion().isAbove(ProtocolVersion.V1_14)) {
             nmsItem = ITEM_NMS_CONSTRUCTOR.invoke(id, item.getAmount());
         } else {
             nmsItem = ITEM_NMS_CONSTRUCTOR.invoke(id, item.getAmount(), item.getData());
@@ -320,7 +321,7 @@ public class ReflectUtil {
         GET_HANDLE_ITEM = Reflection.getField(CRAFT_ITEM_CLAZZ, "handle", ITEM_NMS_CLAZZ);
         GET_ITEM_FROM_ID_METHOD = Reflection.getMethod(ITEM_TYPE_CLAZZ, "getById", int.class);
 
-        if (ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_14)) {
+        if (ServerUtil.getGameVersion().isAbove(ProtocolVersion.V1_14)) {
             ITEM_NMS_CONSTRUCTOR = Reflection.getConstructor(ITEM_NMS_CLAZZ,
                     Reflection.getMinecraftClass("IMaterial"), int.class);
         } else {

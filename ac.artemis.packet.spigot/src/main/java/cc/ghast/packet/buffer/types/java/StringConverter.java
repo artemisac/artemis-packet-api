@@ -1,11 +1,10 @@
 package cc.ghast.packet.buffer.types.java;
 
+import ac.artemis.packet.protocol.ProtocolVersion;
 import cc.ghast.packet.buffer.BufConverter;
 import cc.ghast.packet.buffer.types.Converters;
 import cc.ghast.packet.exceptions.InvalidByteBufStructureException;
-import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
-import io.netty.buffer.ByteBuf;
 
 import java.nio.charset.StandardCharsets;
 

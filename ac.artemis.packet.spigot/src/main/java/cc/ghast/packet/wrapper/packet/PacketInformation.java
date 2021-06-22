@@ -1,7 +1,6 @@
 package cc.ghast.packet.wrapper.packet;
 
-import cc.ghast.packet.nms.ProtocolVersion;
-import lombok.Data;
+import ac.artemis.packet.protocol.ProtocolVersion;
 import lombok.Getter;
 
 import java.util.function.Predicate;

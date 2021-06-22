@@ -1,8 +1,9 @@
 package cc.ghast.packet.wrapper.packet.play.server;
 
+import ac.artemis.packet.protocol.ProtocolVersion;
 import ac.artemis.packet.spigot.protocol.PacketLink;
+import ac.artemis.packet.spigot.utils.ServerUtil;
 import ac.artemis.packet.wrapper.server.PacketPlayServerKeepAlive;
-import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
@@ -36,7 +37,7 @@ public class GPacketPlayServerKeepAlive extends GPacket implements ReadableBuffe
 
     @Override
     public void write(ProtocolByteBuf byteBuf) {
-        if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_12_2)) {
+        if (ServerUtil.getGameVersion().isOrAbove(ProtocolVersion.V1_12_2)) {
             byteBuf.writeLong(id);
         } else {
             byteBuf.writeVarInt((int) id);

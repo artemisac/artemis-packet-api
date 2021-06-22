@@ -1,11 +1,14 @@
 package cc.ghast.packet.codec;
 
+import ac.artemis.packet.PacketGenerator;
+import ac.artemis.packet.protocol.ProtocolDirection;
+import ac.artemis.packet.protocol.ProtocolState;
+import ac.artemis.packet.protocol.ProtocolVersion;
+import ac.artemis.packet.spigot.utils.ServerUtil;
 import cc.ghast.packet.PacketManager;
 import cc.ghast.packet.buffer.types.Converters;
 import cc.ghast.packet.exceptions.IncompatiblePipelineException;
-import cc.ghast.packet.nms.ProtocolVersion;
-import cc.ghast.packet.profile.Profile;
-import cc.ghast.packet.protocol.ProtocolDirection;
+import cc.ghast.packet.profile.ArtemisProfile;
 import cc.ghast.packet.utils.Chat;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.wrapper.packet.login.GPacketLoginServerSuccess;
@@ -36,19 +39,18 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
     private static final boolean debug = false;
 
-    private final Profile profile;
+    private final ArtemisProfile profile;
     private final Inflater inflater;
     private final ProtocolDirection direction;
     private static final ExecutorService PACKET_SERVICE = Executors.newSingleThreadExecutor();
-    private EnumProtocol protocol;
 
-    public ArtemisDecoder(Profile profile, ProtocolDirection direction) {
+    public ArtemisDecoder(ArtemisProfile profile, ProtocolDirection direction) {
         this.profile = profile;
         this.inflater = new Inflater();
         this.direction = direction;
-        this.protocol = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8_9)
+        /*this.protocol = ServerUtil.getGameVersion().isBelow(ProtocolVersion.V1_8_9)
                 ? EnumProtocolCurrent.HANDSHAKE
-                : EnumProtocolLegacy.HANDSHAKE;
+                : EnumProtocolLegacy.HANDSHAKE;*/
     }
 
 
@@ -123,9 +125,13 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
             // Get the var_int packet id of the packet. This is quite important as it's what determines it's type
             int id = Converters.VAR_INT.read(in, profile.getVersion());
 
+            if (profile.getVersion() != profile.getGenerator().getVersion()) {
+                profile.setGenerator(ac.artemis.packet.PacketManager.getApi().getGenerator(profile.getVersion()));
+            }
+
             final boolean viaVersion = PacketManager.INSTANCE.getHookManager().getViaVersionHook() != null
-                    && profile.getProtocol().equals(Profile.Protocol.PLAY)
-                    && !profile.getVersion().equals(ProtocolVersion.getGameVersion())
+                    && profile.getProtocol().equals(ProtocolState.PLAY)
+                    && !profile.getVersion().equals(ServerUtil.getGameVersion())
                     && direction.equals(ProtocolDirection.IN);
 
             if (viaVersion) {
@@ -142,7 +148,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
                 in = MutableByteBuf.translate(parent);
                 in.resetReaderIndex();
-                id = Converters.VAR_INT.read(in, ProtocolVersion.getGameVersion());
+                id = Converters.VAR_INT.read(in, ServerUtil.getGameVersion());
             }
 
             if (debug) {
@@ -159,34 +165,11 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
             try {
                 if (viaVersion) {
-                    final EnumProtocol[] enumProtocols = EnumProtocol
-                            .getProtocolByVersion(ProtocolVersion.getGameVersion());
-
-                    if (enumProtocols == null) {
-                        if (profile.getUuid() != null) {
-                            System.out.println("No version available for " + profile.getUuid() + " of protocolversion " + ProtocolVersion.getGameVersion());
-                            PacketManager.INSTANCE.getListener().getInjector().uninjectPlayer(profile.getUuid());
-                        }
-                        return false;
-                    }
-
-                    packet = enumProtocols[profile.getProtocol().ordinal()]
-                            .getPacket(direction, protocolByteBuf.getId(),
-                                    profile.getUuid(), ProtocolVersion.getGameVersion());
+                    packet = (GPacket) profile.getGenerator()
+                            .getPacketFromId(direction, profile.getProtocol(), protocolByteBuf.getId(), profile.getUuid(), ServerUtil.getGameVersion());
                 } else {
-                    final EnumProtocol[] enumProtocols = EnumProtocol
-                            .getProtocolByVersion(profile.getVersion());
-
-                    if (enumProtocols == null) {
-                        if (profile.getUuid() != null) {
-                            System.out.println("No version available for " + profile.getUuid() + " of protocolversion " + profile.getVersion());
-                            PacketManager.INSTANCE.getListener().getInjector().uninjectPlayer(profile.getUuid());
-                        }
-                        return false;
-                    }
-
-                    packet = enumProtocols[profile.getProtocol().ordinal()]
-                            .getPacket(direction, id, profile.getUuid(), profile.getVersion());
+                    packet = (GPacket) profile.getGenerator()
+                            .getPacketFromId(direction, profile.getProtocol(), protocolByteBuf.getId(), profile.getUuid(), profile.getVersion());
                 }
             } catch (Exception e) {
                 System.out.println("Error on packet of id " + id + " of user of UUID " + profile.getUuid()
@@ -298,16 +281,16 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
         if (PacketManager.INSTANCE.getHookManager().getViaVersionHook() == null) {
             profile.setVersion(version);
-
+            profile.setGenerator(ac.artemis.packet.PacketManager.getApi().getGenerator(version));
         }
         final GPacketHandshakeClientSetProtocol.State state = handshake.getNextState();
         this.profile.setProtocol(state.equals(GPacketHandshakeClientSetProtocol.State.STATUS)
-                ? Profile.Protocol.STATUS : Profile.Protocol.LOGIN);
+                ? ProtocolState.STATUS : ProtocolState.LOGIN);
         this.profile.setVersion(version);
     }
 
     private void handleLoginSuccess(GPacketLoginServerSuccess loginSuccess) {
-        this.profile.setProtocol(Profile.Protocol.PLAY);
+        this.profile.setProtocol(ProtocolState.PLAY);
         this.profile.setUuid(loginSuccess.getGameProfile().getId());
         PacketManager.INSTANCE.getListener().getInjector().injectPlayer(profile);
         PacketManager.INSTANCE.getListener().getInjector().callLoginCallbacks(profile);

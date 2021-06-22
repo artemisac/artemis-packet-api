@@ -1,11 +1,14 @@
 package cc.ghast.packet.codec;
 
+import ac.artemis.packet.PacketGenerator;
+import ac.artemis.packet.protocol.ProtocolState;
+import ac.artemis.packet.protocol.ProtocolVersion;
+import ac.artemis.packet.spigot.utils.ServerUtil;
 import cc.ghast.packet.PacketManager;
 import cc.ghast.packet.buffer.types.Converters;
 import cc.ghast.packet.exceptions.IncompatiblePipelineException;
-import cc.ghast.packet.nms.ProtocolVersion;
-import cc.ghast.packet.profile.Profile;
-import cc.ghast.packet.protocol.ProtocolDirection;
+import cc.ghast.packet.profile.ArtemisProfile;
+import ac.artemis.packet.protocol.ProtocolDirection;
 import cc.ghast.packet.utils.Chat;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.wrapper.packet.login.GPacketLoginServerSuccess;
@@ -34,15 +37,17 @@ public class ArtemisDecoderLegacy extends ChannelDuplexHandler {
 
     private static final boolean debug = false;
 
-    private final Profile profile;
+    private final ArtemisProfile profile;
     private final Inflater inflater;
     private final ProtocolDirection direction;
     private static final ExecutorService PACKET_SERVICE = Executors.newSingleThreadExecutor();
+    private PacketGenerator packetGenerator;
 
-    public ArtemisDecoderLegacy(Profile profile, ProtocolDirection direction) {
+    public ArtemisDecoderLegacy(ArtemisProfile profile, ProtocolDirection direction) {
         this.profile = profile;
         this.inflater = new Inflater();
         this.direction = direction;
+        packetGenerator = ac.artemis.packet.PacketManager.getApi().getGenerator(ServerUtil.getGameVersion());
     }
 
 
@@ -129,20 +134,13 @@ public class ArtemisDecoderLegacy extends ChannelDuplexHandler {
             // Collect the packet from the enum map. This needs to be rewritten for better accuracy tho
             final GPacket packet;
 
+            if (profile.getVersion() != packetGenerator.getVersion()) {
+                packetGenerator = ac.artemis.packet.PacketManager.getApi().getGenerator(profile.getVersion());
+            }
+
             try {
-                final EnumProtocol[] enumProtocols = EnumProtocol
-                        .getProtocolByVersion(profile.getVersion());
-
-                if (enumProtocols == null) {
-                    if (profile.getUuid() != null) {
-                        System.out.println("No version available for " + profile.getUuid() + " of protocolversion " + profile.getVersion());
-                        PacketManager.INSTANCE.getListener().getInjector().uninjectPlayer(profile.getUuid());
-                    }
-                    return false;
-                }
-
-                packet = enumProtocols[profile.getProtocol().ordinal()]
-                        .getPacket(direction, id, profile.getUuid(), profile.getVersion());
+                packet = (GPacket) packetGenerator
+                        .getPacketFromId(direction, profile.getProtocol(), protocolByteBuf.getId(), profile.getUuid(), profile.getVersion());
             } catch (Exception e) {
                 System.out.println("Error on packet of id " + id + " of user of UUID " + profile.getUuid()
                         + " (ver: " + profile.getVersion() + " dir:" + direction + ")");
@@ -257,12 +255,12 @@ public class ArtemisDecoderLegacy extends ChannelDuplexHandler {
         }
         final GPacketHandshakeClientSetProtocol.State state = handshake.getNextState();
         this.profile.setProtocol(state.equals(GPacketHandshakeClientSetProtocol.State.STATUS)
-                ? Profile.Protocol.STATUS : Profile.Protocol.LOGIN);
+                ? ProtocolState.STATUS : ProtocolState.LOGIN);
         this.profile.setVersion(version);
     }
 
     private void handleLoginSuccess(GPacketLoginServerSuccess loginSuccess) {
-        this.profile.setProtocol(Profile.Protocol.PLAY);
+        this.profile.setProtocol(ProtocolState.PLAY);
         this.profile.setUuid(loginSuccess.getGameProfile().getId());
         PacketManager.INSTANCE.getListener().getInjector().injectPlayer(profile);
         PacketManager.INSTANCE.getListener().getInjector().callLoginCallbacks(profile);

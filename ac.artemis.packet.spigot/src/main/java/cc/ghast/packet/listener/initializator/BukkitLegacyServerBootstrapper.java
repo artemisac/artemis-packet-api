@@ -1,8 +1,8 @@
 package cc.ghast.packet.listener.initializator;
 
 import cc.ghast.packet.PacketManager;
-import cc.ghast.packet.profile.Profile;
-import cc.ghast.packet.protocol.ProtocolDirection;
+import cc.ghast.packet.profile.ArtemisProfile;
+import ac.artemis.packet.protocol.ProtocolDirection;
 import cc.ghast.packet.codec.ArtemisDecoderLegacy;
 import cc.ghast.packet.codec.ArtemisEncoderLegacy;
 import cc.ghast.packet.listener.injector.Injector;
@@ -38,7 +38,7 @@ public class BukkitLegacyServerBootstrapper extends ChannelInitializer<Channel> 
     protected void initChannel(Channel socketChannel) throws Exception {
         final String address = ReflectUtil.parseAddress(socketChannel.remoteAddress());
         final UUID id = UUID.randomUUID();
-        final Profile info = new Profile(id, null, address, socketChannel);
+        final ArtemisProfile info = new ArtemisProfile(id, null, address, socketChannel);
 
         // Inject the profile
         PacketManager.INSTANCE.getListener().getInjector().injectFuturePlayer(info);

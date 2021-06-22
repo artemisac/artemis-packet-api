@@ -1,8 +1,8 @@
 package cc.ghast.packet.buffer;
 
+import ac.artemis.packet.protocol.ProtocolVersion;
 import cc.ghast.packet.buffer.types.Converters;
 import cc.ghast.packet.exceptions.InvalidByteBufStructureException;
-import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.nms.payload.MinecraftKey;
 import cc.ghast.packet.wrapper.codec.StringPool;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;

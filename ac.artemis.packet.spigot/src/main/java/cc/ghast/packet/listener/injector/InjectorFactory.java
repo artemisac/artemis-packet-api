@@ -1,6 +1,6 @@
 package cc.ghast.packet.listener.injector;
 
-import cc.ghast.packet.nms.ProtocolVersion;
+import ac.artemis.packet.protocol.ProtocolVersion;
 
 /**
  * @author Ghast
@@ -16,6 +16,10 @@ public class InjectorFactory {
     }
 
     public Injector buildInjector() {
-        return new InjectorModern();
+        if (serverVersion.isAbove(ProtocolVersion.V1_8)) {
+            return new InjectorLegacy();
+        } else {
+            return new InjectorModern();
+        }
     }
 }

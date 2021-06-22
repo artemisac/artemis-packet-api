@@ -1,10 +1,10 @@
 package cc.ghast.packet;
 
-import cc.ghast.packet.nms.ProtocolVersion;
-import cc.ghast.packet.profile.Profile;
-import cc.ghast.packet.chain.PacketListener;
-import cc.ghast.packet.listener.callback.LoginCallback;
-import cc.ghast.packet.utils.PacketCallback;
+import ac.artemis.packet.PacketListener;
+import ac.artemis.packet.protocol.ProtocolVersion;
+import cc.ghast.packet.profile.ArtemisProfile;
+import ac.artemis.packet.callback.LoginCallback;
+import ac.artemis.packet.callback.PacketCallback;
 import ac.artemis.packet.spigot.wrappers.GPacket;
 import org.bukkit.entity.Player;
 
@@ -21,12 +21,7 @@ public class PacketAPI {
         PacketManager.INSTANCE.getManager().injectListener(listener);
     }
 
-    public static void addAsyncListener(PacketListener listener){
-        listener.setAsync(true);
-        PacketManager.INSTANCE.getManager().injectListener(listener);
-    }
-
-    public static Profile getProfile(UUID uuid) {
+    public static ArtemisProfile getProfile(UUID uuid) {
         return PacketManager.INSTANCE.getListener().getInjector().getProfile(uuid);
     }
 

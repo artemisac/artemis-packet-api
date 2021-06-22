@@ -1,8 +1,13 @@
 package ac.artemis.packet.spigot.utils;
 
+import ac.artemis.packet.protocol.ProtocolVersion;
+import cc.ghast.packet.reflections.Reflection;
+import lombok.Getter;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+
+import static ac.artemis.packet.protocol.ProtocolVersion.UNKNOWN;
 
 /**
  * @author Ghast
@@ -18,5 +23,20 @@ public class ServerUtil {
 
     public void sendConsoleMessage(String s) {
         Bukkit.getConsoleSender().sendMessage(color("&r[&b&lPacket&r] &r" + s));
+    }
+
+    private final ProtocolVersion gameVersion = fetchGameVersion();
+
+    public static ProtocolVersion getGameVersion() {
+        return gameVersion;
+    }
+
+    private ProtocolVersion fetchGameVersion() {
+        for (ProtocolVersion version : ProtocolVersion.values()) {
+            if (version.getServerVersion() != null && version.getServerVersion().equalsIgnoreCase(Reflection.VERSION))
+                return version;
+
+        }
+        return UNKNOWN;
     }
 }

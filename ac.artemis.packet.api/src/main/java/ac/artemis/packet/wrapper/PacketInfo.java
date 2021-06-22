@@ -30,6 +30,10 @@ public class PacketInfo {
         return id;
     }
 
+    public int getClazzId() {
+        return clazz.getId();
+    }
+
     public Class<? extends Packet> getClazz() {
         return clazz.getClazz();
     }

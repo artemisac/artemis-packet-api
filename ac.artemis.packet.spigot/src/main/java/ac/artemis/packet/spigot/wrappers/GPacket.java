@@ -1,9 +1,12 @@
 package ac.artemis.packet.spigot.wrappers;
 
-import cc.ghast.packet.nms.ProtocolVersion;
+import ac.artemis.packet.protocol.ProtocolVersion;
+import ac.artemis.packet.spigot.utils.ServerUtil;
+import ac.artemis.packet.wrapper.Packet;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -11,10 +14,10 @@ import java.util.function.Predicate;
 
 @Getter
 @Setter
-public abstract class GPacket {
+public abstract class GPacket implements Packet {
     protected UUID uuid;
     protected ProtocolVersion version;
-    protected final static ProtocolVersion gameVersion = ProtocolVersion.getGameVersion();
+    protected final static ProtocolVersion gameVersion = ServerUtil.getGameVersion();
     protected final Predicate<ProtocolVersion>[] versionPredicate;
     protected final long timestamp;
     protected boolean cancelled;

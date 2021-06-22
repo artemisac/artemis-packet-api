@@ -1,6 +1,7 @@
 package cc.ghast.packet.utils;
 
-import cc.ghast.packet.nms.ProtocolVersion;
+import ac.artemis.packet.protocol.ProtocolVersion;
+import ac.artemis.packet.spigot.utils.ServerUtil;
 
 /**
  * @author Ghast
@@ -8,5 +9,5 @@ import cc.ghast.packet.nms.ProtocolVersion;
  * ArtemisPacket © 2020
  */
 public class PacketUtil {
-    public static String BLOCK_PLACE = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_11) ? "PacketPlayInBlockPlace" : "PacketPlayInUseItem";
+    public static String BLOCK_PLACE = ServerUtil.getGameVersion().isBelow(ProtocolVersion.V1_11) ? "PacketPlayInBlockPlace" : "PacketPlayInUseItem";
 }

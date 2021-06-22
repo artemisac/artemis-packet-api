@@ -15,6 +15,10 @@ public interface PacketAPI {
 
     void addProtocol(ProtocolVersion version, WrittenEnumProtocol writtenEnumProtocol);
 
+    void addGenerator(ProtocolVersion version, PacketGenerator generator);
+
+    PacketGenerator getGenerator(ProtocolVersion version);
+
     Profile getProfile(UUID uuid) ;
 
     boolean isInjected(UUID uuid) ;

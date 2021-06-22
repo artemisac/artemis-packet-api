@@ -1,9 +1,11 @@
 package cc.ghast.packet.codec;
 
+import ac.artemis.packet.PacketGenerator;
+import ac.artemis.packet.spigot.utils.ServerUtil;
 import cc.ghast.packet.PacketManager;
 import cc.ghast.packet.exceptions.InvalidPacketException;
-import cc.ghast.packet.profile.Profile;
-import cc.ghast.packet.protocol.ProtocolDirection;
+import cc.ghast.packet.profile.ArtemisProfile;
+import ac.artemis.packet.protocol.ProtocolDirection;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.protocol.EnumProtocolCurrent;
@@ -13,6 +15,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import lombok.SneakyThrows;
+import org.bukkit.Server;
 
 /**
  * @author Ghast
@@ -21,18 +24,17 @@ import lombok.SneakyThrows;
  */
 public class ArtemisEncoder extends MessageToByteEncoder<GPacket> {
 
-    private final Profile profile;
+    private final ArtemisProfile profile;
+    private final PacketGenerator generator = ac.artemis.packet.PacketManager.getApi().getGenerator(ServerUtil.getGameVersion());
 
-    public ArtemisEncoder(Profile profile) {
+    public ArtemisEncoder(ArtemisProfile profile) {
         this.profile = profile;
     }
 
     @Override
     @SneakyThrows
     protected void encode(ChannelHandlerContext channelHandlerContext, GPacket obj, ByteBuf byteBuf) {
-        final int packetId = EnumProtocolCurrent
-                .values()[profile.getProtocol().ordinal()]
-                .getPacketId(ProtocolDirection.OUT, obj);
+        final int packetId = generator.getPacketId(obj);
 
         if (packetId < 0){
             throw new InvalidPacketException(obj.getClass());

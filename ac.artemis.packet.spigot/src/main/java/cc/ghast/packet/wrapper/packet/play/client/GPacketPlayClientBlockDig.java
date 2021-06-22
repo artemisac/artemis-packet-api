@@ -1,13 +1,12 @@
 package cc.ghast.packet.wrapper.packet.play.client;
 
+import ac.artemis.packet.protocol.ProtocolVersion;
 import ac.artemis.packet.spigot.protocol.PacketLink;
 import ac.artemis.packet.wrapper.client.PacketPlayClientBlockDig;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.nms.EnumDirection;
-import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.wrapper.bukkit.BlockPosition;
 import cc.ghast.packet.wrapper.mc.PlayerEnums;
-import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import ac.artemis.packet.spigot.wrappers.GPacket;
 import lombok.Getter;

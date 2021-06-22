@@ -1,8 +1,8 @@
 package cc.ghast.packet.wrapper.packet.login;
 
+import ac.artemis.packet.protocol.ProtocolVersion;
 import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
-import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.wrapper.mc.GameProfile;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 

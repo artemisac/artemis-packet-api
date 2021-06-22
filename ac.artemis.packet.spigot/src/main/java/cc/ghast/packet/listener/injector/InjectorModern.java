@@ -2,10 +2,10 @@ package cc.ghast.packet.listener.injector;
 
 import cc.ghast.packet.PacketManager;
 import cc.ghast.packet.listener.initializator.BukkitServerBootstrapper;
-import cc.ghast.packet.profile.Profile;
-import cc.ghast.packet.listener.callback.LoginCallback;
+import cc.ghast.packet.profile.ArtemisProfile;
+import ac.artemis.packet.callback.LoginCallback;
 import cc.ghast.packet.reflections.ReflectUtil;
-import cc.ghast.packet.utils.PacketCallback;
+import ac.artemis.packet.callback.PacketCallback;
 import ac.artemis.packet.spigot.wrappers.GPacket;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -36,8 +36,8 @@ public class InjectorModern implements Injector {
 
     private final ChannelFuture future = (ChannelFuture) ReflectUtil.getChannelFuture();
     private final List<LoginCallback> callbacks = new ArrayList<>();
-    private final Map<UUID, Profile> profiles = new WeakHashMap<>();
-    private final Cache<Profile, Long> futureProfiles = CacheBuilder
+    private final Map<UUID, ArtemisProfile> profiles = new WeakHashMap<>();
+    private final Cache<ArtemisProfile, Long> futureProfiles = CacheBuilder
             .newBuilder()
             .expireAfterWrite(30, TimeUnit.SECONDS)
             .build();
@@ -112,7 +112,7 @@ public class InjectorModern implements Injector {
     }
 
     @Override
-    public void injectPlayer(Profile profile) {
+    public void injectPlayer(ArtemisProfile profile) {
         // ProtocolLib channel
         this.profiles.put(profile.getUuid(), profile);
         uninjectFuturePlayer(profile);
@@ -122,7 +122,7 @@ public class InjectorModern implements Injector {
     @Override
     public void uninjectPlayer(UUID uuid) {
         if (this.profiles.containsKey(uuid)) {
-            final Profile profile = profiles.get(uuid);
+            final ArtemisProfile profile = profiles.get(uuid);
             final Channel channel = (Channel) profile.getChannel();
 
             CompletableFuture.runAsync(() -> {
@@ -149,12 +149,12 @@ public class InjectorModern implements Injector {
     }
 
     @Override
-    public void injectFuturePlayer(Profile profile) {
+    public void injectFuturePlayer(ArtemisProfile profile) {
         this.futureProfiles.put(profile, System.currentTimeMillis());
     }
 
     @Override
-    public void uninjectFuturePlayer(Profile profile) {
+    public void uninjectFuturePlayer(ArtemisProfile profile) {
         new HashSet<>(this.futureProfiles.asMap().entrySet())
                 .stream()
                 .filter(e -> ((Channel) e.getKey().getChannel()).attr(KEY_IDENTIFIER).get().equals(profile.getId()))
@@ -165,7 +165,7 @@ public class InjectorModern implements Injector {
     }
 
     @Override
-    public Profile getProfile(UUID uuid) {
+    public ArtemisProfile getProfile(UUID uuid) {
         return this.profiles.get(uuid);
     }
 
@@ -180,13 +180,13 @@ public class InjectorModern implements Injector {
     }
 
     @Override
-    public void callLoginCallbacks(Profile profile) {
+    public void callLoginCallbacks(ArtemisProfile profile) {
         this.callbacks.forEach(e -> e.onLogin(profile));
     }
 
     @Override
     public void writePacket(UUID target, GPacket packet, Consumer<PacketCallback> callback) {
-        final Profile profile = this.getProfile(target);
+        final ArtemisProfile profile = this.getProfile(target);
 
         if (profile == null) {
             throw new IllegalStateException("Attempt to send packet to an unregistered profile (uuid: "
@@ -220,7 +220,7 @@ public class InjectorModern implements Injector {
     }
 
     @Override
-    public boolean contains(Profile profile) {
+    public boolean contains(ArtemisProfile profile) {
         return this.profiles.containsValue(profile);
     }
 }

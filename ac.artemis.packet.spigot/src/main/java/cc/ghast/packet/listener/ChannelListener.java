@@ -1,8 +1,8 @@
 package cc.ghast.packet.listener;
 
+import ac.artemis.packet.spigot.utils.ServerUtil;
 import cc.ghast.packet.PacketManager;
 import cc.ghast.packet.listener.injector.InjectorFactory;
-import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.utils.Chat;
 import cc.ghast.packet.listener.injector.Injector;
 import lombok.Getter;
@@ -29,7 +29,7 @@ public class ChannelListener implements Listener {
         this.packetManager = packetManager;
         //*
         Bukkit.getPluginManager().registerEvents(this, packetManager.getPlugin());
-        this.injector = new InjectorFactory(ProtocolVersion.getGameVersion()).buildInjector();
+        this.injector = new InjectorFactory(ServerUtil.getGameVersion()).buildInjector();
         this.injector.injectReader();
     }
 

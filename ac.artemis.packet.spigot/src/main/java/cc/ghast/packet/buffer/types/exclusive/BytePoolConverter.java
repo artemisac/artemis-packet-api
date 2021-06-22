@@ -1,11 +1,10 @@
 package cc.ghast.packet.buffer.types.exclusive;
 
+import ac.artemis.packet.protocol.ProtocolVersion;
 import cc.ghast.packet.buffer.BufConverter;
 import cc.ghast.packet.buffer.types.Converters;
-import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.wrapper.codec.BytePool;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
-import io.netty.buffer.ByteBuf;
 
 
 public class BytePoolConverter extends BufConverter<BytePool> {

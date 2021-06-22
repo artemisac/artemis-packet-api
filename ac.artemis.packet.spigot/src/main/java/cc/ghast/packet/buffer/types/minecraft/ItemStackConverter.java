@@ -1,12 +1,11 @@
 package cc.ghast.packet.buffer.types.minecraft;
 
+import ac.artemis.packet.protocol.ProtocolVersion;
 import cc.ghast.packet.buffer.BufConverter;
 import cc.ghast.packet.buffer.types.Converters;
-import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.wrapper.nbt.WrappedItem;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.reflections.ReflectUtil;
-import com.github.steveice10.opennbt.tag.builtin.CompoundTag;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;

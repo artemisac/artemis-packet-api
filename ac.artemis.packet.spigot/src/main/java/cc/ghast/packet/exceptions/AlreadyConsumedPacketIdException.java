@@ -1,6 +1,6 @@
 package cc.ghast.packet.exceptions;
 
-import cc.ghast.packet.protocol.ProtocolDirection;
+import ac.artemis.packet.protocol.ProtocolDirection;
 import ac.artemis.packet.spigot.wrappers.GPacket;
 
 public class AlreadyConsumedPacketIdException extends RuntimeException {

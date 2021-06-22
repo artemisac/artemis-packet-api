@@ -1,8 +1,7 @@
 package cc.ghast.packet.buffer;
 
+import ac.artemis.packet.protocol.ProtocolVersion;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
-import cc.ghast.packet.nms.ProtocolVersion;
-import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
 

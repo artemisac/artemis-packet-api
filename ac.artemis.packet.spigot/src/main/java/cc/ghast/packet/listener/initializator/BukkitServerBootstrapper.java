@@ -1,8 +1,8 @@
 package cc.ghast.packet.listener.initializator;
 
 import cc.ghast.packet.PacketManager;
-import cc.ghast.packet.profile.Profile;
-import cc.ghast.packet.protocol.ProtocolDirection;
+import cc.ghast.packet.profile.ArtemisProfile;
+import ac.artemis.packet.protocol.ProtocolDirection;
 import cc.ghast.packet.codec.ArtemisDecoder;
 import cc.ghast.packet.codec.ArtemisEncoder;
 import cc.ghast.packet.listener.injector.Injector;
@@ -10,8 +10,6 @@ import cc.ghast.packet.listener.injector.InjectorModern;
 import cc.ghast.packet.reflections.ReflectUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.util.AttributeKey;
 
 import java.lang.reflect.Method;
 import java.util.UUID;
@@ -40,7 +38,7 @@ public class BukkitServerBootstrapper extends ChannelInitializer<Channel> {
     protected void initChannel(Channel socketChannel) throws Exception {
         final String address = ReflectUtil.parseAddress(socketChannel.remoteAddress());
         final UUID id = UUID.randomUUID();
-        final Profile info = new Profile(id, null, address, socketChannel);
+        final ArtemisProfile info = new ArtemisProfile(id, null, address, socketChannel);
 
         // Inject the profile
         PacketManager.INSTANCE.getListener().getInjector().injectFuturePlayer(info);
