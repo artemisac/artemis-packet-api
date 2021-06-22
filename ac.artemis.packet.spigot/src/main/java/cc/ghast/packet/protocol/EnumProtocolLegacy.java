@@ -103,32 +103,32 @@ public enum EnumProtocolLegacy implements EnumProtocol {
             this.addPacket(ProtocolDirection.OUT, PacketPlayServerUpdateEntityNBT.class);
 
             // Client
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientKeepAlive.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientChat.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientUseEntity.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientFlying.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientFlying.PacketPlayClientPosition.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientFlying.PacketPlayClientLook.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientFlying.PacketPlayClientPositionLook.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientBlockDig.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientBlockPlace.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientHeldItemSlot.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientArmAnimation.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientEntityAction.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientSteerVehicle.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientWindowClose.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientWindowClick.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientTransaction.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientSetCreativeSlot.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientEnchantItem.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientUpdateSign.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientAbilities.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientTabComplete.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientSettings.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientClientCommand.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientCustomPayload.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientSpectate.class);
-            this.addPacket(ProtocolDirection.IN, PacketPlayClientResourcePackStatus.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientKeepAlive.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientChat.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientUseEntity.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientFlying.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientFlying.PacketPlayClientPosition.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientFlying.PacketPlayClientLook.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientFlying.PacketPlayClientPositionLook.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientBlockDig.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientBlockPlace.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientHeldItemSlot.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientArmAnimation.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientEntityAction.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientSteerVehicle.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientWindowClose.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientWindowClick.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientTransaction.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientSetCreativeSlot.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientEnchantItem.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientUpdateSign.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientAbilities.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientTabComplete.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientSettings.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientClientCommand.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientCustomPayload.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientSpectate.class);
+            this.addPacket(ProtocolDirection.IN, GPacketPlayClientResourcePackStatus.class);
 
         }
 

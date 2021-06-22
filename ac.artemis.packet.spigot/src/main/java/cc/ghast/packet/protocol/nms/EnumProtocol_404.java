@@ -7,7 +7,6 @@ import cc.ghast.packet.utils.PacketPair;
 import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.wrapper.packet.PacketInfo;
 import cc.ghast.packet.wrapper.packet.handshake.GPacketHandshakeClientSetProtocol;
-import cc.ghast.packet.wrapper.packet.handshake.GPacketHandshakeLegacyServerListPing;
 import cc.ghast.packet.wrapper.packet.login.*;
 import cc.ghast.packet.wrapper.packet.play.client.*;
 import cc.ghast.packet.wrapper.packet.play.server.*;
@@ -46,60 +45,60 @@ public enum EnumProtocol_404 implements EnumProtocol {
     PLAY(
             new PacketPair(
                 new PacketInfo[] {
-                        new PacketInfo<>(0x00, PacketPlayClientConfirmTeleport.class, "PacketPlayInTeleportAccept"),
+                        new PacketInfo<>(0x00, GPacketPlayClientConfirmTeleport.class, "PacketPlayInTeleportAccept"),
                         // Todo figure out NMS name for this
-                        new PacketInfo<>(0x01, PacketPlayClientBlockMetadataQuery.class, "PacketPlayInQueryBlockNBT"),
-                        new PacketInfo<>(0x02, PacketPlayClientChat.class, "PacketPlayInChat"),
-                        new PacketInfo<>(0x03, PacketPlayClientClientCommand.class,"PacketPlayInClientCommand"),
-                        new PacketInfo<>(0x04, PacketPlayClientSettings.class,"PacketPlayInSettings"),
-                        new PacketInfo<>(0x05, PacketPlayClientTabComplete.class, "PacketPlayInTabComplete"),
-                        new PacketInfo<>(0x06, PacketPlayClientTransaction.class,"PacketPlayInTransaction"),
-                        new PacketInfo<>(0x07, PacketPlayClientEnchantItem.class,"PacketPlayInEnchantItem"),
-                        new PacketInfo<>(0x08, PacketPlayClientWindowClick.class,"PacketPlayInWindowClick"),
-                        new PacketInfo<>(0x09, PacketPlayClientWindowClose.class,"PacketPlayInCloseWindow"),
+                        new PacketInfo<>(0x01, GPacketPlayClientBlockMetadataQuery.class, "PacketPlayInQueryBlockNBT"),
+                        new PacketInfo<>(0x02, GPacketPlayClientChat.class, "PacketPlayInChat"),
+                        new PacketInfo<>(0x03, GPacketPlayClientClientCommand.class,"PacketPlayInClientCommand"),
+                        new PacketInfo<>(0x04, GPacketPlayClientSettings.class,"PacketPlayInSettings"),
+                        new PacketInfo<>(0x05, GPacketPlayClientTabComplete.class, "PacketPlayInTabComplete"),
+                        new PacketInfo<>(0x06, GPacketPlayClientTransaction.class,"PacketPlayInTransaction"),
+                        new PacketInfo<>(0x07, GPacketPlayClientEnchantItem.class,"PacketPlayInEnchantItem"),
+                        new PacketInfo<>(0x08, GPacketPlayClientWindowClick.class,"PacketPlayInWindowClick"),
+                        new PacketInfo<>(0x09, GPacketPlayClientWindowClose.class,"PacketPlayInCloseWindow"),
                         // AKA Plugin Message
-                        new PacketInfo<>(0x0A, PacketPlayClientCustomPayload.class,"PacketPlayInCustomPayload"),
+                        new PacketInfo<>(0x0A, GPacketPlayClientCustomPayload.class,"PacketPlayInCustomPayload"),
                         // Todo find NMS name
-                        new PacketInfo<>(0x0B, PacketPlayClientBookEdit.class, "PacketPlayInEditBook"),
+                        new PacketInfo<>(0x0B, GPacketPlayClientBookEdit.class, "PacketPlayInEditBook"),
                         // Todo find NMS name
                         new PacketInfo<>(0x0C, PacketPlayClientEntityMetadataQuery.class, "PacketPlayInQueryEntityNBT"),
-                        new PacketInfo<>(0x0D, PacketPlayClientUseEntity.class, "PacketPlayInUseEntity"),
-                        new PacketInfo<>(0x0E, PacketPlayClientKeepAlive.class, "PacketPlayInKeepAlive"),
-                        new PacketInfo<>(0x0F, PacketPlayClientFlying.class, "PacketPlayInFlying"),
-                        new PacketInfo<>(0x10, PacketPlayClientFlying.PacketPlayClientPosition.class,"PacketPlayInPosition"),
-                        new PacketInfo<>(0x11, PacketPlayClientFlying.PacketPlayClientPositionLook.class,"PacketPlayInPositionLook"),
-                        new PacketInfo<>(0x12, PacketPlayClientFlying.PacketPlayClientLook.class,"PacketPlayInLook"),
-                        new PacketInfo<>(0x13, PacketPlayClientVehicleMove.class,"PacketPlayInVehicleMove"),
-                        new PacketInfo<>(0x14, PacketPlayClientBoatMove.class, "PacketPlayInSteerBoat"),
+                        new PacketInfo<>(0x0D, GPacketPlayClientUseEntity.class, "PacketPlayInUseEntity"),
+                        new PacketInfo<>(0x0E, GPacketPlayClientKeepAlive.class, "PacketPlayInKeepAlive"),
+                        new PacketInfo<>(0x0F, GPacketPlayClientFlying.class, "PacketPlayInFlying"),
+                        new PacketInfo<>(0x10, GPacketPlayClientFlying.PacketPlayClientPosition.class,"PacketPlayInPosition"),
+                        new PacketInfo<>(0x11, GPacketPlayClientFlying.PacketPlayClientPositionLook.class,"PacketPlayInPositionLook"),
+                        new PacketInfo<>(0x12, GPacketPlayClientFlying.PacketPlayClientLook.class,"PacketPlayInLook"),
+                        new PacketInfo<>(0x13, GPacketPlayClientVehicleMove.class,"PacketPlayInVehicleMove"),
+                        new PacketInfo<>(0x14, GPacketPlayClientBoatMove.class, "PacketPlayInSteerBoat"),
                         // Todo find NMS name
                         new PacketInfo<>(0x15, PacketPlayClientItemPick.class, "PacketPlayInPickItem"),
                         // Todo find NMS name
-                        new PacketInfo<>(0x16, PacketPlayClientCraftingPrepareGrid.class, "PacketPlayInCraftingPrepareGrid"),
-                        new PacketInfo<>(0x17, PacketPlayClientAbilities.class,"PacketPlayInAbilities"),
-                        new PacketInfo<>(0x18, PacketPlayClientBlockDig.class,"PacketPlayInBlockDig"),
-                        new PacketInfo<>(0x19, PacketPlayClientEntityAction.class,"PacketPlayInEntityAction"),
-                        new PacketInfo<>(0x1A, PacketPlayClientSteerVehicle.class,"PacketPlayInSteerVehicle"),
-                        new PacketInfo<>(0x1B, PacketPlayClientCraftingBookData.class, "PacketPlayInCraftBookData"),
+                        new PacketInfo<>(0x16, GPacketPlayClientCraftingPrepareGrid.class, "PacketPlayInCraftingPrepareGrid"),
+                        new PacketInfo<>(0x17, GPacketPlayClientAbilities.class,"PacketPlayInAbilities"),
+                        new PacketInfo<>(0x18, GPacketPlayClientBlockDig.class,"PacketPlayInBlockDig"),
+                        new PacketInfo<>(0x19, GPacketPlayClientEntityAction.class,"PacketPlayInEntityAction"),
+                        new PacketInfo<>(0x1A, GPacketPlayClientSteerVehicle.class,"PacketPlayInSteerVehicle"),
+                        new PacketInfo<>(0x1B, GPacketPlayClientCraftingBookData.class, "PacketPlayInCraftBookData"),
                         // Todo find NMS name
                         new PacketInfo<>(0x1C, PacketPlayClientItemName.class, "PacketPlayInNameItem"),
-                        new PacketInfo<>(0x1D, PacketPlayClientResourcePackStatus.class, "PacketPlayInResourcePackStatus"),
-                        new PacketInfo<>(0x1E, PacketPlayClientAdvancementTab.class, "PacketPlayInAdvancementTab"),
+                        new PacketInfo<>(0x1D, GPacketPlayClientResourcePackStatus.class, "PacketPlayInResourcePackStatus"),
+                        new PacketInfo<>(0x1E, GPacketPlayClientAdvancementTab.class, "PacketPlayInAdvancementTab"),
                         // Todo find NMS name
                         new PacketInfo<>(0x1F, PacketPlayClientTradeSelect.class, "PacketPlayInSelectTrade"),
                         new PacketInfo<>(0x20, PacketPlayClientEffectBeaconSet.class, "PacketPlayInSetBeaconEffect"),
-                        new PacketInfo<>(0x21, PacketPlayClientHeldItemSlot.class,"PacketPlayInHeldItemSlot"),
+                        new PacketInfo<>(0x21, GPacketPlayClientHeldItemSlot.class,"PacketPlayInHeldItemSlot"),
                         // Todo find NMS name
                         new PacketInfo<>(0x22, PacketPlayClientUpdateCommandBlock.class,"PacketPlayInUpdateCommandBlock"),
                         // Todo find NMS name
                         new PacketInfo<>(0x23, PacketPlayClientUpdateCommandMinecart.class, "PacketPlayInUpdateCommandBlockMinecart"),
-                        new PacketInfo<>(0x24, PacketPlayClientSetCreativeSlot.class,"PacketPlayInSetCreativeSlot"),
+                        new PacketInfo<>(0x24, GPacketPlayClientSetCreativeSlot.class,"PacketPlayInSetCreativeSlot"),
                         // Todo find NMS name
                         new PacketInfo<>(0x25, PacketPlayClientUpdateStructureBlock.class, "PacketPlayInUpdateStructureBlock"),
-                        new PacketInfo<>(0x26, PacketPlayClientUpdateSign.class,"PacketPlayInUpdateSign"),
-                        new PacketInfo<>(0x27, PacketPlayClientArmAnimation.class,"PacketPlayInArmAnimation"),
-                        new PacketInfo<>(0x28, PacketPlayClientSpectate.class, "PacketPlayInSpectate"),
-                        new PacketInfo<>(0x29, PacketPlayClientBlockPlace.class,"PacketPlayInBlockPlace"),
-                        new PacketInfo<>(0x2A, PacketPlayClientItemUse.class, "PacketPlayInUseItem")
+                        new PacketInfo<>(0x26, GPacketPlayClientUpdateSign.class,"PacketPlayInUpdateSign"),
+                        new PacketInfo<>(0x27, GPacketPlayClientArmAnimation.class,"PacketPlayInArmAnimation"),
+                        new PacketInfo<>(0x28, GPacketPlayClientSpectate.class, "PacketPlayInSpectate"),
+                        new PacketInfo<>(0x29, GPacketPlayClientBlockPlace.class,"PacketPlayInBlockPlace"),
+                        new PacketInfo<>(0x2A, GPacketPlayClientItemUse.class, "PacketPlayInUseItem")
 
                 },
                 new PacketInfo[] {

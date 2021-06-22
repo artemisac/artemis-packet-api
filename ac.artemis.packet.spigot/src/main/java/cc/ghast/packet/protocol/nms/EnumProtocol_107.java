@@ -7,7 +7,6 @@ import cc.ghast.packet.protocol.EnumProtocol;
 import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.wrapper.packet.PacketInfo;
 import cc.ghast.packet.wrapper.packet.handshake.GPacketHandshakeClientSetProtocol;
-import cc.ghast.packet.wrapper.packet.handshake.GPacketHandshakeLegacyServerListPing;
 import cc.ghast.packet.wrapper.packet.login.*;
 import cc.ghast.packet.wrapper.packet.play.client.*;
 import cc.ghast.packet.wrapper.packet.play.server.*;
@@ -47,36 +46,36 @@ public enum EnumProtocol_107 implements EnumProtocol {
     PLAY(
             new PacketPair(
                 new PacketInfo[] {
-                        new PacketInfo<>(0x00, PacketPlayClientConfirmTeleport.class, "PacketPlayInTeleportAccept"),
-                        new PacketInfo<>(0x01, PacketPlayClientTabComplete.class, "PacketPlayInTabComplete"),
-                        new PacketInfo<>(0x02, PacketPlayClientChat.class, "PacketPlayInChat"),
-                        new PacketInfo<>(0x03, PacketPlayClientClientCommand.class,"PacketPlayInClientCommand"),
-                        new PacketInfo<>(0x04, PacketPlayClientSettings.class,"PacketPlayInSettings"),
-                        new PacketInfo<>(0x05, PacketPlayClientTransaction.class,"PacketPlayInTransaction"),
-                        new PacketInfo<>(0x06, PacketPlayClientEnchantItem.class,"PacketPlayInEnchantItem"),
-                        new PacketInfo<>(0x07, PacketPlayClientWindowClick.class,"PacketPlayInWindowClick"),
-                        new PacketInfo<>(0x08, PacketPlayClientWindowClose.class,"PacketPlayInCloseWindow"),
-                        new PacketInfo<>(0x09, PacketPlayClientCustomPayload.class,"PacketPlayInCustomPayload"),
-                        new PacketInfo<>(0x0A, PacketPlayClientUseEntity.class, "PacketPlayInUseEntity"),
-                        new PacketInfo<>(0x0B, PacketPlayClientKeepAlive.class, "PacketPlayInKeepAlive"),
-                        new PacketInfo<>(0x0C, PacketPlayClientFlying.PacketPlayClientPosition.class,"PacketPlayInPosition"),
-                        new PacketInfo<>(0x0D, PacketPlayClientFlying.PacketPlayClientPositionLook.class,"PacketPlayInPositionLook"),
-                        new PacketInfo<>(0x0E, PacketPlayClientFlying.PacketPlayClientLook.class,"PacketPlayInLook"),
-                        new PacketInfo<>(0x0F, PacketPlayClientFlying.class, "PacketPlayInFlying"),
-                        new PacketInfo<>(0x10, PacketPlayClientVehicleMove.class,"PacketPlayInVehicleMove"),
-                        new PacketInfo<>(0x11, PacketPlayClientBoatMove.class, "PacketPlayInSteerBoat"),
-                        new PacketInfo<>(0x12, PacketPlayClientAbilities.class,"PacketPlayInAbilities"),
-                        new PacketInfo<>(0x13, PacketPlayClientBlockDig.class,"PacketPlayInBlockDig"),
-                        new PacketInfo<>(0x14, PacketPlayClientEntityAction.class,"PacketPlayInEntityAction"),
-                        new PacketInfo<>(0x15, PacketPlayClientSteerVehicle.class,"PacketPlayInSteerVehicle"),
-                        new PacketInfo<>(0x16, PacketPlayClientResourcePackStatus.class, "PacketPlayInResourcePackStatus"),
-                        new PacketInfo<>(0x17, PacketPlayClientHeldItemSlot.class,"PacketPlayInHeldItemSlot"),
-                        new PacketInfo<>(0x18, PacketPlayClientSetCreativeSlot.class,"PacketPlayInSetCreativeSlot"),
-                        new PacketInfo<>(0x19, PacketPlayClientUpdateSign.class,"PacketPlayInUpdateSign"),
-                        new PacketInfo<>(0x1A, PacketPlayClientArmAnimation.class,"PacketPlayInArmAnimation"),
-                        new PacketInfo<>(0x1B, PacketPlayClientSpectate.class, "PacketPlayInSpectate"),
-                        new PacketInfo<>(0x1C, PacketPlayClientBlockPlace.class,"PacketPlayInBlockPlace"),
-                        new PacketInfo<>(0x1D, PacketPlayClientItemUse.class, "PacketPlayInUseItem")
+                        new PacketInfo<>(0x00, GPacketPlayClientConfirmTeleport.class, "PacketPlayInTeleportAccept"),
+                        new PacketInfo<>(0x01, GPacketPlayClientTabComplete.class, "PacketPlayInTabComplete"),
+                        new PacketInfo<>(0x02, GPacketPlayClientChat.class, "PacketPlayInChat"),
+                        new PacketInfo<>(0x03, GPacketPlayClientClientCommand.class,"PacketPlayInClientCommand"),
+                        new PacketInfo<>(0x04, GPacketPlayClientSettings.class,"PacketPlayInSettings"),
+                        new PacketInfo<>(0x05, GPacketPlayClientTransaction.class,"PacketPlayInTransaction"),
+                        new PacketInfo<>(0x06, GPacketPlayClientEnchantItem.class,"PacketPlayInEnchantItem"),
+                        new PacketInfo<>(0x07, GPacketPlayClientWindowClick.class,"PacketPlayInWindowClick"),
+                        new PacketInfo<>(0x08, GPacketPlayClientWindowClose.class,"PacketPlayInCloseWindow"),
+                        new PacketInfo<>(0x09, GPacketPlayClientCustomPayload.class,"PacketPlayInCustomPayload"),
+                        new PacketInfo<>(0x0A, GPacketPlayClientUseEntity.class, "PacketPlayInUseEntity"),
+                        new PacketInfo<>(0x0B, GPacketPlayClientKeepAlive.class, "PacketPlayInKeepAlive"),
+                        new PacketInfo<>(0x0C, GPacketPlayClientFlying.PacketPlayClientPosition.class,"PacketPlayInPosition"),
+                        new PacketInfo<>(0x0D, GPacketPlayClientFlying.PacketPlayClientPositionLook.class,"PacketPlayInPositionLook"),
+                        new PacketInfo<>(0x0E, GPacketPlayClientFlying.PacketPlayClientLook.class,"PacketPlayInLook"),
+                        new PacketInfo<>(0x0F, GPacketPlayClientFlying.class, "PacketPlayInFlying"),
+                        new PacketInfo<>(0x10, GPacketPlayClientVehicleMove.class,"PacketPlayInVehicleMove"),
+                        new PacketInfo<>(0x11, GPacketPlayClientBoatMove.class, "PacketPlayInSteerBoat"),
+                        new PacketInfo<>(0x12, GPacketPlayClientAbilities.class,"PacketPlayInAbilities"),
+                        new PacketInfo<>(0x13, GPacketPlayClientBlockDig.class,"PacketPlayInBlockDig"),
+                        new PacketInfo<>(0x14, GPacketPlayClientEntityAction.class,"PacketPlayInEntityAction"),
+                        new PacketInfo<>(0x15, GPacketPlayClientSteerVehicle.class,"PacketPlayInSteerVehicle"),
+                        new PacketInfo<>(0x16, GPacketPlayClientResourcePackStatus.class, "PacketPlayInResourcePackStatus"),
+                        new PacketInfo<>(0x17, GPacketPlayClientHeldItemSlot.class,"PacketPlayInHeldItemSlot"),
+                        new PacketInfo<>(0x18, GPacketPlayClientSetCreativeSlot.class,"PacketPlayInSetCreativeSlot"),
+                        new PacketInfo<>(0x19, GPacketPlayClientUpdateSign.class,"PacketPlayInUpdateSign"),
+                        new PacketInfo<>(0x1A, GPacketPlayClientArmAnimation.class,"PacketPlayInArmAnimation"),
+                        new PacketInfo<>(0x1B, GPacketPlayClientSpectate.class, "PacketPlayInSpectate"),
+                        new PacketInfo<>(0x1C, GPacketPlayClientBlockPlace.class,"PacketPlayInBlockPlace"),
+                        new PacketInfo<>(0x1D, GPacketPlayClientItemUse.class, "PacketPlayInUseItem")
 
                 },
                 new PacketInfo[] {
