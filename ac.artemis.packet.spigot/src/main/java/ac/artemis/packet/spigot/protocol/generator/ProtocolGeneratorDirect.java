@@ -1,4 +1,4 @@
-package ac.artemis.packet.spigot.protocol;
+package ac.artemis.packet.spigot.protocol.generator;
 
 import ac.artemis.packet.PacketGenerator;
 import ac.artemis.packet.protocol.ProtocolDirection;
@@ -10,23 +10,20 @@ import ac.artemis.packet.spigot.utils.Accessor;
 import ac.artemis.packet.spigot.wrappers.GPacket;
 import ac.artemis.packet.wrapper.Packet;
 import ac.artemis.packet.wrapper.PacketInfo;
-import ac.artemis.packet.wrapper.client.PacketHandshakeClientSetProtocol;
-import ac.artemis.packet.wrapper.client.PacketLoginClientEncryptionBegin;
-import ac.artemis.packet.wrapper.client.PacketLoginClientStart;
 import cc.ghast.packet.wrapper.packet.handshake.GPacketHandshakeClientSetProtocol;
-import cc.ghast.packet.wrapper.packet.login.GPacketLoginClientStart;
-import cc.ghast.packet.wrapper.packet.login.GPacketLoginServerEncryptionBegin;
 
 import java.lang.reflect.Constructor;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class ProtocolGenerator extends Accessor implements PacketGenerator {
+public class ProtocolGeneratorDirect extends Accessor implements PacketGenerator {
     private final Map<Class<? extends Packet>, Class<? extends GPacket>> translationMap = new HashMap<>();
     private final Map<Integer, Constructor<? extends GPacket>> constructorMap = new HashMap<>();
     private final WrittenEnumProtocol version;
 
-    public ProtocolGenerator(ArtemisSpigotPlugin plugin, WrittenEnumProtocol version) {
+    public ProtocolGeneratorDirect(ArtemisSpigotPlugin plugin, WrittenEnumProtocol version) {
         super(plugin);
         this.version = version;
     }
@@ -54,7 +51,11 @@ public class ProtocolGenerator extends Accessor implements PacketGenerator {
 
     @Override
     public void create() {
-        
+        List<Class<? extends GPacket>> packets = Arrays.asList(
+                GPacketHandshakeClientSetProtocol.class,
+                GPacketLoginClientEncryptionBegin.class,
+                GPacketLoginClient
+        )
 
     }
 
