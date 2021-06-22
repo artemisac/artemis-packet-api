@@ -125,7 +125,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
             // Get the var_int packet id of the packet. This is quite important as it's what determines it's type
             int id = Converters.VAR_INT.read(in, profile.getVersion());
 
-            if (profile.getVersion() != profile.getGenerator().getVersion()) {
+            if (profile.getGenerator() != null && profile.getVersion() != profile.getGenerator().getVersion()) {
                 profile.setGenerator(ac.artemis.packet.PacketManager.getApi().getGenerator(profile.getVersion()));
             }
 
@@ -211,6 +211,8 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                 if (packet.isCancelled()) {
                     return true;
                 }
+            } else {
+                //System.out.println("Failed to handle packet of id " + id + " of state " + profile.getProtocol() + " of version " + profile.getVersion());
             }
 
             // Reset the reader index to prevent following pipelines to have getX sort of issue. Normally it doesn't, I'm
@@ -281,12 +283,13 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
         if (PacketManager.INSTANCE.getHookManager().getViaVersionHook() == null) {
             profile.setVersion(version);
-            profile.setGenerator(ac.artemis.packet.PacketManager.getApi().getGenerator(version));
         }
         final GPacketHandshakeClientSetProtocol.State state = handshake.getNextState();
         this.profile.setProtocol(state.equals(GPacketHandshakeClientSetProtocol.State.STATUS)
                 ? ProtocolState.STATUS : ProtocolState.LOGIN);
         this.profile.setVersion(version);
+
+        profile.setGenerator(ac.artemis.packet.PacketManager.getApi().getGenerator(version));
     }
 
     private void handleLoginSuccess(GPacketLoginServerSuccess loginSuccess) {

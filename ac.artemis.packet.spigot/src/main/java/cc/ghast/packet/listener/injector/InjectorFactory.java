@@ -16,7 +16,7 @@ public class InjectorFactory {
     }
 
     public Injector buildInjector() {
-        if (serverVersion.isAbove(ProtocolVersion.V1_8)) {
+        if (serverVersion.isBelow(ProtocolVersion.V1_8)) {
             return new InjectorLegacy();
         } else {
             return new InjectorModern();

@@ -6,7 +6,6 @@ public class PacketClass {
     private final Class<? extends Packet> clazz;
     private final int id;
 
-
     public PacketClass(Class<? extends Packet> clazz, int id) {
         this.clazz = clazz;
         this.id = id;

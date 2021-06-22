@@ -2,7 +2,11 @@ package cc.ghast.packet.wrapper.packet.play.server;
 
 import ac.artemis.packet.protocol.ProtocolVersion;
 import ac.artemis.packet.spigot.protocol.PacketLink;
+import ac.artemis.packet.wrapper.client.PacketPlayClientLook;
 import ac.artemis.packet.wrapper.server.PacketPlayServerEntity;
+import ac.artemis.packet.wrapper.server.PacketPlayServerEntityRelLook;
+import ac.artemis.packet.wrapper.server.PacketPlayServerEntityRelMove;
+import ac.artemis.packet.wrapper.server.PacketPlayServerEntityRelMoveLook;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
@@ -36,6 +40,7 @@ public class GPacketPlayServerEntity extends GPacket implements PacketPlayServer
         this.entityId = byteBuf.readVarInt();
     }
 
+    @PacketLink(PacketPlayServerEntityRelMove.class)
     public static class GPacketPlayServerRelEntityMove extends GPacketPlayServerEntity {
         public GPacketPlayServerRelEntityMove(UUID player, ProtocolVersion version) {
             super("PacketPlayOutRelEntityMove", player, version);
@@ -60,6 +65,7 @@ public class GPacketPlayServerEntity extends GPacket implements PacketPlayServer
         }
     }
 
+    @PacketLink(PacketPlayServerEntityRelLook.class)
     public static class GPacketPlayServerEntityLook extends GPacketPlayServerEntity {
         public GPacketPlayServerEntityLook(UUID player, ProtocolVersion version) {
             super("PacketPlayOutEntityLook", player, version);
@@ -76,6 +82,7 @@ public class GPacketPlayServerEntity extends GPacket implements PacketPlayServer
         }
     }
 
+    @PacketLink(PacketPlayServerEntityRelMoveLook.class)
     public static class GPacketPlayServerRelEntityMoveLook extends GPacketPlayServerEntity {
         public GPacketPlayServerRelEntityMoveLook(UUID player, ProtocolVersion version) {
             super("PacketPlayOutRelEntityMoveLook", player, version);

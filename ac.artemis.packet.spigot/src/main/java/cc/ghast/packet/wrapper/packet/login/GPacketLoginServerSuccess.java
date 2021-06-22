@@ -1,13 +1,16 @@
 package cc.ghast.packet.wrapper.packet.login;
 
 import ac.artemis.packet.protocol.ProtocolVersion;
+import ac.artemis.packet.spigot.protocol.PacketLink;
 import ac.artemis.packet.spigot.wrappers.GPacket;
+import ac.artemis.packet.wrapper.server.PacketLoginOutSuccess;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.wrapper.mc.GameProfile;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 
 import java.util.UUID;
 
+@PacketLink(PacketLoginOutSuccess.class)
 public class GPacketLoginServerSuccess extends GPacket implements ReadableBuffer {
     public GPacketLoginServerSuccess(UUID player, ProtocolVersion version) {
         super("PacketLoginOutServerSuccess", player, version);

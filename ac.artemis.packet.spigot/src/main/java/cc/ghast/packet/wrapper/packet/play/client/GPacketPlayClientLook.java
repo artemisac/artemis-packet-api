@@ -26,10 +26,10 @@ public class GPacketPlayClientLook extends GPacket implements PacketPlayClientLo
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-        this.onGround = byteBuf.readUnsignedByte() != 0;
-
         this.yaw = byteBuf.readFloat();
         this.pitch = byteBuf.readFloat();
+
+        this.onGround = byteBuf.readUnsignedByte() != 0;
     }
 
     public float getYaw() {

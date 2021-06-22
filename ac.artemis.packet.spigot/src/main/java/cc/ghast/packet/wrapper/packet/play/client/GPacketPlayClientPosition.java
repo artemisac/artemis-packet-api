@@ -28,11 +28,11 @@ public class GPacketPlayClientPosition extends GPacket implements PacketPlayClie
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-        this.onGround = byteBuf.readUnsignedByte() != 0;
-
         this.x = byteBuf.readDouble();
         this.y = byteBuf.readDouble();
         this.z = byteBuf.readDouble();
+
+        this.onGround = byteBuf.readUnsignedByte() != 0;
     }
 
     public double getX() {

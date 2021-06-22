@@ -30,14 +30,14 @@ public class GPacketPlayClientPositionLook extends GPacket implements PacketPlay
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-        this.onGround = byteBuf.readUnsignedByte() != 0;
-
         this.x = byteBuf.readDouble();
         this.y = byteBuf.readDouble();
         this.z = byteBuf.readDouble();
 
         this.yaw = byteBuf.readFloat();
         this.pitch = byteBuf.readFloat();
+
+        this.onGround = byteBuf.readUnsignedByte() != 0;
     }
 
     public double getX() {

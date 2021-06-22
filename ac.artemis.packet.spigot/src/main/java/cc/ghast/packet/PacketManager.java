@@ -28,9 +28,10 @@ public enum PacketManager {
     public void init(Plugin plugin) {
         this.plugin = plugin;
 
+        this.api = new ArtemisSpigotApi(plugin);
+        ac.artemis.packet.PacketManager.setApi(api);
         // Plugin startup logic
         this.repository = new ProtocolRepository(plugin);
-        this.api = new ArtemisSpigotApi(plugin);
 
         this.manager = new ChainManager();
         this.listener = new ChannelListener(this);

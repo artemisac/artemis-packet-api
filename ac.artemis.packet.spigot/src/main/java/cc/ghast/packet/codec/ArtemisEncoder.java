@@ -25,7 +25,7 @@ import org.bukkit.Server;
 public class ArtemisEncoder extends MessageToByteEncoder<GPacket> {
 
     private final ArtemisProfile profile;
-    private final PacketGenerator generator = ac.artemis.packet.PacketManager.getApi().getGenerator(ServerUtil.getGameVersion());
+    private PacketGenerator generator = ac.artemis.packet.PacketManager.getApi().getGenerator(ServerUtil.getGameVersion());
 
     public ArtemisEncoder(ArtemisProfile profile) {
         this.profile = profile;
@@ -34,9 +34,12 @@ public class ArtemisEncoder extends MessageToByteEncoder<GPacket> {
     @Override
     @SneakyThrows
     protected void encode(ChannelHandlerContext channelHandlerContext, GPacket obj, ByteBuf byteBuf) {
-        final int packetId = generator.getPacketId(obj);
+        final Integer packetId = generator == null
+                ? (generator = ac.artemis.packet.PacketManager.getApi().getGenerator(ServerUtil.getGameVersion())).getPacketId(obj)
+                : generator.getPacketId(obj);
 
-        if (packetId < 0){
+        if (packetId == null || packetId < 0){
+            ServerUtil.sendConsoleMessage("&4&lFailed packet encoding! Fatal error... (" + obj.getRealName() + ")");
             throw new InvalidPacketException(obj.getClass());
         }
 
