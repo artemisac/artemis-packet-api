@@ -11,7 +11,7 @@ import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import java.util.UUID;
 
 @PacketLink(PacketPlayServerBlockBreakAnimation.class)
-public class GPacketPlayServerBlockBreakAnimation extends GPacket implements ReadableBuffer {
+public class GPacketPlayServerBlockBreakAnimation extends GPacket implements PacketPlayServerBlockBreakAnimation, ReadableBuffer {
     public GPacketPlayServerBlockBreakAnimation(UUID player, ProtocolVersion version) {
         super("PacketPlayOutBlockBreakAnimation", player, version);
     }

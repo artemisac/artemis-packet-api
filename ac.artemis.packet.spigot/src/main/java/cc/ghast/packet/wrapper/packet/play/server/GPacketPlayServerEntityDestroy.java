@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Getter
 @PacketLink(PacketPlayServerEntityDestroy.class)
-public class GPacketPlayServerEntityDestroy extends GPacket implements ReadableBuffer {
+public class GPacketPlayServerEntityDestroy extends GPacket implements PacketPlayServerEntityDestroy, ReadableBuffer {
     public GPacketPlayServerEntityDestroy(UUID player, ProtocolVersion version) {
         super("PacketPlayOutEntityDestroy", player, version);
     }

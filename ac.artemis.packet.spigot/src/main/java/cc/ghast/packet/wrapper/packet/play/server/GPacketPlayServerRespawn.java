@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Getter
 @PacketLink(PacketPlayServerRespawn.class)
-public class GPacketPlayServerRespawn extends GPacket implements ReadableBuffer {
+public class GPacketPlayServerRespawn extends GPacket implements PacketPlayServerRespawn, ReadableBuffer {
     public GPacketPlayServerRespawn(UUID player, ProtocolVersion version) {
         super("PacketPlayOutRespawn", player, version);
     }

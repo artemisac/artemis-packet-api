@@ -10,7 +10,7 @@ import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import java.util.UUID;
 
 @PacketLink(PacketPlayServerBlockAction.class)
-public class GPacketPlayServerBlockAction extends GPacket implements ReadableBuffer {
+public class GPacketPlayServerBlockAction extends GPacket implements PacketPlayServerBlockAction, ReadableBuffer  {
     public GPacketPlayServerBlockAction(UUID player, ProtocolVersion version) {
         super("PacketPlayOutBlockAction", player, version);
     }

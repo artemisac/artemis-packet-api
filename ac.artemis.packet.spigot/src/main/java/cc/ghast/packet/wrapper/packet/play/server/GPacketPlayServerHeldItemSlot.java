@@ -10,7 +10,7 @@ import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import java.util.UUID;
 
 @PacketLink(PacketPlayServerItemHeldSlot.class)
-public class GPacketPlayServerHeldItemSlot extends GPacket implements ReadableBuffer {
+public class GPacketPlayServerHeldItemSlot extends GPacket implements PacketPlayServerItemHeldSlot, ReadableBuffer {
     public GPacketPlayServerHeldItemSlot(UUID player, ProtocolVersion version) {
         super("PacketPlayOutHeldItemSlot", player, version);
     }

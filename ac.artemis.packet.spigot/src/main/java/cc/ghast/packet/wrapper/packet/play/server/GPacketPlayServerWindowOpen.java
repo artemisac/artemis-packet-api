@@ -10,7 +10,7 @@ import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import java.util.UUID;
 
 @PacketLink(PacketPlayServerWindowOpen.class)
-public class GPacketPlayServerWindowOpen extends GPacket implements ReadableBuffer {
+public class GPacketPlayServerWindowOpen extends GPacket implements PacketPlayServerWindowOpen, ReadableBuffer {
     public GPacketPlayServerWindowOpen(UUID player, ProtocolVersion version) {
         super("PacketPlayOutOpenWindow", player, version);
     }

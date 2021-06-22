@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Getter
 @PacketLink(PacketPlayServerBlockChange.class)
-public class GPacketPlayServerBlockChange extends GPacket implements ReadableBuffer {
+public class GPacketPlayServerBlockChange extends GPacket implements PacketPlayServerBlockChange, ReadableBuffer {
     public GPacketPlayServerBlockChange(UUID player, ProtocolVersion version) {
         super("PacketPlayOutBlockChange", player, version);
     }

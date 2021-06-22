@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Getter
 @PacketLink(PacketPlayServerChat.class)
-public class GPacketPlayServerChat extends GPacket implements ReadableBuffer {
+public class GPacketPlayServerChat extends GPacket implements PacketPlayServerChat, ReadableBuffer {
     public GPacketPlayServerChat(UUID player, ProtocolVersion version) {
         super("PacketPlayOutChat", player, version);
     }

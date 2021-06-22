@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Getter
 @PacketLink(PacketPlayServerPosition.class)
-public class GPacketPlayServerPosition extends GPacket implements ReadableBuffer {
+public class GPacketPlayServerPosition extends GPacket implements PacketPlayServerPosition, ReadableBuffer {
     public GPacketPlayServerPosition(UUID player, ProtocolVersion version) {
         super("PacketPlayOutPosition", player, version);
     }

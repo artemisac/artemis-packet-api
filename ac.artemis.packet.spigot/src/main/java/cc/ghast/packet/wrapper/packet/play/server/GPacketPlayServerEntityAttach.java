@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Getter
 @PacketLink(PacketPlayServerEntityAttach.class)
-public class GPacketPlayServerEntityAttach extends GPacket implements ReadableBuffer {
+public class GPacketPlayServerEntityAttach extends GPacket implements PacketPlayServerEntityAttach, ReadableBuffer {
     public GPacketPlayServerEntityAttach(UUID player, ProtocolVersion version) {
         super("PacketPlayOutAttachEntity", player, version);
     }

@@ -10,7 +10,7 @@ import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import java.util.UUID;
 
 @PacketLink(PacketPlayServerKickDisconnect.class)
-public class GPacketPlayServerKickDisconnect extends GPacket implements ReadableBuffer {
+public class GPacketPlayServerKickDisconnect extends GPacket implements PacketPlayServerKickDisconnect, ReadableBuffer {
     public GPacketPlayServerKickDisconnect(UUID player, ProtocolVersion version) {
         super("PacketPlayOutKickDisconnect", player, version);
     }

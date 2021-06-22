@@ -10,7 +10,7 @@ import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import java.util.UUID;
 
 @PacketLink(PacketPlayServerChunkUnload.class)
-public class GPacketPlayServerChunkUnload extends GPacket implements ReadableBuffer {
+public class GPacketPlayServerChunkUnload extends GPacket implements PacketPlayServerChunkUnload, ReadableBuffer {
     public GPacketPlayServerChunkUnload(UUID player, ProtocolVersion version) {
         super("PacketPlayOutUnloadChunk", player, version);
     }

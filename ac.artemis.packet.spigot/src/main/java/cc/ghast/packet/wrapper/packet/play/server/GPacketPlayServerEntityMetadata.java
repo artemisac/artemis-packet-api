@@ -13,7 +13,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 @PacketLink(PacketPlayServerEntityMetadata.class)
-public class GPacketPlayServerEntityMetadata extends GPacket implements ReadableBuffer, WriteableBuffer {
+public class GPacketPlayServerEntityMetadata extends GPacket implements PacketPlayServerEntityMetadata, ReadableBuffer, WriteableBuffer {
     public GPacketPlayServerEntityMetadata(UUID player, ProtocolVersion version) {
         super("PacketPlayOutEntityMetadata", player, version);
     }

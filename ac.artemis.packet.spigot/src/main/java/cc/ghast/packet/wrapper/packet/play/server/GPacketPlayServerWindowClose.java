@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Getter
 @PacketLink(PacketPlayServerWindowClose.class)
-public class GPacketPlayServerWindowClose extends GPacket implements ReadableBuffer, WriteableBuffer {
+public class GPacketPlayServerWindowClose extends GPacket implements PacketPlayServerWindowClose, ReadableBuffer, WriteableBuffer {
     public GPacketPlayServerWindowClose(UUID player, ProtocolVersion version) {
         super("PacketPlayOutCloseWindow", player, version);
     }
