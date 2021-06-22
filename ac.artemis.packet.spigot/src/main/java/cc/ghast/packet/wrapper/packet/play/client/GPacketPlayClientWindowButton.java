@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Getter
 @PacketLink(PacketPlayClientWindowButton.class)
-public class GPacketPlayClientWindowButton extends GPacket implements ReadableBuffer {
+public class GPacketPlayClientWindowButton extends GPacket implements PacketPlayClientWindowButton, ReadableBuffer {
     public GPacketPlayClientWindowButton(UUID player, ProtocolVersion version) {
         super("PacketPlayInWindowButton", player, version);
     }

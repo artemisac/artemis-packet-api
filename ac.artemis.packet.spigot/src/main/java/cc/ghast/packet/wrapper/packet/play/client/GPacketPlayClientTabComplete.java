@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Getter
 @PacketLink(PacketPlayClientTabComplete.class)
-public class GPacketPlayClientTabComplete extends GPacket implements ReadableBuffer {
+public class GPacketPlayClientTabComplete extends GPacket implements PacketPlayClientTabComplete, ReadableBuffer {
     public GPacketPlayClientTabComplete(UUID player, ProtocolVersion version) {
         super("PacketPlayInTabComplete", player, version);
     }

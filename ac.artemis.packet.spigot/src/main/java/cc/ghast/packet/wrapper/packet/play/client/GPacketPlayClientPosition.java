@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Getter
 @PacketLink(PacketPlayClientPosition.class)
-public class GPacketPlayClientPosition extends GPacket implements ReadableBuffer {
+public class GPacketPlayClientPosition extends GPacket implements PacketPlayClientPosition, ReadableBuffer {
     public GPacketPlayClientPosition(UUID player, ProtocolVersion version) {
         super((ServerUtil.getGameVersion().isBelow(ProtocolVersion.V1_8) ? "" : "PacketPlayInFlying$")
                 + "PacketPlayInPosition", player, version);

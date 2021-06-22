@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Getter
 @PacketLink(PacketPlayClientConfirmTeleport.class)
-public class GPacketPlayClientConfirmTeleport extends GPacket implements ReadableBuffer {
+public class GPacketPlayClientConfirmTeleport extends GPacket implements PacketPlayClientConfirmTeleport, ReadableBuffer {
     public GPacketPlayClientConfirmTeleport(UUID player, ProtocolVersion version) {
         super("PacketPlayInTeleportAccept", player, version, e -> e.isOrAbove(ProtocolVersion.V1_9));
     }

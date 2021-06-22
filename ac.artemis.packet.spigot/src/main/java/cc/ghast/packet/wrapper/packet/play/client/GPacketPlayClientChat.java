@@ -10,7 +10,7 @@ import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import java.util.UUID;
 
 @PacketLink(PacketPlayClientChat.class)
-public class GPacketPlayClientChat extends GPacket implements ReadableBuffer {
+public class GPacketPlayClientChat extends GPacket implements PacketPlayClientChat, ReadableBuffer {
 
     public GPacketPlayClientChat(UUID player, ProtocolVersion version) {
         super("PacketPlayInChat", player, version);

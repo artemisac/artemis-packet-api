@@ -18,7 +18,7 @@ import java.util.UUID;
  */
 @Getter
 @PacketLink(PacketPlayClientItemUse.class)
-public class GPacketPlayClientItemUse extends GPacket implements ReadableBuffer {
+public class GPacketPlayClientItemUse extends GPacket implements PacketPlayClientItemUse, ReadableBuffer{
     public GPacketPlayClientItemUse(UUID player, ProtocolVersion version) {
         super("PacketPlayInBlockPlace", player, version, e -> e.isOrAbove(ProtocolVersion.V1_9));
     }

@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Getter
 @PacketLink(PacketPlayClientBlockMetadata.class)
-public class GPacketPlayClientBlockMetadataQuery extends GPacket implements ReadableBuffer {
+public class GPacketPlayClientBlockMetadataQuery extends GPacket implements PacketPlayClientBlockMetadata, ReadableBuffer {
     public GPacketPlayClientBlockMetadataQuery(UUID player, ProtocolVersion version) {
         super("PacketPlayInBlockMetadataQuery", player, version);
     }
