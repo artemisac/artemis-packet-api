@@ -5,7 +5,7 @@ import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.nms.payload.MinecraftKey;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
-import cc.ghast.packet.wrapper.packet.Packet;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Getter
-public class PacketPlayClientCustomPayload extends Packet<ClientPacket> implements ReadableBuffer {
+public class PacketPlayClientCustomPayload extends GPacket implements ReadableBuffer {
     public PacketPlayClientCustomPayload(UUID player, ProtocolVersion version) {
         super("PacketPlayInCustomPayload", player, version);
     }

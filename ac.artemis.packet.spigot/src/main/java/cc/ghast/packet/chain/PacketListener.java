@@ -1,7 +1,7 @@
 package cc.ghast.packet.chain;
 
 import cc.ghast.packet.profile.Profile;
-import cc.ghast.packet.wrapper.packet.Packet;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 
 public interface PacketListener {
 
@@ -15,6 +15,6 @@ public interface PacketListener {
         return this.async[0];
     }
 
-    void onPacket(Profile profile, Packet<?> packet);
+    void onPacket(Profile profile, GPacket packet);
 
 }

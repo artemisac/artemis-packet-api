@@ -5,12 +5,12 @@ import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.wrapper.mc.PlayerEnums;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
-import cc.ghast.packet.wrapper.packet.Packet;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 import lombok.Getter;
 
 import java.util.UUID;
 @Getter
-public class PacketPlayClientEntityAction extends Packet<ClientPacket> implements ReadableBuffer {
+public class PacketPlayClientEntityAction extends GPacket implements ReadableBuffer {
     public PacketPlayClientEntityAction(UUID player, ProtocolVersion version) {
         super("PacketPlayInEntityAction", player, version);
     }

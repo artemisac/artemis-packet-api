@@ -6,7 +6,7 @@ import cc.ghast.packet.wrapper.mc.PlayerEnums;
 import cc.ghast.packet.wrapper.bukkit.Vector3D;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
-import cc.ghast.packet.wrapper.packet.Packet;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Getter
-public class PacketPlayClientUseEntity extends Packet<ClientPacket> implements ReadableBuffer {
+public class PacketPlayClientUseEntity extends GPacket implements ReadableBuffer {
     public PacketPlayClientUseEntity(UUID player, ProtocolVersion version) {
         super("PacketPlayInUseEntity", player, version);
     }

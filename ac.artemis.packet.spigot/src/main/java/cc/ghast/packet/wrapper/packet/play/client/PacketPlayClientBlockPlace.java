@@ -9,7 +9,7 @@ import cc.ghast.packet.wrapper.bukkit.Vector3D;
 import cc.ghast.packet.wrapper.mc.PlayerEnums;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
-import cc.ghast.packet.wrapper.packet.Packet;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
 
@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Getter
-public class PacketPlayClientBlockPlace extends Packet<ClientPacket> implements ReadableBuffer {
+public class PacketPlayClientBlockPlace extends GPacket implements ReadableBuffer {
     public PacketPlayClientBlockPlace(UUID player, ProtocolVersion version) {
         super(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_11) ? "PacketPlayInBlockPlace"
                 : "PacketPlayInUseItem", player, version);

@@ -4,8 +4,7 @@ import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.wrapper.bukkit.Dimension;
 import cc.ghast.packet.wrapper.bukkit.GameMode;
-import cc.ghast.packet.wrapper.packet.Packet;
-import cc.ghast.packet.wrapper.packet.ServerPacket;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import lombok.Getter;
 import org.bukkit.Difficulty;
@@ -14,7 +13,7 @@ import org.bukkit.WorldType;
 import java.util.UUID;
 
 @Getter
-public class PacketPlayServerLogin extends Packet<ServerPacket> implements ReadableBuffer {
+public class PacketPlayServerLogin extends GPacket implements ReadableBuffer {
     public PacketPlayServerLogin(UUID player, ProtocolVersion version) {
         super("PacketPlayOutLogin", player, version);
     }

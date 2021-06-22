@@ -6,7 +6,7 @@ import cc.ghast.packet.profile.Profile;
 import cc.ghast.packet.utils.PacketCallback;
 import cc.ghast.packet.listener.callback.LoginCallback;
 import cc.ghast.packet.reflections.ReflectUtil;
-import cc.ghast.packet.wrapper.packet.Packet;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 import net.minecraft.util.com.google.common.cache.Cache;
 import net.minecraft.util.com.google.common.cache.CacheBuilder;
 import net.minecraft.util.io.netty.channel.*;
@@ -185,7 +185,7 @@ public class InjectorLegacy implements Injector {
     }
 
     @Override
-    public void writePacket(UUID target, Packet<?> packet, Consumer<PacketCallback> callback) {
+    public void writePacket(UUID target, GPacket packet, Consumer<PacketCallback> callback) {
         final Profile profile = this.getProfile(target);
 
         if (profile == null) {

@@ -5,7 +5,7 @@ import cc.ghast.packet.profile.Profile;
 import cc.ghast.packet.chain.PacketListener;
 import cc.ghast.packet.listener.callback.LoginCallback;
 import cc.ghast.packet.utils.PacketCallback;
-import cc.ghast.packet.wrapper.packet.Packet;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -45,11 +45,11 @@ public class PacketAPI {
         return PacketManager.INSTANCE.getListener().getInjector().getProfile(uuid).getVersion();
     }
 
-    public static void sendPacket(Player player, Packet<?> packet){
+    public static void sendPacket(Player player, GPacket packet){
         sendPacket(player, packet, null);
     }
 
-    public static void sendPacket(Player player, Packet<?> packet, Consumer<PacketCallback> callback){
+    public static void sendPacket(Player player, GPacket packet, Consumer<PacketCallback> callback){
         PacketManager.INSTANCE.getListener().getInjector().writePacket(player.getUniqueId(), packet, callback);
     }
 

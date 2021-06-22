@@ -2,13 +2,12 @@ package cc.ghast.packet.wrapper.packet.play.server;
 
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
-import cc.ghast.packet.wrapper.packet.Packet;
-import cc.ghast.packet.wrapper.packet.ServerPacket;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 
 import java.util.UUID;
 
-public class PacketPlayServerTabComplete extends Packet<ServerPacket> implements ReadableBuffer {
+public class PacketPlayServerTabComplete extends GPacket implements ReadableBuffer {
     public PacketPlayServerTabComplete(UUID player, ProtocolVersion version) {
         super("PacketPlayOutTabComplete", player, version);
     }

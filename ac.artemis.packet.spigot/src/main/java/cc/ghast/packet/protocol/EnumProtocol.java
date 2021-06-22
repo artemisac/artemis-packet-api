@@ -2,16 +2,15 @@ package cc.ghast.packet.protocol;
 
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.protocol.nms.*;
-import cc.ghast.packet.wrapper.packet.Packet;
-import cc.ghast.packet.protocol.nms.*;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 
 public interface EnumProtocol {
-    Packet<?> getPacket(ProtocolDirection direction, int id, UUID playerId, ProtocolVersion version) throws IllegalAccessException, InvocationTargetException, InstantiationException;
-    int getPacketId(ProtocolDirection direction, Packet<?> packet);
-    Class<? extends Packet<?>> getPacketClass(ProtocolDirection direction, String name);
+    GPacket getPacket(ProtocolDirection direction, int id, UUID playerId, ProtocolVersion version) throws IllegalAccessException, InvocationTargetException, InstantiationException;
+    int getPacketId(ProtocolDirection direction, GPacket packet);
+    Class<? extends GPacket> getPacketClass(ProtocolDirection direction, String name);
     int getOrdinal();
     EnumProtocol[] getValues();
 

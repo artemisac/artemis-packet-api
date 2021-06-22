@@ -2,8 +2,7 @@ package cc.ghast.packet.wrapper.packet.play.server;
 
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
-import cc.ghast.packet.wrapper.packet.Packet;
-import cc.ghast.packet.wrapper.packet.ServerPacket;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import lombok.Getter;
 
@@ -11,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Getter
-public class PacketPlayServerAbilities extends Packet<ServerPacket> implements ReadableBuffer {
+public class PacketPlayServerAbilities extends GPacket implements ReadableBuffer {
     public PacketPlayServerAbilities(UUID player, ProtocolVersion version) {
         super("PacketPlayOutAbilities", player, version);
     }

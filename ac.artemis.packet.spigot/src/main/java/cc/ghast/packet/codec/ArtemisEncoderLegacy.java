@@ -6,7 +6,7 @@ import cc.ghast.packet.protocol.ProtocolDirection;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.protocol.EnumProtocolCurrent;
-import cc.ghast.packet.wrapper.packet.Packet;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.wrapper.packet.WriteableBuffer;
 import lombok.SneakyThrows;
 import net.minecraft.util.io.netty.buffer.ByteBuf;
@@ -18,7 +18,7 @@ import net.minecraft.util.io.netty.handler.codec.MessageToByteEncoder;
  * @since 30/08/2020
  * Artemis © 2020
  */
-public class ArtemisEncoderLegacy extends MessageToByteEncoder<Packet> {
+public class ArtemisEncoderLegacy extends MessageToByteEncoder<GPacket> {
 
     private final Profile profile;
 
@@ -28,7 +28,7 @@ public class ArtemisEncoderLegacy extends MessageToByteEncoder<Packet> {
 
     @Override
     @SneakyThrows
-    protected void encode(ChannelHandlerContext channelHandlerContext, Packet obj, ByteBuf byteBuf) {
+    protected void encode(ChannelHandlerContext channelHandlerContext, GPacket obj, ByteBuf byteBuf) {
         final int packetId = EnumProtocolCurrent
                 .values()[profile.getProtocol().ordinal()]
                 .getPacketId(ProtocolDirection.OUT, obj);
@@ -63,6 +63,6 @@ public class ArtemisEncoderLegacy extends MessageToByteEncoder<Packet> {
 
     @Override
     public boolean acceptOutboundMessage(Object msg) {
-        return Packet.class.isAssignableFrom(msg.getClass());
+        return GPacket.class.isAssignableFrom(msg.getClass());
     }
 }

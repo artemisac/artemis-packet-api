@@ -6,7 +6,7 @@ import cc.ghast.packet.protocol.ProtocolDirection;
 import cc.ghast.packet.wrapper.nbt.WrappedItem;
 import cc.ghast.packet.wrapper.netty.MutableByteBufOutputStream;
 import cc.ghast.packet.wrapper.netty.input.NettyUtil;
-import cc.ghast.packet.wrapper.packet.Packet;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -102,9 +102,9 @@ public class ReflectUtil {
         return address.toString().split("/")[1].split(":")[0];
     }
 
-    public static Map<ProtocolDirection, Map<Integer, Class<? extends Packet<?>>>> getPacketMap(EnumProtocol id) {
+    public static Map<ProtocolDirection, Map<Integer, Class<? extends GPacket>>> getPacketMap(EnumProtocol id) {
         // Create the map
-        Map<ProtocolDirection, Map<Integer, Class<? extends Packet<?>>>> map = new HashMap<>();
+        Map<ProtocolDirection, Map<Integer, Class<? extends GPacket>>> map = new HashMap<>();
 
         // Get the map from the id to match the Spigot enum protocol
         Object enumProtocol = ENUM_PROTOCOLS[id.getOrdinal()];
@@ -115,7 +115,7 @@ public class ReflectUtil {
             ProtocolDirection direction = ProtocolDirection.values()[i];
 
             // Create getX new map where we'll store the values
-            Map<Integer, Class<? extends Packet<?>>> packetMap = new HashMap<>();
+            Map<Integer, Class<? extends GPacket>> packetMap = new HashMap<>();
 
             // Get the map from the packet map
             Map map1 = PACKET_MAP_FIELD.get(enumProtocol);

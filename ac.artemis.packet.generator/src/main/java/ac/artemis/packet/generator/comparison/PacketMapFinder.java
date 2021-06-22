@@ -124,6 +124,10 @@ public class PacketMapFinder {
     }
 
     public static Class<? extends Packet> getFuzzy(final String clazz) {
+        if (packets.get(clazz) != null) {
+            return packets.get(clazz);
+        }
+
         final AtomicReference<Class<? extends Packet>> closest = new AtomicReference<>();
         final AtomicDouble similarity = new AtomicDouble(-1);
 

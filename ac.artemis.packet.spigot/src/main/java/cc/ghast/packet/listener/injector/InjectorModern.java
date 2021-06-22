@@ -6,12 +6,11 @@ import cc.ghast.packet.profile.Profile;
 import cc.ghast.packet.listener.callback.LoginCallback;
 import cc.ghast.packet.reflections.ReflectUtil;
 import cc.ghast.packet.utils.PacketCallback;
-import cc.ghast.packet.wrapper.packet.Packet;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import io.netty.channel.*;
 import io.netty.util.AttributeKey;
-import lombok.SneakyThrows;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.lang.reflect.Field;
@@ -186,7 +185,7 @@ public class InjectorModern implements Injector {
     }
 
     @Override
-    public void writePacket(UUID target, Packet<?> packet, Consumer<PacketCallback> callback) {
+    public void writePacket(UUID target, GPacket packet, Consumer<PacketCallback> callback) {
         final Profile profile = this.getProfile(target);
 
         if (profile == null) {

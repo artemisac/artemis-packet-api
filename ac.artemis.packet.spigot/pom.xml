@@ -7,7 +7,7 @@
     <artifactId>Packet-API</artifactId>
     <groupId>ac.artemis.anticheat</groupId>
     <version>1.2.16</version>
-    <name>ArtemisPacket</name>
+    <name>Artemis Packet API</name>
 
     <description>Packet api implementation for the Spigot api</description>
     <properties>
@@ -56,6 +56,11 @@
             <artifactId>bungeecord-chat</artifactId>
             <version>1.16-R0.4</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>ac.artemis.packet</groupId>
+            <artifactId>api</artifactId>
+            <version>1.2.15</version>
         </dependency>
 
         <!-- Netty API which's version somewhats matches NMS's one -->

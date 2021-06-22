@@ -2,12 +2,11 @@ package cc.ghast.packet.protocol;
 
 import cc.ghast.packet.exceptions.AlreadyConsumedPacketIdException;
 import cc.ghast.packet.nms.ProtocolVersion;
-import cc.ghast.packet.wrapper.packet.Packet;
-import cc.ghast.packet.wrapper.packet.handshake.PacketHandshakeClientSetProtocol;
+import ac.artemis.packet.spigot.wrappers.GPacket;
+import cc.ghast.packet.wrapper.packet.handshake.GPacketHandshakeClientSetProtocol;
 import cc.ghast.packet.wrapper.packet.login.*;
 import cc.ghast.packet.wrapper.packet.play.client.*;
 import cc.ghast.packet.wrapper.packet.play.server.*;
-import cc.ghast.packet.wrapper.packet.play.client.*;
 import cc.ghast.packet.wrapper.packet.status.PacketStatusClientPing;
 import cc.ghast.packet.wrapper.packet.status.PacketStatusClientStart;
 import cc.ghast.packet.wrapper.packet.status.PacketStatusServerInfoServer;
@@ -15,8 +14,6 @@ import cc.ghast.packet.wrapper.packet.status.PacketStatusServerPing;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import lombok.SneakyThrows;
-import cc.ghast.packet.wrapper.packet.login.*;
-import cc.ghast.packet.wrapper.packet.play.server.*;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -25,7 +22,7 @@ import java.util.UUID;
 public enum EnumProtocolLegacy implements EnumProtocol {
     HANDSHAKE(-1) {;
         {
-            this.addPacket(ProtocolDirection.IN, PacketHandshakeClientSetProtocol.class);
+            this.addPacket(ProtocolDirection.IN, GPacketHandshakeClientSetProtocol.class);
         }
     },
 
@@ -148,12 +145,12 @@ public enum EnumProtocolLegacy implements EnumProtocol {
 
     LOGIN(2) {;
         {
-            this.addPacket(ProtocolDirection.OUT, PacketLoginServerDisconnect.class);
-            this.addPacket(ProtocolDirection.OUT, PacketLoginServerEncryptionBegin.class);
-            this.addPacket(ProtocolDirection.OUT, PacketLoginServerSuccess.class);
-            this.addPacket(ProtocolDirection.OUT, PacketLoginServerSetCompression.class);
-            this.addPacket(ProtocolDirection.IN, PacketLoginClientStart.class);
-            this.addPacket(ProtocolDirection.IN, PacketLoginClientEncryptionBegin.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketLoginServerDisconnect.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketLoginServerEncryptionBegin.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketLoginServerSuccess.class);
+            this.addPacket(ProtocolDirection.OUT, GPacketLoginServerSetCompression.class);
+            this.addPacket(ProtocolDirection.IN, GPacketLoginClientStart.class);
+            this.addPacket(ProtocolDirection.IN, GPacketLoginClientEncryptionBegin.class);
         }
     };
 
@@ -162,15 +159,15 @@ public enum EnumProtocolLegacy implements EnumProtocol {
 
     private int i;
 
-    private final Map<ProtocolDirection, BiMap<Integer, Class<? extends Packet<?>>>> packetMap;
+    private final Map<ProtocolDirection, BiMap<Integer, Class<? extends GPacket>>> packetMap;
 
     EnumProtocolLegacy(int i) {
         this.i = i;
         this.packetMap = new EnumMap<>(ProtocolDirection.class);
     }
 
-    public EnumProtocolLegacy addPacket(ProtocolDirection enumProtocolDirection, Class<? extends Packet<?>> clazz) {
-        BiMap<Integer, Class<? extends Packet<?>>> object = this.packetMap.get(enumProtocolDirection);
+    public EnumProtocolLegacy addPacket(ProtocolDirection enumProtocolDirection, Class<? extends GPacket> clazz) {
+        BiMap<Integer, Class<? extends GPacket>> object = this.packetMap.get(enumProtocolDirection);
 
         if (object == null) {
             object = HashBiMap.create();
@@ -188,18 +185,18 @@ public enum EnumProtocolLegacy implements EnumProtocol {
 
 
     @SneakyThrows
-    public Packet<?> getPacket(ProtocolDirection enumProtocolDirection, int i, UUID player, ProtocolVersion version) {
-        Class<? extends Packet<?>> clazz = this.packetMap.get(enumProtocolDirection).get(i);
+    public GPacket getPacket(ProtocolDirection enumProtocolDirection, int i, UUID player, ProtocolVersion version) {
+        Class<? extends GPacket> clazz = this.packetMap.get(enumProtocolDirection).get(i);
         return clazz == null ? null : clazz.getConstructor(UUID.class, ProtocolVersion.class).newInstance(player, version);
     }
 
     @Override
-    public int getPacketId(ProtocolDirection direction, Packet<?> packet) {
+    public int getPacketId(ProtocolDirection direction, GPacket packet) {
         return this.packetMap.get(direction).inverse().get(packet.getClass());
     }
 
     @Override
-    public Class<? extends Packet<?>> getPacketClass(ProtocolDirection direction, String name) {
+    public Class<? extends GPacket> getPacketClass(ProtocolDirection direction, String name) {
         return this.packetMap.get(direction).get(i);
     }
 

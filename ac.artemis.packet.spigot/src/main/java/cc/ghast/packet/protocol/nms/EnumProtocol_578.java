@@ -4,14 +4,13 @@ import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.protocol.ProtocolDirection;
 import cc.ghast.packet.protocol.EnumProtocol;
 import cc.ghast.packet.utils.PacketPair;
-import cc.ghast.packet.wrapper.packet.Packet;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.wrapper.packet.PacketInfo;
-import cc.ghast.packet.wrapper.packet.handshake.PacketHandshakeClientSetProtocol;
-import cc.ghast.packet.wrapper.packet.handshake.PacketHandshakeLegacyServerListPing;
+import cc.ghast.packet.wrapper.packet.handshake.GPacketHandshakeClientSetProtocol;
+import cc.ghast.packet.wrapper.packet.handshake.GPacketHandshakeLegacyServerListPing;
 import cc.ghast.packet.wrapper.packet.login.*;
 import cc.ghast.packet.wrapper.packet.play.client.*;
 import cc.ghast.packet.wrapper.packet.play.server.*;
-import cc.ghast.packet.wrapper.packet.play.client.*;
 import cc.ghast.packet.wrapper.packet.status.PacketStatusClientPing;
 import cc.ghast.packet.wrapper.packet.status.PacketStatusClientStart;
 import cc.ghast.packet.wrapper.packet.status.PacketStatusServerInfoServer;
@@ -19,8 +18,6 @@ import cc.ghast.packet.wrapper.packet.status.PacketStatusServerPing;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import cc.ghast.packet.wrapper.packet.login.*;
-import cc.ghast.packet.wrapper.packet.play.server.*;
 
 import java.lang.reflect.Constructor;
 import java.util.Map;
@@ -38,9 +35,9 @@ public enum EnumProtocol_578 implements EnumProtocol {
     HANDSHAKE(
             new PacketPair(
                 new PacketInfo[]{
-                        new PacketInfo<>(0x00, PacketHandshakeClientSetProtocol.class, "PacketHandshakingInSetProtocol"),
+                        new PacketInfo<>(0x00, GPacketHandshakeClientSetProtocol.class, "PacketHandshakingInSetProtocol"),
                         // Todo double check NMS name
-                        new PacketInfo<>(0xFE, PacketHandshakeLegacyServerListPing.class, "PacketHandshakingLegacyServerListPing")
+                        new PacketInfo<>(0xFE, GPacketHandshakeLegacyServerListPing.class, "PacketHandshakingLegacyServerListPing")
                 },
                 new PacketInfo[]{}
             )
@@ -255,19 +252,19 @@ public enum EnumProtocol_578 implements EnumProtocol {
     LOGIN(
             new PacketPair(
                 new PacketInfo[] {
-                        new PacketInfo<>(0x00, PacketLoginClientStart.class, "PacketLoginInStart"),
-                        new PacketInfo<>(0x01, PacketLoginClientEncryptionBegin.class, "PacketLoginInEncryptionBegin"),
+                        new PacketInfo<>(0x00, GPacketLoginClientStart.class, "PacketLoginInStart"),
+                        new PacketInfo<>(0x01, GPacketLoginClientEncryptionBegin.class, "PacketLoginInEncryptionBegin"),
                         // Todo find NMS name
-                        new PacketInfo<>(0x02, PacketLoginClientPluginRequest.class, "PacketLoginInPluginRequest")
+                        new PacketInfo<>(0x02, GPacketLoginClientPluginRequest.class, "PacketLoginInPluginRequest")
                     },
 
                 new PacketInfo[] {
-                        new PacketInfo<>(0x00, PacketLoginServerDisconnect.class, "PacketLoginOutDisconnect"),
-                        new PacketInfo<>(0x01, PacketLoginServerEncryptionBegin.class, "PacketLoginOutEncryptionBegin"),
-                        new PacketInfo<>(0x02, PacketLoginServerSuccess.class, "PacketLoginOutSuccess"),
-                        new PacketInfo<>(0x03, PacketLoginServerSetCompression.class, "PacketLoginOutSetCompression"),
+                        new PacketInfo<>(0x00, GPacketLoginServerDisconnect.class, "PacketLoginOutDisconnect"),
+                        new PacketInfo<>(0x01, GPacketLoginServerEncryptionBegin.class, "PacketLoginOutEncryptionBegin"),
+                        new PacketInfo<>(0x02, GPacketLoginServerSuccess.class, "PacketLoginOutSuccess"),
+                        new PacketInfo<>(0x03, GPacketLoginServerSetCompression.class, "PacketLoginOutSetCompression"),
                         // Todo find NMS name
-                        new PacketInfo<>(0x04, PacketLoginServerPluginResponse.class, "PacketLoginPluginResponse")
+                        new PacketInfo<>(0x04, GPacketLoginServerPluginResponse.class, "PacketLoginPluginResponse")
                 }
             )
     );
@@ -278,7 +275,7 @@ public enum EnumProtocol_578 implements EnumProtocol {
 
     @Override
     @SneakyThrows
-    public Packet<?> getPacket(ProtocolDirection direction, int id, UUID playerId, ProtocolVersion version) {
+    public GPacket getPacket(ProtocolDirection direction, int id, UUID playerId, ProtocolVersion version) {
         final Map<Integer, PacketInfo> packets = direction.equals(ProtocolDirection.IN) ? packetPair.getClient() : packetPair.getServer();
 
         final PacketInfo packetInfo = packets.get(id);
@@ -288,7 +285,7 @@ public enum EnumProtocol_578 implements EnumProtocol {
                     + direction + " ver: " + version + " type: " + ordinal() + ")");
         }
 
-        final Constructor<? extends Packet<?>> packetConstructor = packetInfo.getConstructor();
+        final Constructor<? extends GPacket> packetConstructor = packetInfo.getConstructor();
 
         if (packetConstructor == null) {
             throw new IllegalStateException(playerId + " -> Packet of id " + id
@@ -299,7 +296,7 @@ public enum EnumProtocol_578 implements EnumProtocol {
     }
 
     @Override
-    public int getPacketId(ProtocolDirection direction, Packet<?> packet) {
+    public int getPacketId(ProtocolDirection direction, GPacket packet) {
         final Map<Integer, PacketInfo> packets = direction.equals(ProtocolDirection.IN) ? packetPair.getClient() : packetPair.getServer();
         return packets.values()
                 .stream()
@@ -310,7 +307,7 @@ public enum EnumProtocol_578 implements EnumProtocol {
     }
 
     @Override
-    public Class<? extends Packet<?>> getPacketClass(ProtocolDirection direction, String name) {
+    public Class<? extends GPacket> getPacketClass(ProtocolDirection direction, String name) {
         final Map<Integer, PacketInfo> packets = direction.equals(ProtocolDirection.IN) ? packetPair.getClient() : packetPair.getServer();
         return packets.values()
                 .stream()

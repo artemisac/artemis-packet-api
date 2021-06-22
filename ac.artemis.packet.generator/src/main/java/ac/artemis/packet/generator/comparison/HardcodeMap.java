@@ -70,8 +70,11 @@ public class HardcodeMap {
             wrap("PacketPlayOutRecipeUpdate", PacketPlayServerRecipeUnlock.class),
             wrap("PacketPlayOutTags", PacketPlayServerMetadata.class),
             wrap("PacketPlayOutCustomSoundEffect", PacketPlayServerSoundEffectCustom.class),
-            wrap("PacketStatusOutServerInfo", PacketStatusServerInfo.class)
-
+            wrap("PacketStatusOutServerInfo", PacketStatusServerInfo.class),
+            wrap("PacketPlayOutUpdateTime", PacketPlayServerUpdateTime.class),
+            wrap("PacketPlayOutSpawnEntity", PacketPlayServerSpawnObject.class),
+            wrap("PacketPlayOutEntityEffect", PacketPlayServerEntityEffect.class),
+            wrap("PacketPlayOutOpenWindowHorse", PacketPlayServerWindowHorse.class)
 
     );
 

@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.SneakyThrows;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
-import cc.ghast.packet.wrapper.packet.Packet;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.wrapper.packet.PacketInfo;
 import cc.ghast.packet.wrapper.packet.ServerPacket;
 
@@ -22,8 +22,8 @@ import java.util.Map;
 public class PacketPair {
     private final Map<Integer, PacketInfo> client;
     private final Map<Integer, PacketInfo> server;
-    private final Map<Class<? extends Packet<ClientPacket>>, PacketInfo> clientClasses;
-    private final Map<Class<? extends Packet<ServerPacket>>, PacketInfo> serverClasses;
+    private final Map<Class<? extends GPacket>, PacketInfo> clientClasses;
+    private final Map<Class<? extends GPacket>, PacketInfo> serverClasses;
 
 
     /**

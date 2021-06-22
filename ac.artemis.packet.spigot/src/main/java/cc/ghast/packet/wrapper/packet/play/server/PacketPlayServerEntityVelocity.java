@@ -3,8 +3,7 @@ package cc.ghast.packet.wrapper.packet.play.server;
 import cc.ghast.packet.nms.MathHelper;
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
-import cc.ghast.packet.wrapper.packet.Packet;
-import cc.ghast.packet.wrapper.packet.ServerPacket;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.WriteableBuffer;
 import lombok.Getter;
@@ -12,7 +11,7 @@ import lombok.Getter;
 import java.util.UUID;
 
 @Getter
-public class PacketPlayServerEntityVelocity extends Packet<ServerPacket> implements ReadableBuffer, WriteableBuffer {
+public class PacketPlayServerEntityVelocity extends GPacket implements ReadableBuffer, WriteableBuffer {
     public PacketPlayServerEntityVelocity(UUID player, ProtocolVersion version) {
         super("PacketPlayOutEntityVelocity", player, version);
     }

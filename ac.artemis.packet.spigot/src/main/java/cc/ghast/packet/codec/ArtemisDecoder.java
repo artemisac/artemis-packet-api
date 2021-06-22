@@ -8,14 +8,14 @@ import cc.ghast.packet.profile.Profile;
 import cc.ghast.packet.protocol.ProtocolDirection;
 import cc.ghast.packet.utils.Chat;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
-import cc.ghast.packet.wrapper.packet.login.PacketLoginServerSuccess;
+import cc.ghast.packet.wrapper.packet.login.GPacketLoginServerSuccess;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.protocol.EnumProtocol;
 import cc.ghast.packet.protocol.EnumProtocolCurrent;
 import cc.ghast.packet.protocol.EnumProtocolLegacy;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
-import cc.ghast.packet.wrapper.packet.Packet;
-import cc.ghast.packet.wrapper.packet.handshake.PacketHandshakeClientSetProtocol;
+import ac.artemis.packet.spigot.wrappers.GPacket;
+import cc.ghast.packet.wrapper.packet.handshake.GPacketHandshakeClientSetProtocol;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
@@ -155,7 +155,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
             protocolByteBuf.setId(id);
 
             // Collect the packet from the enum map. This needs to be rewritten for better accuracy tho
-            final Packet<?> packet;
+            final GPacket packet;
 
             try {
                 if (viaVersion) {
@@ -213,12 +213,12 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                 }
 
                 // Handle and collect the handshake
-                if (packet instanceof PacketHandshakeClientSetProtocol){
-                    handleHandshake((PacketHandshakeClientSetProtocol) packet);
+                if (packet instanceof GPacketHandshakeClientSetProtocol){
+                    handleHandshake((GPacketHandshakeClientSetProtocol) packet);
                 }
 
-                else if (packet instanceof PacketLoginServerSuccess) {
-                    handleLoginSuccess((PacketLoginServerSuccess) packet);
+                else if (packet instanceof GPacketLoginServerSuccess) {
+                    handleLoginSuccess((GPacketLoginServerSuccess) packet);
                 }
 
                 if (profile.getUuid() != null && PacketManager.INSTANCE.getListener().getInjector().contains(profile)) {
@@ -293,20 +293,20 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
         return packetDataSerializer.getByteBuf();
     }
 
-    private void handleHandshake(PacketHandshakeClientSetProtocol handshake){
+    private void handleHandshake(GPacketHandshakeClientSetProtocol handshake){
         final ProtocolVersion version = ProtocolVersion.getVersion(handshake.getProtocolVersion());
 
         if (PacketManager.INSTANCE.getHookManager().getViaVersionHook() == null) {
             profile.setVersion(version);
 
         }
-        final PacketHandshakeClientSetProtocol.State state = handshake.getNextState();
-        this.profile.setProtocol(state.equals(PacketHandshakeClientSetProtocol.State.STATUS)
+        final GPacketHandshakeClientSetProtocol.State state = handshake.getNextState();
+        this.profile.setProtocol(state.equals(GPacketHandshakeClientSetProtocol.State.STATUS)
                 ? Profile.Protocol.STATUS : Profile.Protocol.LOGIN);
         this.profile.setVersion(version);
     }
 
-    private void handleLoginSuccess(PacketLoginServerSuccess loginSuccess) {
+    private void handleLoginSuccess(GPacketLoginServerSuccess loginSuccess) {
         this.profile.setProtocol(Profile.Protocol.PLAY);
         this.profile.setUuid(loginSuccess.getGameProfile().getId());
         PacketManager.INSTANCE.getListener().getInjector().injectPlayer(profile);

@@ -1,7 +1,7 @@
 package cc.ghast.packet.chain;
 
 import cc.ghast.packet.profile.Profile;
-import cc.ghast.packet.wrapper.packet.Packet;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 public class ChainManager {
     private final List<PacketListener> packetListeners = new ArrayList<>();
 
-    public void callPacket(Profile profile, Packet<?> packet){
+    public void callPacket(Profile profile, GPacket packet){
         this.packetListeners.forEach(listener -> {
             Runnable exec = () -> listener.onPacket(profile, packet);
 

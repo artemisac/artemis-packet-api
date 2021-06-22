@@ -3,14 +3,14 @@ package cc.ghast.packet.wrapper.packet.play.client;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
-import cc.ghast.packet.wrapper.packet.Packet;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import lombok.Getter;
 
 import java.util.UUID;
 
 @Getter
-public class PacketPlayClientBlockMetadataQuery extends Packet<ClientPacket> implements ReadableBuffer {
+public class PacketPlayClientBlockMetadataQuery extends GPacket implements ReadableBuffer {
     public PacketPlayClientBlockMetadataQuery(UUID player, ProtocolVersion version) {
         super("PacketPlayInBlockMetadataQuery", player, version);
     }

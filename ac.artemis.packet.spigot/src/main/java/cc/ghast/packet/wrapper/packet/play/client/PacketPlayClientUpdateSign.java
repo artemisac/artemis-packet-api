@@ -5,13 +5,13 @@ import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.wrapper.bukkit.BlockPosition;
 import cc.ghast.packet.wrapper.packet.ClientPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
-import cc.ghast.packet.wrapper.packet.Packet;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 import lombok.Getter;
 
 import java.util.UUID;
 
 @Getter
-public class PacketPlayClientUpdateSign extends Packet<ClientPacket> implements ReadableBuffer {
+public class PacketPlayClientUpdateSign extends GPacket implements ReadableBuffer {
     public PacketPlayClientUpdateSign(UUID player, ProtocolVersion version) {
         super("PacketPlayInUpdateSign", player, version);
     }

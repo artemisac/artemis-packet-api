@@ -4,9 +4,9 @@ import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.protocol.EnumProtocol;
 import cc.ghast.packet.protocol.ProtocolDirection;
 import cc.ghast.packet.utils.PacketPair;
-import cc.ghast.packet.wrapper.packet.Packet;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.wrapper.packet.PacketInfo;
-import cc.ghast.packet.wrapper.packet.handshake.PacketHandshakeClientSetProtocol;
+import cc.ghast.packet.wrapper.packet.handshake.GPacketHandshakeClientSetProtocol;
 import cc.ghast.packet.wrapper.packet.login.*;
 import cc.ghast.packet.wrapper.packet.play.client.*;
 import cc.ghast.packet.wrapper.packet.play.server.*;
@@ -16,10 +16,6 @@ import cc.ghast.packet.wrapper.packet.status.PacketStatusServerInfoServer;
 import cc.ghast.packet.wrapper.packet.status.PacketStatusServerPing;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.SneakyThrows;
-import cc.ghast.packet.wrapper.packet.login.*;
-import cc.ghast.packet.wrapper.packet.play.client.*;
-import cc.ghast.packet.wrapper.packet.play.server.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -39,7 +35,7 @@ public enum EnumProtocol_47 implements EnumProtocol {
     HANDSHAKE(
             new PacketPair(
                 new PacketInfo[]{
-                        new PacketInfo<>(0x00, PacketHandshakeClientSetProtocol.class, "PacketHandshakingInSetProtocol"),
+                        new PacketInfo<>(0x00, GPacketHandshakeClientSetProtocol.class, "PacketHandshakingInSetProtocol"),
                 },
                 new PacketInfo[]{}
             )
@@ -183,16 +179,16 @@ public enum EnumProtocol_47 implements EnumProtocol {
     LOGIN(
             new PacketPair(
                 new PacketInfo[] {
-                        new PacketInfo<>(0x00, PacketLoginClientStart.class, "PacketLoginInStart"),
-                        new PacketInfo<>(0x01, PacketLoginClientEncryptionBegin.class, "PacketLoginInEncryptionBegin")
+                        new PacketInfo<>(0x00, GPacketLoginClientStart.class, "PacketLoginInStart"),
+                        new PacketInfo<>(0x01, GPacketLoginClientEncryptionBegin.class, "PacketLoginInEncryptionBegin")
 
                     },
 
                 new PacketInfo[] {
-                        new PacketInfo<>(0x00, PacketLoginServerDisconnect.class, "PacketLoginOutDisconnect"),
-                        new PacketInfo<>(0x01, PacketLoginServerEncryptionBegin.class, "PacketLoginOutEncryptionBegin"),
-                        new PacketInfo<>(0x02, PacketLoginServerSuccess.class, "PacketLoginOutSuccess"),
-                        new PacketInfo<>(0x03, PacketLoginServerSetCompression.class, "PacketLoginOutSetCompression")
+                        new PacketInfo<>(0x00, GPacketLoginServerDisconnect.class, "PacketLoginOutDisconnect"),
+                        new PacketInfo<>(0x01, GPacketLoginServerEncryptionBegin.class, "PacketLoginOutEncryptionBegin"),
+                        new PacketInfo<>(0x02, GPacketLoginServerSuccess.class, "PacketLoginOutSuccess"),
+                        new PacketInfo<>(0x03, GPacketLoginServerSetCompression.class, "PacketLoginOutSetCompression")
                 }
             )
     );
@@ -202,7 +198,7 @@ public enum EnumProtocol_47 implements EnumProtocol {
 
 
     @Override
-    public Packet<?> getPacket(ProtocolDirection direction, int id, UUID playerId, ProtocolVersion version) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+    public GPacket getPacket(ProtocolDirection direction, int id, UUID playerId, ProtocolVersion version) throws IllegalAccessException, InvocationTargetException, InstantiationException {
         final Map<Integer, PacketInfo> packets = direction.equals(ProtocolDirection.IN) ? packetPair.getClient() : packetPair.getServer();
 
         final PacketInfo packetInfo = packets.get(id);
@@ -212,7 +208,7 @@ public enum EnumProtocol_47 implements EnumProtocol {
                     + direction + " ver: " + version + " type: " + ordinal() + ")");
         }
 
-        final Constructor<? extends Packet<?>> packetConstructor = packetInfo.getConstructor();
+        final Constructor<? extends GPacket> packetConstructor = packetInfo.getConstructor();
 
         if (packetConstructor == null) {
             throw new IllegalStateException(playerId + " -> Packet of id " + id
@@ -223,7 +219,7 @@ public enum EnumProtocol_47 implements EnumProtocol {
     }
 
     @Override
-    public int getPacketId(ProtocolDirection direction, Packet<?> packet) {
+    public int getPacketId(ProtocolDirection direction, GPacket packet) {
         final Map<Integer, PacketInfo> packets = direction.equals(ProtocolDirection.IN) ? packetPair.getClient() : packetPair.getServer();
         return packets.values()
                 .stream()
@@ -234,7 +230,7 @@ public enum EnumProtocol_47 implements EnumProtocol {
     }
 
     @Override
-    public Class<? extends Packet<?>> getPacketClass(ProtocolDirection direction, String name) {
+    public Class<? extends GPacket> getPacketClass(ProtocolDirection direction, String name) {
         final Map<Integer, PacketInfo> packets = direction.equals(ProtocolDirection.IN) ? packetPair.getClient() : packetPair.getServer();
         return packets.values()
                 .stream()

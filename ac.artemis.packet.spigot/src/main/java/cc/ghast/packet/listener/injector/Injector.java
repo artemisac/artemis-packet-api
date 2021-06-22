@@ -3,8 +3,7 @@ package cc.ghast.packet.listener.injector;
 import cc.ghast.packet.profile.Profile;
 import cc.ghast.packet.listener.callback.LoginCallback;
 import cc.ghast.packet.utils.PacketCallback;
-import cc.ghast.packet.wrapper.packet.Packet;
-import lombok.SneakyThrows;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -28,5 +27,5 @@ public interface Injector {
     void removeLoginCallback(LoginCallback loginCallback);
     void callLoginCallbacks(Profile profile);
 
-    void writePacket(UUID target, Packet<?> packet, Consumer<PacketCallback> callback);
+    void writePacket(UUID target, GPacket packet, Consumer<PacketCallback> callback);
 }

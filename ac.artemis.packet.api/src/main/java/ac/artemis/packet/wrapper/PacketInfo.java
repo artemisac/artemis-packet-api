@@ -13,7 +13,7 @@ public class PacketInfo {
 
     public PacketInfo(int id, Class<? extends Packet> clazz, String nmsName) {
         this.id = id;
-        this.clazz = new PacketClass(clazz);
+        this.clazz = new PacketClass(clazz, PacketRepository.getPacketId(clazz));
         this.nmsName = nmsName;
 
         Constructor<? extends Packet> constructor1;

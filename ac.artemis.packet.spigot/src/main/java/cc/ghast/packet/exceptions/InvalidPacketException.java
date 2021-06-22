@@ -1,6 +1,6 @@
 package cc.ghast.packet.exceptions;
 
-import cc.ghast.packet.wrapper.packet.Packet;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 
 /**
  * @author Ghast
@@ -8,7 +8,7 @@ import cc.ghast.packet.wrapper.packet.Packet;
  * Artemis © 2020
  */
 public class InvalidPacketException extends RuntimeException {
-    public InvalidPacketException(Class<? extends Packet> clazz){
+    public InvalidPacketException(Class<? extends GPacket> clazz){
         super("Packet of type " + clazz + " is not getX valid packet!");
     }
 }

@@ -4,21 +4,18 @@ import cc.ghast.packet.nms.ProtocolVersion;
 import cc.ghast.packet.reflections.ReflectUtil;
 import cc.ghast.packet.utils.PacketUtil;
 import cc.ghast.packet.utils.Pair;
-import cc.ghast.packet.wrapper.packet.Packet;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.wrapper.packet.PacketInformation;
-import cc.ghast.packet.wrapper.packet.handshake.PacketHandshakeClientSetProtocol;
+import cc.ghast.packet.wrapper.packet.handshake.GPacketHandshakeClientSetProtocol;
 import cc.ghast.packet.wrapper.packet.login.*;
 import cc.ghast.packet.wrapper.packet.play.client.*;
 import cc.ghast.packet.wrapper.packet.play.server.*;
-import cc.ghast.packet.wrapper.packet.play.client.*;
 import cc.ghast.packet.wrapper.packet.status.PacketStatusClientPing;
 import cc.ghast.packet.wrapper.packet.status.PacketStatusClientStart;
 import cc.ghast.packet.wrapper.packet.status.PacketStatusServerInfoServer;
 import cc.ghast.packet.wrapper.packet.status.PacketStatusServerPing;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import cc.ghast.packet.wrapper.packet.login.*;
-import cc.ghast.packet.wrapper.packet.play.server.*;
 
 import java.util.Map;
 import java.util.UUID;
@@ -34,7 +31,7 @@ public enum EnumProtocolCurrent implements EnumProtocol {
     HANDSHAKE(-1, new Pair[][]{
             // Client
             new Pair[]{
-                new Pair<>(PacketHandshakeClientSetProtocol.class, new PacketInformation("PacketHandshakingInSetProtocol"))
+                new Pair<>(GPacketHandshakeClientSetProtocol.class, new PacketInformation("PacketHandshakingInSetProtocol"))
             },
 
             // Server
@@ -166,17 +163,17 @@ public enum EnumProtocolCurrent implements EnumProtocol {
     LOGIN(2, new Pair[][]{
             // Client
             new Pair[]{
-                new Pair<>(PacketLoginClientStart.class, new PacketInformation("PacketLoginInStart")),
-                new Pair<>(PacketLoginClientEncryptionBegin.class, new PacketInformation("PacketLoginInEncryptionBegin")),
-                new Pair<>(PacketLoginClientPluginRequest.class, new PacketInformation("PacketLoginInCustomPayload")),
+                new Pair<>(GPacketLoginClientStart.class, new PacketInformation("PacketLoginInStart")),
+                new Pair<>(GPacketLoginClientEncryptionBegin.class, new PacketInformation("PacketLoginInEncryptionBegin")),
+                new Pair<>(GPacketLoginClientPluginRequest.class, new PacketInformation("PacketLoginInCustomPayload")),
             },
 
             // Server
             new Pair[]{
-                new Pair<>(PacketLoginServerDisconnect.class, new PacketInformation("PacketLoginOutDisconnect")),
-                new Pair<>(PacketLoginServerEncryptionBegin.class, new PacketInformation("PacketLoginOutEncryptionBegin")),
-                new Pair<>(PacketLoginServerSuccess.class, new PacketInformation("PacketLoginOutSuccess")),
-                new Pair<>(PacketLoginServerSetCompression.class, new PacketInformation("PacketLoginOutSetCompression")),
+                new Pair<>(GPacketLoginServerDisconnect.class, new PacketInformation("PacketLoginOutDisconnect")),
+                new Pair<>(GPacketLoginServerEncryptionBegin.class, new PacketInformation("PacketLoginOutEncryptionBegin")),
+                new Pair<>(GPacketLoginServerSuccess.class, new PacketInformation("PacketLoginOutSuccess")),
+                new Pair<>(GPacketLoginServerSetCompression.class, new PacketInformation("PacketLoginOutSetCompression")),
             }
     });
 
@@ -184,10 +181,10 @@ public enum EnumProtocolCurrent implements EnumProtocol {
 
     // Direction = Ordinal so 0 = IN and 1 = OUT
     // Second bit is just the id lol
-    private final Pair<Class<? extends Packet<?>>, PacketInformation>[][] packets;
-    private final Map<ProtocolDirection, Map<Integer, Class<? extends Packet<?>>>> packetMap;
+    private final Pair<Class<? extends GPacket>, PacketInformation>[][] packets;
+    private final Map<ProtocolDirection, Map<Integer, Class<? extends GPacket>>> packetMap;
 
-    EnumProtocolCurrent(int id, Pair<Class<? extends Packet<?>>, PacketInformation>[][] packets) {
+    EnumProtocolCurrent(int id, Pair<Class<? extends GPacket>, PacketInformation>[][] packets) {
         this.id = id;
         this.packets = packets;
         this.packetMap = ReflectUtil.getPacketMap(this);
@@ -195,8 +192,8 @@ public enum EnumProtocolCurrent implements EnumProtocol {
 
     @Override
     @SneakyThrows
-    public Packet<?> getPacket(ProtocolDirection direction, int id, UUID playerId, ProtocolVersion version) {
-        Class<? extends Packet<?>> clazz = packetMap.get(direction).get(id);
+    public GPacket getPacket(ProtocolDirection direction, int id, UUID playerId, ProtocolVersion version) {
+        Class<? extends GPacket> clazz = packetMap.get(direction).get(id);
         if (clazz == null) {
             System.out.println("Packet of id " + id + " in direction does not exist! - " + packetMap.get(direction));
             return null;
@@ -205,8 +202,8 @@ public enum EnumProtocolCurrent implements EnumProtocol {
     }
 
     @Override
-    public int getPacketId(ProtocolDirection direction, Packet<?> packet) {
-        Map.Entry<Integer, Class<? extends Packet<?>>> v = packetMap
+    public int getPacketId(ProtocolDirection direction, GPacket packet) {
+        Map.Entry<Integer, Class<? extends GPacket>> v = packetMap
                 .get(direction)
                 .entrySet()
                 .parallelStream()
@@ -230,8 +227,8 @@ public enum EnumProtocolCurrent implements EnumProtocol {
 
 
     @Override
-    public Class<? extends Packet<?>> getPacketClass(ProtocolDirection direction, String name){
-        for (Pair<Class<? extends Packet<?>>, PacketInformation> pair : packets[direction.ordinal()]) {
+    public Class<? extends GPacket> getPacketClass(ProtocolDirection direction, String name){
+        for (Pair<Class<? extends GPacket>, PacketInformation> pair : packets[direction.ordinal()]) {
             if (pair.getV().getNmsName().equalsIgnoreCase(name) && pair.getV().isValid(ProtocolVersion.getGameVersion())) {
                 return pair.getK();
             }
