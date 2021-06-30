@@ -28,14 +28,18 @@ public class ProtocolRepository extends Accessor {
                 .registerTypeAdapter(PacketClass.class, new PacketSerializer())
                 .create();
 
+
         for (ProtocolVersion value : ProtocolVersion.values()) {
-            final InputStream inputStream = plugin.getResource(value.getServerVersion() + ".json");
+            final String name = value.getServerVersion() + ".json";
+            final InputStream bufferedInputStream = this.getClass().getClassLoader().getResourceAsStream(name);
 
-            if (inputStream == null)
-                continue;
+            if (bufferedInputStream == null) continue;
 
-            final JsonReader jsonReader = new JsonReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+            final JsonReader jsonReader = new JsonReader(new InputStreamReader(bufferedInputStream, StandardCharsets.UTF_8));
             final WrittenEnumProtocol writtenEnumProtocol = gson.fromJson(jsonReader, WrittenEnumProtocol.class);
+
+            if (writtenEnumProtocol == null)
+                continue;
 
             PacketManager.getApi().addProtocol(value, writtenEnumProtocol);
 

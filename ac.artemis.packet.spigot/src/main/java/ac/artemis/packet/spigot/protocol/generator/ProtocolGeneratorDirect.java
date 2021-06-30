@@ -72,12 +72,12 @@ public class ProtocolGeneratorDirect extends Accessor implements PacketGenerator
 
             if (clazz == null) {
                 if (debugMap.containsKey(info.getClazzId())) {
-                    ServerUtil.sendConsoleMessage("&cFailed&r to find internal constructor of packet of type &b" + info.getNmsName()
+                    /*ServerUtil.sendConsoleMessage("&cFailed&r to find internal constructor of packet of type &b" + info.getNmsName()
                             + " &r(&btype&r:&b " + protocol
                             + " &r|&b id&r: &b" + id
                             + " &r|&b c-id&r: &b" + info.getClazzId()
                             + " &r|&b c-name&r: &b" + info.getClazz().getSimpleName()
-                            + ")");
+                            + ")");*/
                 }
                 return null;
             }
@@ -88,12 +88,12 @@ public class ProtocolGeneratorDirect extends Accessor implements PacketGenerator
                 e.printStackTrace();
             }
 
-            ServerUtil.sendConsoleMessage("&aSuccessfully&r registered packet of type &b" + info.getNmsName()
+            /*ServerUtil.sendConsoleMessage("&aSuccessfully&r registered packet of type &b" + info.getNmsName()
                     + " &r(&btype&r:&b " + protocol
                     + " &r|&b id&r: &b" + id
                     + " &r|&b c-id&r: &b" + info.getClazzId()
                     + " &r|&b c-name&r: &b" + info.getClazz().getSimpleName()
-                    + ")");
+                    + ")");*/
             constructorMap.put(info.getClazzId(), constructor);
         }
 

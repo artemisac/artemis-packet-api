@@ -3,7 +3,6 @@ package ac.artemis.packet.protocol.format;
 import ac.artemis.packet.protocol.ProtocolState;
 import ac.artemis.packet.protocol.ProtocolVersion;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class WrittenEnumProtocol {

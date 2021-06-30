@@ -10,6 +10,7 @@ import cc.ghast.packet.listener.injector.InjectorLegacy;
 import cc.ghast.packet.reflections.ReflectUtil;
 import net.minecraft.util.io.netty.channel.Channel;
 import net.minecraft.util.io.netty.channel.ChannelInitializer;
+import net.minecraft.util.io.netty.channel.ChannelPipeline;
 
 import java.lang.reflect.Method;
 import java.util.UUID;
@@ -46,11 +47,13 @@ public class BukkitLegacyServerBootstrapper extends ChannelInitializer<Channel> 
         // Add originals
         initChannelMethod.invoke(this.original, socketChannel);
 
-        socketChannel.pipeline().addBefore("decoder", Injector.clientBound,
+        final ChannelPipeline pipeline = InjectorLegacy.BRIDGE.get(socketChannel);
+        
+        pipeline.addBefore("decoder", Injector.clientBound,
                 new ArtemisDecoderLegacy(info, ProtocolDirection.IN));
-        socketChannel.pipeline().addBefore("encoder", Injector.serverBound,
+        pipeline.addBefore("encoder", Injector.serverBound,
                 new ArtemisDecoderLegacy(info, ProtocolDirection.OUT));
-        socketChannel.pipeline().addLast(Injector.encoder,
+        pipeline.addLast(Injector.encoder,
                 new ArtemisEncoderLegacy(info));
 
         socketChannel.attr(InjectorLegacy.KEY_IDENTIFIER).set(id);

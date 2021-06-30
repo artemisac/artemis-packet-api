@@ -713,6 +713,33 @@
       "inboundPackets": {
         "0": {
           "id": 0,
+          "clazz": 2002,
+          "nmsName": "PacketStatusInStart"
+        },
+        "1": {
+          "id": 1,
+          "clazz": 2001,
+          "nmsName": "PacketStatusInPing"
+        }
+      },
+      "outboundPackets": {
+        "0": {
+          "id": 0,
+          "clazz": 5001,
+          "nmsName": "PacketStatusOutServerInfo"
+        },
+        "1": {
+          "id": 1,
+          "clazz": 5002,
+          "nmsName": "PacketStatusOutPong"
+        }
+      }
+    },
+    "LOGIN": {
+      "state": "LOGIN",
+      "inboundPackets": {
+        "0": {
+          "id": 0,
           "clazz": 2,
           "nmsName": "PacketLoginInStart"
         },
@@ -752,33 +779,6 @@
           "id": 4,
           "clazz": 4021,
           "nmsName": "PacketLoginOutCustomPayload"
-        }
-      }
-    },
-    "LOGIN": {
-      "state": "LOGIN",
-      "inboundPackets": {
-        "0": {
-          "id": 0,
-          "clazz": 2002,
-          "nmsName": "PacketStatusInStart"
-        },
-        "1": {
-          "id": 1,
-          "clazz": 2001,
-          "nmsName": "PacketStatusInPing"
-        }
-      },
-      "outboundPackets": {
-        "0": {
-          "id": 0,
-          "clazz": 5001,
-          "nmsName": "PacketStatusOutServerInfo"
-        },
-        "1": {
-          "id": 1,
-          "clazz": 5002,
-          "nmsName": "PacketStatusOutPong"
         }
       }
     },

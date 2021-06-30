@@ -2,9 +2,7 @@ package cc.ghast.packet.wrapper.netty.bytebuf;
 
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.wrapper.netty.MutableByteBufAllocator;
-import net.minecraft.util.com.google.common.io.ByteProcessor;
 import net.minecraft.util.io.netty.buffer.ByteBuf;
-import net.minecraft.util.io.netty.buffer.ByteBufProcessor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,16 +19,13 @@ import java.nio.charset.Charset;
  * Artemis © 2020
  */
 public class LegacyByteBuf implements MutableByteBuf {
-    
+
     private final ByteBuf byteBuf;
-    private final MutableByteBufAllocator allocator;
 
     public LegacyByteBuf(Object object) {
         this.byteBuf = (ByteBuf) object;
-        this.allocator = MutableByteBufAllocator.translate(((ByteBuf) object).alloc());
+        //this.allocator = MutableByteBufAllocator.translate(((ByteBuf) object).alloc());
     }
-
-
 
     @Override
     public Object getParent() {
@@ -55,7 +50,7 @@ public class LegacyByteBuf implements MutableByteBuf {
 
     @Override
     public MutableByteBufAllocator alloc() {
-        return this.allocator;
+        return MutableByteBufAllocator.translate(((ByteBuf) byteBuf).alloc());
     }
 
     @Override
@@ -408,12 +403,12 @@ public class LegacyByteBuf implements MutableByteBuf {
         return this.byteBuf.setBytes(i, scatteringByteChannel, i1);
     }
 
-
     @Override
     public MutableByteBuf setZero(final int i, final int i1) {
         this.byteBuf.setZero(i, i1);
         return this;
     }
+
     @Override
     public boolean readBoolean() {
         return this.byteBuf.readBoolean();
@@ -481,8 +476,7 @@ public class LegacyByteBuf implements MutableByteBuf {
 
     @Override
     public MutableByteBuf readBytes(final int i) {
-        this.byteBuf.readBytes(i);
-        return this;
+        return MutableByteBuf.translate(this.byteBuf.readBytes(i));
     }
 
     @Override
@@ -644,6 +638,7 @@ public class LegacyByteBuf implements MutableByteBuf {
         return this.byteBuf.writeBytes(scatteringByteChannel, i);
     }
 
+
     @Override
     public MutableByteBuf writeZero(final int i) {
         this.byteBuf.writeZero(i);
@@ -691,6 +686,7 @@ public class LegacyByteBuf implements MutableByteBuf {
         this.byteBuf.slice(i, i1);
         return this;
     }
+
     @Override
     public MutableByteBuf duplicate() {
         return MutableByteBuf.translate(this.byteBuf.duplicate());
@@ -812,5 +808,5 @@ public class LegacyByteBuf implements MutableByteBuf {
     public MutableByteBuf getByteBuf() {
         return this;
     }
-    
+
 }

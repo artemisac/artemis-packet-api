@@ -5,15 +5,17 @@ import cc.ghast.packet.listener.initializator.BukkitLegacyServerBootstrapper;
 import cc.ghast.packet.profile.ArtemisProfile;
 import ac.artemis.packet.callback.PacketCallback;
 import ac.artemis.packet.callback.LoginCallback;
+import cc.ghast.packet.reflections.FieldAccessor;
 import cc.ghast.packet.reflections.ReflectUtil;
 import ac.artemis.packet.spigot.wrappers.GPacket;
+import cc.ghast.packet.reflections.Reflection;
 import net.minecraft.util.com.google.common.cache.Cache;
 import net.minecraft.util.com.google.common.cache.CacheBuilder;
 import net.minecraft.util.io.netty.channel.*;
 import net.minecraft.util.io.netty.util.AttributeKey;
 import org.bukkit.plugin.PluginDescriptionFile;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.*;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -29,10 +31,10 @@ import java.util.function.Consumer;
 public class InjectorLegacy implements Injector {
 
     public InjectorLegacy() {
-        System.out.println("[Artemis] Using Modern Encoder");
+        System.out.println("[Artemis] Using Legacy Encoder");
     }
 
-    public static final AttributeKey<UUID> KEY_IDENTIFIER = AttributeKey.valueOf("artemis_id");
+    public static final AttributeKey<UUID> KEY_IDENTIFIER = new AttributeKey<>("artemis_id");
 
     private final ChannelFuture future = (ChannelFuture) ReflectUtil.getChannelFuture();
     private final List<LoginCallback> callbacks = new ArrayList<>();
@@ -42,36 +44,43 @@ public class InjectorLegacy implements Injector {
             .expireAfterWrite(30, TimeUnit.SECONDS)
             .build();
 
+    public static final FieldAccessor<ChannelPipeline> BRIDGE = Reflection.getField(AbstractChannel.class, "pipeline", ChannelPipeline.class);
     private ChannelFuture serverBoot;
 
     @Override
     public void injectReader() {
-        ChannelHandler serverBootstrap = future.channel().pipeline().first();
+        ChannelPipeline pipeline = BRIDGE.get(future.channel());
+        ChannelHandler serverBootstrap = pipeline.first();
         ChannelInitializer<Channel> serverBootstrapInit = null;
 
-        /*
-         * Here we iterate through every single pipeline and attempt to find the one which corresponds to the
-         * server bootstrap. Such one will contain getX childHandler.
-         */
-        for (Map.Entry<String, ChannelHandler> stringChannelHandlerEntry : future.channel().pipeline()) {
-            final ChannelHandler handler = stringChannelHandlerEntry.getValue();
-
-            if (handler == null)
-                continue;
-
+        iter: {
             /*
-             * This is quite unconventional but pretty much we attempt to get the field. If it does not exist or
-             * produces an error, we can pretty much be confident it is not the server bootstrap.
+             * Here we iterate through every single pipeline and attempt to find the one which corresponds to the
+             * server bootstrap. Such one will contain getX childHandler.
              */
-            try {
-                Field field = handler.getClass().getDeclaredField("childHandler");
-                field.setAccessible(true);
-                serverBootstrapInit = (ChannelInitializer) field.get(handler);
-                serverBootstrap = handler;
-            } catch (Exception e){
-                // Ignored
+            for (Map.Entry<String, ChannelHandler> stringChannelHandlerEntry : pipeline) {
+                final ChannelHandler handler = stringChannelHandlerEntry.getValue();
+
+                if (handler == null)
+                    continue;
+
+                /*
+                 * This is quite unconventional but pretty much we attempt to get the field. If it does not exist or
+                 * produces an error, we can pretty much be confident it is not the server bootstrap.
+                 */
+                try {
+                    Field field = handler.getClass().getDeclaredField("childHandler");
+                    field.setAccessible(true);
+                    serverBootstrapInit = (ChannelInitializer) field.get(handler);
+                    serverBootstrap = handler;
+                    break iter;
+                } catch (Exception e){
+                    // Ignored
+                    //e.printStackTrace();
+                }
             }
         }
+
 
         /*
          * If there is no bootstrapper. Well... that's not good.
@@ -126,19 +135,20 @@ public class InjectorLegacy implements Injector {
             final Channel channel = (Channel) profile.getChannel();
 
             CompletableFuture.runAsync(() -> {
-                if (channel.pipeline() != null && channel.isOpen() && channel.isActive()) {
+                final ChannelPipeline pipeline = BRIDGE.get(channel);
+                if (pipeline != null && channel.isOpen() && channel.isActive()) {
 
                     ChannelHandler handler;
-                    if ((handler = channel.pipeline().get(clientBound)) != null) {
-                        channel.pipeline().remove(handler);
+                    if ((handler = pipeline.get(clientBound)) != null) {
+                        pipeline.remove(handler);
                     }
 
-                    if ((handler = channel.pipeline().get(serverBound)) != null) {
-                        channel.pipeline().remove(handler);
+                    if ((handler = pipeline.get(serverBound)) != null) {
+                        pipeline.remove(handler);
                     }
 
-                    if ((handler = channel.pipeline().get(encoder)) != null) {
-                        channel.pipeline().remove(handler);
+                    if ((handler = pipeline.get(encoder)) != null) {
+                        pipeline.remove(handler);
                     }
                 }
             });

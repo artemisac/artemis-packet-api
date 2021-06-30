@@ -293,7 +293,12 @@ public class ReflectUtil {
 
         NETWORK_MANAGER_CLAZZ = Reflection.getMinecraftClass("NetworkManager");
         NETWORK_MANAGERS_FIELD = Reflection.getField(SERVER_CONNECTION_CLAZZ, List.class, 1);
-        CHANNEL_FIELD = Reflection.getField(NETWORK_MANAGER_CLAZZ, "channel", 0);
+
+        try {
+            CHANNEL_FIELD = Reflection.getField(NETWORK_MANAGER_CLAZZ, "channel", 0);
+        } catch (Exception e) {
+
+        }
 
         ADDRESS_FIELD = Reflection.getField(NETWORK_MANAGER_CLAZZ, SocketAddress.class, 0);
 
@@ -301,9 +306,12 @@ public class ReflectUtil {
         ENUM_PROTOCOLS = ENUM_PROTOCOL_CLAZZ.getEnumConstants();
         PACKET_MAP_FIELD = Reflection.getField(ENUM_PROTOCOL_CLAZZ, Map.class, 1);
 
-        ENUM_DIRECTION_CLAZZ = Reflection.getMinecraftClass("EnumProtocolDirection");
+        try {
+            ENUM_DIRECTION_CLAZZ = Reflection.getMinecraftClass("EnumProtocolDirection");
+            DIRECTIONS = ENUM_DIRECTION_CLAZZ.getEnumConstants();
+        } catch (Exception e) {
 
-        DIRECTIONS = ENUM_DIRECTION_CLAZZ.getEnumConstants();
+        }
 
         NBT_READ_LIMITER_CLAZZ = Reflection.getMinecraftClass("NBTReadLimiter");
         NBT_READ_LIMITER_CONSTRUCTOR = Reflection.getConstructor(NBT_READ_LIMITER_CLAZZ, long.class);
