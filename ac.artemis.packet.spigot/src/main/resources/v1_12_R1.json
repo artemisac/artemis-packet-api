@@ -1,35 +1,19 @@
 {
   "version": "V1_12",
   "formatMap": {
-    "LOGIN": {
-      "state": "LOGIN",
+    "HANDSHAKE": {
+      "state": "HANDSHAKE",
       "inboundPackets": {
         "0": {
           "id": 0,
-          "clazz": 2002,
-          "nmsName": "PacketStatusInStart"
-        },
-        "1": {
-          "id": 1,
-          "clazz": 2001,
-          "nmsName": "PacketStatusInPing"
+          "clazz": 0,
+          "nmsName": "PacketHandshakingInSetProtocol"
         }
       },
-      "outboundPackets": {
-        "0": {
-          "id": 0,
-          "clazz": 5001,
-          "nmsName": "PacketStatusOutServerInfo"
-        },
-        "1": {
-          "id": 1,
-          "clazz": 5002,
-          "nmsName": "PacketStatusOutPong"
-        }
-      }
+      "outboundPackets": {}
     },
-    "STATUS": {
-      "state": "STATUS",
+    "LOGIN": {
+      "state": "LOGIN",
       "inboundPackets": {
         "0": {
           "id": 0,
@@ -637,16 +621,32 @@
         }
       }
     },
-    "HANDSHAKE": {
-      "state": "HANDSHAKE",
+    "STATUS": {
+      "state": "STATUS",
       "inboundPackets": {
         "0": {
           "id": 0,
-          "clazz": 0,
-          "nmsName": "PacketHandshakingInSetProtocol"
+          "clazz": 2002,
+          "nmsName": "PacketStatusInStart"
+        },
+        "1": {
+          "id": 1,
+          "clazz": 2001,
+          "nmsName": "PacketStatusInPing"
         }
       },
-      "outboundPackets": {}
+      "outboundPackets": {
+        "0": {
+          "id": 0,
+          "clazz": 5001,
+          "nmsName": "PacketStatusOutServerInfo"
+        },
+        "1": {
+          "id": 1,
+          "clazz": 5002,
+          "nmsName": "PacketStatusOutPong"
+        }
+      }
     }
   }
 }

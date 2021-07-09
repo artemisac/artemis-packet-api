@@ -1,6 +1,5 @@
 package cc.ghast.packet.codec;
 
-import ac.artemis.packet.PacketGenerator;
 import ac.artemis.packet.protocol.ProtocolState;
 import ac.artemis.packet.protocol.ProtocolVersion;
 import ac.artemis.packet.spigot.utils.ServerUtil;
@@ -145,10 +144,13 @@ public class ArtemisDecoderLegacy extends ChannelDuplexHandler {
             // Collect the packet from the enum map. This needs to be rewritten for better accuracy tho
             final GPacket packet;
 
-            if (profile.getVersion() != profile.getGenerator().getVersion()) {
+            if (profile.getGenerator() == null || profile.getVersion() != profile.getGenerator().getVersion()) {
                 profile.setGenerator(ac.artemis.packet.PacketManager.getApi().getGenerator(profile.getVersion()));
             }
 
+            if (profile.getGenerator() == null) {
+                profile.setGenerator(ac.artemis.packet.PacketManager.getApi().getGenerator(ServerUtil.getGameVersion()));
+            }
             try {
                 packet = (GPacket) profile.getGenerator()
                         .getPacketFromId(direction, profile.getProtocol(), protocolByteBuf.getId(), profile.getUuid(), profile.getVersion());

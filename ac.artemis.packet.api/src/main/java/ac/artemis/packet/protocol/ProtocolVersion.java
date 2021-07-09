@@ -61,6 +61,10 @@ public enum ProtocolVersion {
         return values()[values().length - 2];
     }
 
+    public boolean isLegacy() {
+        return this.getVersion() < ProtocolVersion.V1_8.getVersion();
+    }
+
     public boolean isBelow(ProtocolVersion version) {
         return this.getVersion() < version.getVersion();
     }

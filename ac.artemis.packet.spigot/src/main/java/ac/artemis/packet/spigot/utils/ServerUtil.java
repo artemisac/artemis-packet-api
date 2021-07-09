@@ -27,8 +27,12 @@ public class ServerUtil {
 
     private final ProtocolVersion gameVersion = fetchGameVersion();
 
-    public static ProtocolVersion getGameVersion() {
+    public ProtocolVersion getGameVersion() {
         return gameVersion;
+    }
+
+    public boolean isLegacy() {
+        return gameVersion.isBelow(ProtocolVersion.V1_8);
     }
 
     private ProtocolVersion fetchGameVersion() {

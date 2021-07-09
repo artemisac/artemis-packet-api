@@ -42,7 +42,7 @@ public class GPacketPlayClientBlockPlace extends GPacket implements PacketPlayCl
         if (legacy) {
 
             // 1.6.4 - 1.7.10 version range
-            if (version.isBelow(ProtocolVersion.V1_8)) {
+            if (version.isLegacy()) {
                 // Position
                 int x = byteBuf.readInt();
                 int y = byteBuf.readByte();

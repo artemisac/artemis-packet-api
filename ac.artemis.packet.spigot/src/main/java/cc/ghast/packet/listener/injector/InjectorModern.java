@@ -157,6 +157,9 @@ public class InjectorModern implements Injector {
     public void uninjectFuturePlayer(ArtemisProfile profile) {
         new HashSet<>(this.futureProfiles.asMap().entrySet())
                 .stream()
+                .filter(e -> e.getKey().getChannel() != null)
+                .filter(e -> ((Channel) e.getKey().getChannel()).attr(KEY_IDENTIFIER) != null)
+                .filter(e -> ((Channel) e.getKey().getChannel()).attr(KEY_IDENTIFIER).get() != null)
                 .filter(e -> ((Channel) e.getKey().getChannel()).attr(KEY_IDENTIFIER).get().equals(profile.getId()))
                 .findFirst()
                 .ifPresent(e -> {

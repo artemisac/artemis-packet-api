@@ -36,7 +36,7 @@ public class GPacketPlayClientBlockDig extends GPacket implements PacketPlayClie
         final World world = getPlayer() == null ? null : getPlayer().getWorld();
 
         // Position of the block placed
-        if (version.isBelow(ProtocolVersion.V1_8)) {
+        if (version.isLegacy()) {
             final int x = byteBuf.readInt();
             final int y = byteBuf.readByte();
             final int z = byteBuf.readInt();

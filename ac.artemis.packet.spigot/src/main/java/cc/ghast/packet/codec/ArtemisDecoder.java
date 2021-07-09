@@ -129,6 +129,10 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                 profile.setGenerator(ac.artemis.packet.PacketManager.getApi().getGenerator(profile.getVersion()));
             }
 
+            if (profile.getGenerator() == null) {
+                profile.setGenerator(ac.artemis.packet.PacketManager.getApi().getGenerator(ServerUtil.getGameVersion()));
+            }
+
             final boolean viaVersion = PacketManager.INSTANCE.getHookManager().getViaVersionHook() != null
                     && profile.getProtocol().equals(ProtocolState.PLAY)
                     && !profile.getVersion().equals(ServerUtil.getGameVersion())

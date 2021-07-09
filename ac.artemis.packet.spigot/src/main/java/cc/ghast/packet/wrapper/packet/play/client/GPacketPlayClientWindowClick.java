@@ -51,8 +51,12 @@ public class GPacketPlayClientWindowClick extends GPacket implements PacketPlayC
             this.clickedItem = byteBuf.readItem();
         }
 
-        this.mode = types[shiftedMode][button];
-        this.simpleMode = SimpleSlotType.values()[shiftedMode];
+        try {
+            this.mode = types[shiftedMode][button];
+            this.simpleMode = SimpleSlotType.values()[shiftedMode];
+        } catch (Exception e){
+            // Ignore
+        }
     }
 
 

@@ -2,6 +2,7 @@ package cc.ghast.packet.wrapper.packet.play.server;
 
 import ac.artemis.packet.protocol.ProtocolVersion;
 import ac.artemis.packet.spigot.protocol.PacketLink;
+import ac.artemis.packet.spigot.utils.ServerUtil;
 import ac.artemis.packet.wrapper.server.PacketPlayServerEntityVelocity;
 import cc.ghast.packet.nms.MathHelper;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
@@ -42,7 +43,11 @@ public class GPacketPlayServerEntityVelocity extends GPacket implements PacketPl
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-        this.entityId = byteBuf.readVarInt();
+        if (version.isLegacy()) {
+            this.entityId = byteBuf.readInt();
+        } else {
+            this.entityId = byteBuf.readVarInt();
+        }
 
         this.x = byteBuf.readShort();
         this.y = byteBuf.readShort();
@@ -51,7 +56,11 @@ public class GPacketPlayServerEntityVelocity extends GPacket implements PacketPl
 
     @Override
     public void write(ProtocolByteBuf byteBuf) {
-        byteBuf.writeVarInt(entityId);
+        if (version.isLegacy()) {
+            byteBuf.writeInt(entityId);
+        } else {
+            byteBuf.writeVarInt(entityId);
+        }
         byteBuf.writeShort(x);
         byteBuf.writeShort(y);
         byteBuf.writeShort(z);

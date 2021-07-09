@@ -30,6 +30,8 @@ public class GPacketPlayServerKeepAlive extends GPacket implements PacketPlaySer
     public void read(ProtocolByteBuf byteBuf) {
         if (version.isOrAbove(ProtocolVersion.V1_12_2)) {
             this.id = byteBuf.readLong();
+        } else if (version.isLegacy()) {
+            this.id = byteBuf.readInt();
         } else {
             this.id = byteBuf.readVarInt();
         }
@@ -37,8 +39,10 @@ public class GPacketPlayServerKeepAlive extends GPacket implements PacketPlaySer
 
     @Override
     public void write(ProtocolByteBuf byteBuf) {
-        if (ServerUtil.getGameVersion().isOrAbove(ProtocolVersion.V1_12_2)) {
+        if (version.isOrAbove(ProtocolVersion.V1_12_2)) {
             byteBuf.writeLong(id);
+        } else if (version.isLegacy()) {
+            byteBuf.writeInt((int) id);
         } else {
             byteBuf.writeVarInt((int) id);
         }

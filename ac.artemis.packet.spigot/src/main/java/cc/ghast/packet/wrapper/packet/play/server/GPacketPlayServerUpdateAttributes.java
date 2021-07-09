@@ -2,6 +2,7 @@ package cc.ghast.packet.wrapper.packet.play.server;
 
 import ac.artemis.packet.protocol.ProtocolVersion;
 import ac.artemis.packet.spigot.protocol.PacketLink;
+import ac.artemis.packet.spigot.utils.ServerUtil;
 import ac.artemis.packet.wrapper.server.PacketPlayServerUpdateAttributes;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import ac.artemis.packet.spigot.wrappers.GPacket;
@@ -25,7 +26,10 @@ public class GPacketPlayServerUpdateAttributes extends GPacket implements Packet
 
     @Override
     public void read(final ProtocolByteBuf byteBuf) {
-        this.entityId = byteBuf.readVarInt();
+        this.entityId = version.isLegacy()
+                ? byteBuf.readInt()
+                : byteBuf.readVarInt();
+
         this.attributes = new ArrayList<>();
 
         final int max = byteBuf.readInt();
@@ -40,8 +44,11 @@ public class GPacketPlayServerUpdateAttributes extends GPacket implements Packet
             }
 
             final double base = byteBuf.readDouble();
+
             final List<Modifier> list = new ArrayList<>();
-            final int maxModifiers = byteBuf.readVarInt();
+            final int maxModifiers = version.isBelow(ProtocolVersion.V1_8)
+                    ? byteBuf.readShort()
+                    : byteBuf.readVarInt();
 
             for (int j = 0; j < maxModifiers; ++j) {
                 final UUID uuid = byteBuf.readUUID();

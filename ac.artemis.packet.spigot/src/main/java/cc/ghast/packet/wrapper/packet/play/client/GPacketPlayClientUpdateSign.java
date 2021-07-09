@@ -24,7 +24,7 @@ public class GPacketPlayClientUpdateSign extends GPacket implements PacketPlayCl
     @Override
     public void read(ProtocolByteBuf byteBuf) {
         // 1.7.10
-        if (version.isBelow(ProtocolVersion.V1_8)) {
+        if (version.isLegacy()) {
             final int x = byteBuf.readInt();
             final int y = byteBuf.readByte();
             final int z = byteBuf.readInt();

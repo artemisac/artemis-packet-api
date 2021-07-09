@@ -42,7 +42,11 @@ public class GPacketPlayServerEntityMetadata extends GPacket implements PacketPl
 
     @Override
     public void write(ProtocolByteBuf byteBuf) {
-        byteBuf.writeVarInt(entityId);
+        if (version.isOrBelow(ProtocolVersion.V1_7_10)) {
+            byteBuf.writeInt(entityId);
+        } else {
+            byteBuf.writeVarInt(entityId);
+        }
         modifier.accept(byteBuf);
     }
 }

@@ -32,7 +32,7 @@ public class GPacketPlayServerChat extends GPacket implements PacketPlayServerCh
         }
         this.text = byteBuf.readStringBuf(stringBufArg);
 
-        if (version.isBelow(ProtocolVersion.V1_8)) {
+        if (version.isLegacy()) {
             this.type = ChatMessageType.CHAT;
         }
         else {

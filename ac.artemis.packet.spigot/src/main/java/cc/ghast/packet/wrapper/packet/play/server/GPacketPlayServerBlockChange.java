@@ -22,7 +22,7 @@ public class GPacketPlayServerBlockChange extends GPacket implements PacketPlayS
     private int blockId;
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-        if (version.isBelow(ProtocolVersion.V1_8)) {
+        if (version.isLegacy()) {
             int x = byteBuf.readInt();
             int y = byteBuf.readUnsignedByte();
             int z = byteBuf.readInt();

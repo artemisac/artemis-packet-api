@@ -11,6 +11,7 @@ import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.reflections.Reflection;
 import net.minecraft.util.com.google.common.cache.Cache;
 import net.minecraft.util.com.google.common.cache.CacheBuilder;
+import net.minecraft.util.io.netty.channel.LegacyNettyProxy;
 import net.minecraft.util.io.netty.channel.*;
 import net.minecraft.util.io.netty.util.AttributeKey;
 import org.bukkit.plugin.PluginDescriptionFile;
