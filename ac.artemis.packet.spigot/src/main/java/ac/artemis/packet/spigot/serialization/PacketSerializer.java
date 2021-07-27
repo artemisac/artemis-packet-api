@@ -13,7 +13,7 @@ public class PacketSerializer extends TypeAdapter<PacketClass> {
     /**
      * Writes one JSON value (an array, object, string, number, boolean or null) for {@code value}.
      *
-     * @param out
+     * @param out Outbound json writer
      * @param value the Java object to write. May be null.
      */
     @Override
@@ -25,7 +25,7 @@ public class PacketSerializer extends TypeAdapter<PacketClass> {
      * Reads one JSON value (an array, object, string, number, boolean or null) and converts it to a Java object.
      * Returns the converted object.
      *
-     * @param in
+     * @param in Inbound json reader
      *
      * @return the converted Java object. May be null.
      */
