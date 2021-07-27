@@ -81,12 +81,22 @@ public class ArtemisSpigotApi extends Accessor implements PacketAPI {
 
     @Override
     public void sendPacket(UUID player, Packet packet) {
-        sendPacket(player, packet, null);
+        sendPacket(player, packet, true,null);
     }
 
     @Override
     public void sendPacket(UUID player, Packet packet, Consumer<PacketCallback> callback) {
-        PacketManager.INSTANCE.getListener().getInjector().writePacket(player, (GPacket) packet, callback);
+        sendPacket(player, packet, true, callback);
+    }
+
+    @Override
+    public void sendPacket(UUID player, Packet packet, boolean flush) {
+        sendPacket(player, packet, flush, null);
+    }
+
+    @Override
+    public void sendPacket(UUID player, Packet packet, boolean flush, Consumer<PacketCallback> callback) {
+        PacketManager.INSTANCE.getListener().getInjector().writePacket(player, (GPacket) packet, flush, callback);
     }
 
     @Override

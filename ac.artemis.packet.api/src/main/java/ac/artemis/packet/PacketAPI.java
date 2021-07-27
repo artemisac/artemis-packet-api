@@ -29,7 +29,11 @@ public interface PacketAPI {
 
     void sendPacket(UUID player, Packet packet);
 
+    void sendPacket(UUID player, Packet packet, boolean flush);
+
     void sendPacket(UUID player, Packet packet, Consumer<PacketCallback> callback);
+
+    void sendPacket(UUID player, Packet packet, boolean flush, Consumer<PacketCallback> callback);
 
     void addLoginCallback(LoginCallback loginCallback) ;
 

@@ -45,7 +45,7 @@ public class PacketAPI {
     }
 
     public static void sendPacket(Player player, GPacket packet, Consumer<PacketCallback> callback){
-        PacketManager.INSTANCE.getListener().getInjector().writePacket(player.getUniqueId(), packet, callback);
+        PacketManager.INSTANCE.getListener().getInjector().writePacket(player.getUniqueId(), packet, true, callback);
     }
 
     public static void addLoginCallback(LoginCallback loginCallback) {

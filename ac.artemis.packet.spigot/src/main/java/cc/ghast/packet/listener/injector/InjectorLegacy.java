@@ -196,7 +196,7 @@ public class InjectorLegacy implements Injector {
     }
 
     @Override
-    public void writePacket(UUID target, GPacket packet, Consumer<PacketCallback> callback) {
+    public void writePacket(UUID target, GPacket packet, boolean flush, Consumer<PacketCallback> callback) {
         final ArtemisProfile profile = this.getProfile(target);
 
         if (profile == null) {
@@ -216,7 +216,9 @@ public class InjectorLegacy implements Injector {
             return;
         }
 
-        final ChannelFuture channelfuture = channel.writeAndFlush(packet);
+        final ChannelFuture channelfuture = flush
+                ? channel.writeAndFlush(packet)
+                : channel.write(packet);
         channelfuture.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
 
         if (callback != null) {

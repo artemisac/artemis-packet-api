@@ -27,5 +27,5 @@ public interface Injector {
     void removeLoginCallback(LoginCallback loginCallback);
     void callLoginCallbacks(ArtemisProfile profile);
 
-    void writePacket(UUID target, GPacket packet, Consumer<PacketCallback> callback);
+    void writePacket(UUID target, GPacket packet, boolean flush, Consumer<PacketCallback> callback);
 }

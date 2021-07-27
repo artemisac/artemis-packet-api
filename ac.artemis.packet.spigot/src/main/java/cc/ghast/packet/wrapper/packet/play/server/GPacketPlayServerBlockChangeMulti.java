@@ -5,7 +5,9 @@ import ac.artemis.packet.spigot.protocol.PacketLink;
 import ac.artemis.packet.wrapper.server.PacketPlayServerBlockChangeMulti;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import ac.artemis.packet.spigot.wrappers.GPacket;
+import cc.ghast.packet.wrapper.bukkit.BlockPosition;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
+import lombok.Data;
 import lombok.Getter;
 
 import java.util.UUID;
@@ -20,5 +22,11 @@ public class GPacketPlayServerBlockChangeMulti extends GPacket implements Packet
     @Override
     public void read(ProtocolByteBuf byteBuf) {
 
+    }
+
+    @Data
+    static class BlockChange {
+        private int blockId;
+        private BlockPosition position;
     }
 }
