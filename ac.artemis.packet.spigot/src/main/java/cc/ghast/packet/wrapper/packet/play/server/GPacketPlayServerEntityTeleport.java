@@ -6,13 +6,16 @@ import ac.artemis.packet.wrapper.server.PacketPlayServerEntityTeleport;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
+import cc.ghast.packet.wrapper.packet.WriteableBuffer;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @Getter
+@Setter
 @PacketLink(PacketPlayServerEntityTeleport.class)
-public class GPacketPlayServerEntityTeleport extends GPacket implements PacketPlayServerEntityTeleport, ReadableBuffer {
+public class GPacketPlayServerEntityTeleport extends GPacket implements PacketPlayServerEntityTeleport, ReadableBuffer, WriteableBuffer {
     public GPacketPlayServerEntityTeleport(UUID player, ProtocolVersion version) {
         super("PacketPlayOutEntityTeleport", player, version);
     }
@@ -35,6 +38,17 @@ public class GPacketPlayServerEntityTeleport extends GPacket implements PacketPl
         this.yaw = byteBuf.readByte();
         this.pitch = byteBuf.readByte();
         this.onGround = byteBuf.readBoolean();
+    }
+
+    @Override
+    public void write(ProtocolByteBuf byteBuf) {
+        byteBuf.writeVarInt(entityId);
+        byteBuf.writeInt(x);
+        byteBuf.writeInt(y);
+        byteBuf.writeInt(z);
+        byteBuf.writeByte(yaw);
+        byteBuf.writeByte(pitch);
+        byteBuf.writeBoolean(onGround);
     }
 
     public double getValueX() {

@@ -30,7 +30,11 @@ public class GPacketPlayClientSettings extends GPacket implements PacketPlayClie
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-        this.locale = byteBuf.readStringBuf(7);
+        if (version.isBelow(ProtocolVersion.V1_16)) {
+            this.locale = byteBuf.readStringBuf(7);
+        } else {
+            this.locale = byteBuf.readStringBuf(16);
+        }
         this.viewDistance = byteBuf.readByte();
         this.visibility = PlayerEnums.ChatVisibility.values()[byteBuf.readVarInt()];
         this.chatColors = byteBuf.readBoolean();

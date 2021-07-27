@@ -10,13 +10,16 @@ import ac.artemis.packet.wrapper.server.PacketPlayServerEntityRelMoveLook;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
+import cc.ghast.packet.wrapper.packet.WriteableBuffer;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @Getter
+@Setter
 @PacketLink(PacketPlayServerEntity.class)
-public class GPacketPlayServerEntity extends GPacket implements PacketPlayServerEntity, ReadableBuffer {
+public class GPacketPlayServerEntity extends GPacket implements PacketPlayServerEntity, ReadableBuffer, WriteableBuffer {
 
     protected int entityId;
     protected short x;
@@ -38,6 +41,11 @@ public class GPacketPlayServerEntity extends GPacket implements PacketPlayServer
     @Override
     public void read(ProtocolByteBuf byteBuf) {
         this.entityId = byteBuf.readVarInt();
+    }
+
+    @Override
+    public void write(ProtocolByteBuf byteBuf) {
+        byteBuf.writeVarInt(entityId);
     }
 
     @PacketLink(PacketPlayServerEntityRelMove.class)
@@ -63,6 +71,23 @@ public class GPacketPlayServerEntity extends GPacket implements PacketPlayServer
             this.onGround = byteBuf.readBoolean();
             this.hasPos = true;
         }
+
+        @Override
+        public void write(ProtocolByteBuf byteBuf) {
+            super.write(byteBuf);
+
+            if (version.isBelow(ProtocolVersion.V1_16)) {
+                byteBuf.writeByte(x);
+                byteBuf.writeByte(y);
+                byteBuf.writeByte(z);
+            } else {
+                byteBuf.writeShort(x);
+                byteBuf.writeShort(y);
+                byteBuf.writeShort(z);
+            }
+
+            byteBuf.writeBoolean(onGround);
+        }
     }
 
     @PacketLink(PacketPlayServerEntityRelLook.class)
@@ -79,6 +104,15 @@ public class GPacketPlayServerEntity extends GPacket implements PacketPlayServer
             this.pitch = byteBuf.readByte();
             this.onGround = byteBuf.readBoolean();
             this.hasLook = true;
+        }
+
+        @Override
+        public void write(ProtocolByteBuf byteBuf) {
+            super.write(byteBuf);
+
+            byteBuf.writeByte(yaw);
+            byteBuf.writeByte(pitch);
+            byteBuf.writeBoolean(onGround);
         }
     }
 
@@ -105,6 +139,25 @@ public class GPacketPlayServerEntity extends GPacket implements PacketPlayServer
             this.pitch = byteBuf.readByte();
             this.onGround = byteBuf.readBoolean();
             this.hasLook = this.hasPos = true;
+        }
+
+        @Override
+        public void write(ProtocolByteBuf byteBuf) {
+            super.write(byteBuf);
+
+            if (version.isBelow(ProtocolVersion.V1_16)) {
+                byteBuf.writeByte(x);
+                byteBuf.writeByte(y);
+                byteBuf.writeByte(z);
+            } else {
+                byteBuf.writeShort(x);
+                byteBuf.writeShort(y);
+                byteBuf.writeShort(z);
+            }
+
+            byteBuf.writeByte(yaw);
+            byteBuf.writeByte(pitch);
+            byteBuf.writeBoolean(onGround);
         }
     }
 }

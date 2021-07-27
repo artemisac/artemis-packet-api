@@ -6,16 +6,16 @@ import ac.artemis.packet.wrapper.server.PacketPlayServerPosition;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
+import cc.ghast.packet.wrapper.packet.WriteableBuffer;
 import lombok.Getter;
+import lombok.Setter;
 
-import java.util.EnumSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
+@Setter
 @PacketLink(PacketPlayServerPosition.class)
-public class GPacketPlayServerPosition extends GPacket implements PacketPlayServerPosition, ReadableBuffer {
+public class GPacketPlayServerPosition extends GPacket implements PacketPlayServerPosition, ReadableBuffer, WriteableBuffer {
     public GPacketPlayServerPosition(UUID player, ProtocolVersion version) {
         super("PacketPlayOutPosition", player, version);
     }
@@ -38,7 +38,15 @@ public class GPacketPlayServerPosition extends GPacket implements PacketPlayServ
         this.flags = PlayerTeleportFlags.readFlags(byteBuf.readUnsignedByte());
     }
 
-
+    @Override
+    public void write(ProtocolByteBuf byteBuf) {
+        byteBuf.writeDouble(x);
+        byteBuf.writeDouble(y);
+        byteBuf.writeDouble(z);
+        byteBuf.writeFloat(yaw);
+        byteBuf.writeFloat(pitch);
+        byteBuf.writeByte(PlayerTeleportFlags.writeFlags(flags));
+    }
 
     @Getter
     public enum PlayerTeleportFlags {
@@ -74,6 +82,17 @@ public class GPacketPlayServerPosition extends GPacket implements PacketPlayServ
             }
 
             return set;
+        }
+
+        public static int writeFlags(Set<PlayerTeleportFlags> var0) {
+            int var1 = 0;
+
+            PlayerTeleportFlags var3;
+            for(Iterator<PlayerTeleportFlags> var2 = var0.iterator(); var2.hasNext(); var1 |= var3.operand()) {
+                var3 = var2.next();
+            }
+
+            return var1;
         }
     }
 }

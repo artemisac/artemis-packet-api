@@ -5,14 +5,18 @@ import ac.artemis.packet.spigot.protocol.PacketLink;
 import ac.artemis.packet.wrapper.server.PacketPlayServerSpawnEntityNamed;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import ac.artemis.packet.spigot.wrappers.GPacket;
+import cc.ghast.packet.nms.MathHelper;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
+import cc.ghast.packet.wrapper.packet.WriteableBuffer;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @Getter
+@Setter
 @PacketLink(PacketPlayServerSpawnEntityNamed.class)
-public class GPacketPlayServerSpawnNamedEntity extends GPacket implements PacketPlayServerSpawnEntityNamed, ReadableBuffer {
+public class GPacketPlayServerSpawnNamedEntity extends GPacket implements PacketPlayServerSpawnEntityNamed, ReadableBuffer, WriteableBuffer {
     public GPacketPlayServerSpawnNamedEntity(UUID player, ProtocolVersion version) {
         super("PacketPlayOutNamedEntitySpawn", player, version);
     }
@@ -52,6 +56,25 @@ public class GPacketPlayServerSpawnNamedEntity extends GPacket implements Packet
         if (version.isBelow(ProtocolVersion.V1_15)) {
             this.type = byteBuf.readShort();
         }
+    }
+
+    @Override
+    public void write(ProtocolByteBuf byteBuf) {
+        byteBuf.writeVarInt(entityId);
+        byteBuf.writeUUID(objectUUID);
+
+        if (version.isOrBelow(ProtocolVersion.V1_9)) {
+            byteBuf.writeInt(MathHelper.floor(x * 32.D));
+            byteBuf.writeInt(MathHelper.floor(y * 32.D));
+            byteBuf.writeInt(MathHelper.floor(z * 32.D));
+        } else {
+            byteBuf.writeDouble(x);
+            byteBuf.writeDouble(y);
+            byteBuf.writeDouble(z);
+        }
+
+        byteBuf.writeByte((int) (pitch / 360.F * 256.F));
+        byteBuf.writeByte((int) (yaw / 360.F * 256.F));
     }
 
     public float getValueYaw() {

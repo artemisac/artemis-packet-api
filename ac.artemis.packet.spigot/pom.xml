@@ -43,7 +43,6 @@
     </repositories>
 
     <dependencies>
-
         <!-- Bukkit API -->
         <dependency>
             <groupId>org.spigotmc</groupId>
