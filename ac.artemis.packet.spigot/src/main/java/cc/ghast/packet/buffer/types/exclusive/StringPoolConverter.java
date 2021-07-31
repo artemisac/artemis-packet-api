@@ -45,6 +45,7 @@ public class StringPoolConverter extends BufConverter<StringPool> {
             buffer.readerIndex(buffer.readerIndex() + length);
         } else {
             s = buffer.toString(buffer.readerIndex(), length, StandardCharsets.UTF_8);
+            buffer.readerIndex(buffer.readerIndex() + length);
             //s = new String(buffer.readBytes(length), StandardCharsets.UTF_8);
         }
 
