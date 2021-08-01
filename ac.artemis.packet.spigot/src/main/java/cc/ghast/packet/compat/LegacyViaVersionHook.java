@@ -1,12 +1,11 @@
 package cc.ghast.packet.compat;
 
 import cc.ghast.packet.protocol.EnumProtocolCurrent;
-import com.viaversion.viaversion.ViaVersionPlugin;
-import com.viaversion.viaversion.api.Via;
-import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.api.protocol.packet.State;
 import io.netty.buffer.ByteBuf;
 import lombok.SneakyThrows;
+import us.myles.ViaVersion.ViaVersionPlugin;
+import us.myles.ViaVersion.api.data.UserConnection;
+import us.myles.ViaVersion.packets.State;
 
 import java.util.UUID;
 
@@ -15,7 +14,7 @@ import java.util.UUID;
  * @since 15/09/2020
  * ArtemisPacket © 2020
  */
-public class ViaVersionHook implements ViaHook {
+public class LegacyViaVersionHook implements ViaHook {
 
     private final ViaVersionPlugin api = ViaVersionPlugin.getInstance();
 
@@ -26,12 +25,12 @@ public class ViaVersionHook implements ViaHook {
     @SneakyThrows
     public ByteBuf transformPacket(UUID uuid, ByteBuf buf, int id) {
         if (uuid == null
-                || Via.getManager().getConnectionManager().getConnectedClients() == null
-                || !Via.getManager().getConnectionManager().getConnectedClients().containsKey(uuid)) {
+                || api.getConnectionManager().getConnectedClients() == null
+                || !api.getConnectionManager().getConnectedClients().containsKey(uuid)) {
             return buf;
         }
 
-        final UserConnection connection = Via.getManager().getConnectionManager().getConnectedClient(uuid);
+        final UserConnection connection = api.getConnectionManager().getConnectedClient(uuid);
 
         if (connection == null) {
             return buf;
@@ -52,12 +51,12 @@ public class ViaVersionHook implements ViaHook {
     @SneakyThrows
     public ByteBuf transformPacketSend(UUID uuid, ByteBuf buf, int id) {
         if (uuid == null
-                || Via.getManager().getConnectionManager().getConnectedClients() == null
-                || !Via.getManager().getConnectionManager().getConnectedClients().containsKey(uuid)) {
+                || api.getConnectionManager().getConnectedClients() == null
+                || !api.getConnectionManager().getConnectedClients().containsKey(uuid)) {
             return buf;
         }
 
-        final UserConnection connection = Via.getManager().getConnectionManager().getConnectedClient(uuid);
+        final UserConnection connection = api.getConnectionManager().getConnectedClient(uuid);
 
         if (connection == null) {
             return buf;

@@ -19,15 +19,18 @@ import java.util.UUID;
 @Getter
 public class HookManager {
     private final List<PacketModifier> modifiers = new ArrayList<>();
-    private ViaVersionHook viaVersionHook;
+    private ViaHook viaVersionHook;
 
     public HookManager() {
         this.init();
     }
 
     public void init() {
-        if (checkPluginDependency("us.myles.ViaVersion.api.Via")) {
+        if (checkPluginDependency("com.viaversion.viaversion.api.Via")) {
             viaVersionHook = new ViaVersionHook();
+            viaVersionHook.getVersion(UUID.randomUUID());
+        } else if (checkPluginDependency("us.myles.ViaVersion.api.Via")) {
+            viaVersionHook = new LegacyViaVersionHook();
             viaVersionHook.getVersion(UUID.randomUUID());
         } else {
             viaVersionHook = null;

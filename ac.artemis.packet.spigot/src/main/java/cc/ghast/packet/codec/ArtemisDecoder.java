@@ -122,8 +122,10 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
 
         if (in.readableBytes() > 0) {
+            final int readerIndex = in.readerIndex();
             // Get the var_int packet id of the packet. This is quite important as it's what determines it's type
             int id = Converters.VAR_INT.read(in, profile.getVersion());
+            final int oldId = id;
 
             if (profile.getGenerator() != null && profile.getVersion() != profile.getGenerator().getVersion()) {
                 profile.setGenerator(ac.artemis.packet.PacketManager.getApi().getGenerator(profile.getVersion()));
@@ -139,8 +141,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                     && direction.equals(ProtocolDirection.IN);
 
             if (viaVersion) {
-
-                in.resetReaderIndex();
+                in.readerIndex(readerIndex);
 
                 ByteBuf parent = PacketManager.INSTANCE
                         .getHookManager()
@@ -151,7 +152,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                     return false;
 
                 in = MutableByteBuf.translate(parent);
-                in.resetReaderIndex();
+                in.readerIndex(readerIndex);
                 id = Converters.VAR_INT.read(in, ServerUtil.getGameVersion());
             }
 
@@ -169,13 +170,13 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
             try {
                 if (viaVersion) {
-                    packet = (GPacket) profile.getGenerator()
+                    packet = (GPacket) ac.artemis.packet.PacketManager.getApi().getGenerator(ServerUtil.getGameVersion())
                             .getPacketFromId(direction, profile.getProtocol(), protocolByteBuf.getId(), profile.getUuid(), ServerUtil.getGameVersion());
                 } else {
                     packet = (GPacket) profile.getGenerator()
                             .getPacketFromId(direction, profile.getProtocol(), protocolByteBuf.getId(), profile.getUuid(), profile.getVersion());
                 }
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 System.out.println("Error on packet of id " + id + " of user of UUID " + profile.getUuid()
                         + " (ver: " + profile.getVersion() + " dir:" + direction + ")");
                 e.printStackTrace();
@@ -190,7 +191,12 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                     try {
                         buffer.read(protocolByteBuf);
                     } catch (Exception e) {
-                        System.out.println("Error on packet of player of version " + profile.getVersion());
+                        System.out.println("Error on packet of player of version " + profile.getVersion()
+                                + " (ViaVersion: " + viaVersion
+                                + " ver: " + profile.getVersion()
+                                + " id: " + id
+                                + " oldId: " + oldId
+                                + " dir:" + direction + ")");
                         e.printStackTrace();
                     }
                 }
