@@ -23,7 +23,7 @@ public class GPacketLoginServerSuccess extends GPacket implements ReadableBuffer
         final UUID uuid;
         final String username;
 
-        if (version.isOrAbove(ProtocolVersion.V1_15)) {
+        if (version.isOrAbove(ProtocolVersion.V1_16)) {
             int[] aint = new int[4];
 
             for(int i = 0; i < aint.length; ++i) {

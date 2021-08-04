@@ -41,7 +41,7 @@ public class ViaVersionHook implements ViaHook {
         buf.resetReaderIndex();
 
         try {
-            connection.transformIncoming(buf, e -> new IllegalStateException("ViaVersion failed to convert packet (type: " + id + ")", e.getCause()));
+            connection.transformServerbound(buf, e -> new IllegalStateException("ViaVersion failed to convert packet (type: " + id + ")", e.getCause()));
         } catch (Throwable e) {
             // do literally nothing
             buf = null;
@@ -66,7 +66,7 @@ public class ViaVersionHook implements ViaHook {
         buf.resetReaderIndex();
 
         try {
-            connection.transformOutgoing(buf, e -> new IllegalStateException("ViaVersion failed to convert packet (type: " + id + ")", e.getCause()));
+            connection.transformClientbound(buf, e -> new IllegalStateException("ViaVersion failed to convert packet (type: " + id + ")", e.getCause()));
         } catch (IllegalStateException e) {
             // do literally nothing
             buf = null;

@@ -35,6 +35,7 @@ public class PacketRepository {
         // Client bound login packets
         repository.put(CLIENT_LOGIN + 1, PacketLoginClientEncryptionBegin.class);
         repository.put(CLIENT_LOGIN + 2, PacketLoginClientStart.class);
+        repository.put(CLIENT_LOGIN + 3, PacketLoginClientCustomPayload.class);
 
         // Regular packets (starts at 3 don't ask why)
         repository.put(CLIENT_PLAY + 1, PacketPlayClientAbilities.class);
@@ -99,6 +100,7 @@ public class PacketRepository {
         repository.put(SERVER_LOGIN + 2, PacketLoginOutEncryptionBegin.class);
         repository.put(SERVER_LOGIN + 3, PacketLoginOutSetCompression.class);
         repository.put(SERVER_LOGIN + 4, PacketLoginOutSuccess.class);
+        repository.put(SERVER_LOGIN + 5, PacketLoginServerCustomPayload.class);
 
         repository.put(SERVER_PLAY + 1, PacketPlayServerAbilities.class);
         repository.put(SERVER_PLAY + 2, PacketPlayServerAdvancement.class);

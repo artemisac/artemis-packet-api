@@ -35,6 +35,9 @@ public class PacketSerializer extends TypeAdapter<PacketClass> {
     @Override
     public PacketClass read(JsonReader in) throws IOException {
         final int string = in.nextInt();
+        if (string < 0)
+            return new PacketClass(null, string);
+
         return new PacketClass(repository.getPacket(string), string);
     }
 }

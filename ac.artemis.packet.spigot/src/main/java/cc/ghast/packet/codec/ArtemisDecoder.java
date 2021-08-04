@@ -193,7 +193,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                     } catch (Exception e) {
                         System.out.println("Error on packet of player of version " + profile.getVersion()
                                 + " (ViaVersion: " + viaVersion
-                                + " ver: " + profile.getVersion()
+                                + " ver: " + packet.getVersion()
                                 + " id: " + id
                                 + " oldId: " + oldId
                                 + " dir:" + direction + ")");

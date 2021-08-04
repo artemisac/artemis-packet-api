@@ -74,7 +74,10 @@ public class HardcodeMap {
             wrap("PacketPlayOutUpdateTime", PacketPlayServerUpdateTime.class),
             wrap("PacketPlayOutSpawnEntity", PacketPlayServerSpawnObject.class),
             wrap("PacketPlayOutEntityEffect", PacketPlayServerEntityEffect.class),
-            wrap("PacketPlayOutOpenWindowHorse", PacketPlayServerWindowHorse.class)
+            wrap("PacketPlayOutOpenWindowHorse", PacketPlayServerWindowHorse.class),
+
+            wrap("PacketLoginInCustomPayload", PacketLoginClientCustomPayload.class),
+            wrap("PacketLoginOutCustomPayload", PacketLoginServerCustomPayload.class)
 
     );
 
