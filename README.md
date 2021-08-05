@@ -1,5 +1,13 @@
-# Artemis Packet API
-[![](https://jitpack.io/v/artemisac/Artemis-Packet-API.svg)](https://jitpack.io/#artemisac/Artemis-Packet-API)
+<p align="center">
+  <img width="50%" height="50%" src="https://i.imgur.com/I1nYfFf.png">
+  <br>
+  <a><img alt="Server Version" src="https://img.shields.io/badge/Server%20Version-1.7.10%201.16.4-blue"></a>
+  <a><img alt="Api Type" src="https://img.shields.io/badge/API-Bukkit-blue"></a>
+  <a><img alt="Authors" src="https://img.shields.io/badge/Authors-Ghast-blue"></a>
+  <a><img alt="Issues" src="https://img.shields.io/github/issues/artemisac/Artemis-Packet-API"></a>
+  <a><img alt="Forks" src="https://img.shields.io/github/forks/artemisac/Artemis-Packet-API"></a>
+  <a><img alt="Stars" src="https://img.shields.io/github/stars/artemisac/Artemis-Packet-API"></a>
+</p>
 
 This is a simplistic yet extremely efficient way to handle packets. Instead of relying on directly calling NMS packet via
 reflections, this reads them the proper way. It allows for a quite noticeable performance boost and a whole lot more control.
