@@ -43,5 +43,4 @@ all down to your work. I truly appreciate the help.
 # License
 All rights reserved - Ghast Holdings LLC
 
-Any use of this code for non-educational and testing purposes is stricly prohibited. 
-For commercial licenses of this code, contact us on discord (Ghast#0001)
+For any support concern, open an issue. If you'd like to see more fancy stuff, contact me on discord @ Ghast#0001
