@@ -109,7 +109,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
         /*
          * Why
          */
-        if (isCompressor) {
+        if (isCompressor && profile.getVersion().isOrAbove(ProtocolVersion.V1_8)) {
             try {
                 in = decompress(in);
             } catch (Exception e){
