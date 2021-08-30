@@ -82,6 +82,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
         // Make sure we're receiving getX ByteBuf. If getX protocol is placed before such, it may screw with the decompression
         if (msg instanceof ByteBuf) {
+            final int index = ((ByteBuf) msg).readerIndex();
             // Decode the message and send it off
             final ByteBuf buffer = Unpooled.unmodifiableBuffer((ByteBuf) msg).copy().retain();
             try {
@@ -94,7 +95,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                 System.out.println("[!] Error on player of version " + profile.getVersion());
                 e.printStackTrace();
             }
-
+            ((ByteBuf) msg).readerIndex(index);
         } else {
             // If the message is not getX ByteBuf, there's obviously an issue with the pipeline, so disinject and throw error
             new IncompatiblePipelineException(msg.getClass()).printStackTrace();
@@ -109,7 +110,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
         /*
          * Why
          */
-        if (isCompressor && profile.getVersion().isOrAbove(ProtocolVersion.V1_8)) {
+        if (isCompressor && (profile.getVersion().isOrAbove(ProtocolVersion.V1_8) || direction == ProtocolDirection.OUT)) {
             try {
                 in = decompress(in);
             } catch (Exception e){
@@ -118,6 +119,10 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                     Bukkit.getPlayer(profile.getUuid()).kickPlayer(e.getMessage());
                 });
             }
+        } else {
+            byte[] abyte = new byte[in.readableBytes()];
+            in.readBytes(abyte);
+            in = MutableByteBuf.translate(Unpooled.wrappedBuffer(abyte));
         }
 
 
