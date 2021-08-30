@@ -114,10 +114,14 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
             try {
                 in = decompress(in);
             } catch (Exception e){
-                e.printStackTrace();
+                in.resetReaderIndex();
+                byte[] abyte = new byte[in.readableBytes()];
+                in.readBytes(abyte);
+                in = MutableByteBuf.translate(Unpooled.wrappedBuffer(abyte));
+                /*e.printStackTrace();
                 Bukkit.getScheduler().runTask(PacketManager.INSTANCE.getPlugin(), () -> {
                     Bukkit.getPlayer(profile.getUuid()).kickPlayer(e.getMessage());
-                });
+                });*/
             }
         } else {
             byte[] abyte = new byte[in.readableBytes()];
