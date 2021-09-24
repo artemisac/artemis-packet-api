@@ -42,6 +42,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
     private final ArtemisProfile profile;
     private final Inflater inflater;
     private final ProtocolDirection direction;
+    private boolean compress;
     private static final ExecutorService PACKET_SERVICE = Executors.newSingleThreadExecutor();
 
     public ArtemisDecoder(ArtemisProfile profile, ProtocolDirection direction) {
@@ -110,13 +111,15 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
         /*
          * Why
          */
-        if (isCompressor && (profile.getVersion().isOrAbove(ProtocolVersion.V1_8) || direction == ProtocolDirection.OUT)) {
+        if (!compress && isCompressor && (profile.getVersion().isOrAbove(ProtocolVersion.V1_8))) {
             try {
                 in = decompress(in);
             } catch (Exception e){
                 in.resetReaderIndex();
+                compress = true;
                 byte[] abyte = new byte[in.readableBytes()];
                 in.readBytes(abyte);
+                in.resetReaderIndex();
                 in = MutableByteBuf.translate(Unpooled.wrappedBuffer(abyte));
                 /*e.printStackTrace();
                 Bukkit.getScheduler().runTask(PacketManager.INSTANCE.getPlugin(), () -> {
@@ -126,6 +129,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
         } else {
             byte[] abyte = new byte[in.readableBytes()];
             in.readBytes(abyte);
+            in.resetReaderIndex();
             in = MutableByteBuf.translate(Unpooled.wrappedBuffer(abyte));
         }
 
@@ -245,6 +249,8 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
         } else {
             if (debug) System.out.println("NO READABLE BYTES BRUH");
         }
+
+        in.release();
 
         return false;
     }
