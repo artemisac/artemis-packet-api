@@ -32,6 +32,8 @@ public enum ProtocolVersion {
     V1_16_2(751, "v1_16_R2"),
     V1_16_3(753, "v1_16_R2"),
     V1_16_5(754, "v1_16_R3"),
+    V_1_17(755, "v1_17_R1"),
+    V_1_17_1(756, "v1_17_R1"),
     UNKNOWN(999, "UNKNOWN");
 
     private final int version;
