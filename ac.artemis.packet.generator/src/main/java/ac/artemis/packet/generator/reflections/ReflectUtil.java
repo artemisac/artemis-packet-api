@@ -324,7 +324,7 @@ public class ReflectUtil {
         GET_HANDLE_ITEM = Reflection.getField(CRAFT_ITEM_CLAZZ, "handle", ITEM_NMS_CLAZZ);
         GET_ITEM_FROM_ID_METHOD = Reflection.getMethod(ITEM_TYPE_CLAZZ, "getById", int.class);
 
-        if (ServerUtil.getGameVersion().isAbove(ProtocolVersion.V1_14)) {
+        if (ServerUtil.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {
             ITEM_NMS_CONSTRUCTOR = Reflection.getConstructor(ITEM_NMS_CLAZZ,
                     Reflection.getMinecraftClass("IMaterial"), int.class);
         } else {
