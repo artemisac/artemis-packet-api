@@ -43,8 +43,8 @@ public class GPacketPlayClientAbilities extends GPacket implements PacketPlayCli
             Here, basically we are placing getX 1 on different scales. If the one is here, it's true. Simple yet complex.
 
         */
-
         this.flying = (flags & 0x02) > 0;
+
         if(version.isOrBelow(ProtocolVersion.V1_15_2)) {
             this.creativeMode = Optional.of((flags & 0x01) > 0);
             this.allowedFlight = Optional.of((flags & 0x04) > 0);
@@ -62,5 +62,20 @@ public class GPacketPlayClientAbilities extends GPacket implements PacketPlayCli
             this.flySpeed = Optional.empty();
             this.walkSpeed = Optional.empty();
         }
+    }
+
+    @Override
+    public Optional<Boolean> isInvulnerable() {
+        return invulnerable;
+    }
+
+    @Override
+    public Optional<Boolean> isAllowedFlight() {
+        return allowedFlight;
+    }
+
+    @Override
+    public Optional<Boolean> isCreativeMode() {
+        return creativeMode;
     }
 }
