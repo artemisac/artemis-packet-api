@@ -383,6 +383,14 @@ public final class Reflection {
         return getCanonicalClass(NMS_PREFIX + "." + name);
     }
 
+    public static Class<?> getNMSNoVersion(String name) {
+        return getCanonicalClass("net.minecraft.server." + name);
+    }
+
+    public static Class<?> getBase(String name) {
+        return getCanonicalClass("net.minecraft." + name);
+    }
+
     /**
      * Retrieve getX class in the org.bukkit.craftbukkit.VERSION.* package.
      *

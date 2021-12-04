@@ -14,6 +14,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -33,7 +34,28 @@ public class GPacketPlayServerBlockChangeMulti extends GPacket implements Packet
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
+        if (version.isOrBelow(ProtocolVersion.V1_12_2)) {
+            this.chunkX = byteBuf.readInt();
+            this.chunkY = Optional.empty();
+            this.chunkZ = byteBuf.readInt();
 
+            final int length = byteBuf.readVarInt();
+
+            this.records = new ArrayList<>(length);
+
+            for (int i = 0; i < length; i++) {
+                final short pos = byteBuf.readShort();
+
+                final int x = pos >> 12 & 15;
+                final int y = pos & 255;
+                final int z = pos >> 8 & 15;
+                final BlockPosition position = new BlockPosition(x, y, z);
+
+                final int compressed = byteBuf.readVarInt();
+
+                records.add(new BlockChange(compressed, position));
+            }
+        }
     }
 
     @Override
@@ -51,19 +73,26 @@ public class GPacketPlayServerBlockChangeMulti extends GPacket implements Packet
                         | record.getPosition().getY()
                 );
 
-                byteBuf.writeVarInt(
-                        (record.getBlock().getId() << 4)
-                                | (record.getBlock().getData() & 0xF)
-                );
+                byteBuf.writeVarInt(record.getBlock());
             }
         }
 
     }
 
     @Data
-    @AllArgsConstructor
     public static class BlockChange {
-        private WrappedBlock block;
+        private int block;
         private BlockPosition position;
+
+        public BlockChange(int block, BlockPosition position) {
+            this.block = block;
+            this.position = position;
+        }
+
+        public BlockChange(WrappedBlock block, BlockPosition position) {
+            this.block = (block.getId() << 4)
+                    | (block.getData() & 0xF);
+            this.position = position;
+        }
     }
 }

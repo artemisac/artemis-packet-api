@@ -42,6 +42,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
     private final ArtemisProfile profile;
     private final Inflater inflater;
     private final ProtocolDirection direction;
+    private boolean compress;
     private static final ExecutorService PACKET_SERVICE = Executors.newSingleThreadExecutor();
 
     public ArtemisDecoder(ArtemisProfile profile, ProtocolDirection direction) {
@@ -82,6 +83,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
 
         // Make sure we're receiving getX ByteBuf. If getX protocol is placed before such, it may screw with the decompression
         if (msg instanceof ByteBuf) {
+            final int index = ((ByteBuf) msg).readerIndex();
             // Decode the message and send it off
             final ByteBuf buffer = Unpooled.unmodifiableBuffer((ByteBuf) msg).copy().retain();
             try {
@@ -94,7 +96,7 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                 System.out.println("[!] Error on player of version " + profile.getVersion());
                 e.printStackTrace();
             }
-
+            ((ByteBuf) msg).readerIndex(index);
         } else {
             // If the message is not getX ByteBuf, there's obviously an issue with the pipeline, so disinject and throw error
             new IncompatiblePipelineException(msg.getClass()).printStackTrace();
@@ -109,15 +111,26 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
         /*
          * Why
          */
-        if (isCompressor) {
+        if (!compress && isCompressor && (profile.getVersion().isOrAbove(ProtocolVersion.V1_8))) {
             try {
                 in = decompress(in);
             } catch (Exception e){
-                e.printStackTrace();
+                in.resetReaderIndex();
+                compress = true;
+                byte[] abyte = new byte[in.readableBytes()];
+                in.readBytes(abyte);
+                in.resetReaderIndex();
+                in = MutableByteBuf.translate(Unpooled.wrappedBuffer(abyte));
+                /*e.printStackTrace();
                 Bukkit.getScheduler().runTask(PacketManager.INSTANCE.getPlugin(), () -> {
                     Bukkit.getPlayer(profile.getUuid()).kickPlayer(e.getMessage());
-                });
+                });*/
             }
+        } else {
+            byte[] abyte = new byte[in.readableBytes()];
+            in.readBytes(abyte);
+            in.resetReaderIndex();
+            in = MutableByteBuf.translate(Unpooled.wrappedBuffer(abyte));
         }
 
 
@@ -236,6 +249,8 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
         } else {
             if (debug) System.out.println("NO READABLE BYTES BRUH");
         }
+
+        in.release();
 
         return false;
     }

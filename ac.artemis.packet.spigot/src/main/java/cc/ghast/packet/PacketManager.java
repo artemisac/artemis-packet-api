@@ -32,13 +32,13 @@ public enum PacketManager {
         ac.artemis.packet.PacketManager.setApi(api);
         // Plugin startup logic
         this.repository = new ProtocolRepository(plugin);
-
-        this.manager = new ChainManager();
-        this.listener = new ChannelListener(this);
-        this.hookManager = new HookManager();
-
         repository.create();
         api.create();
+
+        this.manager = new ChainManager();
+        this.hookManager = new HookManager();
+        this.listener = new ChannelListener(this);
+
     }
 
     public void destroy() {

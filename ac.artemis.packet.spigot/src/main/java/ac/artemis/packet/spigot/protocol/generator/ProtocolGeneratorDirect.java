@@ -12,6 +12,7 @@ import ac.artemis.packet.spigot.utils.access.Accessor;
 import ac.artemis.packet.spigot.wrappers.GPacket;
 import ac.artemis.packet.wrapper.Packet;
 import ac.artemis.packet.wrapper.PacketInfo;
+import ac.artemis.packet.wrapper.server.PacketPlayServerWorldParticles;
 import cc.ghast.packet.wrapper.packet.handshake.GPacketHandshakeClientSetProtocol;
 import cc.ghast.packet.wrapper.packet.login.GPacketLoginServerSuccess;
 import cc.ghast.packet.wrapper.packet.play.client.*;
@@ -195,7 +196,8 @@ public class ProtocolGeneratorDirect extends Accessor implements PacketGenerator
                 GPacketPlayServerUpdateAttributes.class,
                 GPacketPlayServerVehicleMove.class,
                 GPacketPlayServerWindowClose.class,
-                GPacketPlayServerWindowOpen.class
+                GPacketPlayServerWindowOpen.class,
+                GPacketPlayServerWorldParticles.class
         );
 
         for (EnumProtocolFormat value : version.getFormatMap().values()) {

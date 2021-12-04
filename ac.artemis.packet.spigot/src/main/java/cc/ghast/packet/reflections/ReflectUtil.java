@@ -35,18 +35,18 @@ public class ReflectUtil {
         Minecraft Server field
      */
     public static final Class<?> MINECRAFT_SERVER_CLAZZ = Reflection.getMinecraftClass("MinecraftServer");
-    private static Class<?> CRAFT_SERVER_CLAZZ;
-    private static FieldAccessor<?> MINECRAFT_SERVER_FIELD;
-    private static Object MINECRAFT_SERVER;
+    public static Class<?> CRAFT_SERVER_CLAZZ;
+    public static FieldAccessor<?> MINECRAFT_SERVER_FIELD;
+    public static Object MINECRAFT_SERVER;
 
     /*
         Minecraft Connection Field
      */
 
-    private static Class<?> SERVER_CONNECTION_CLAZZ;
-    private static FieldAccessor<?> SERVER_CONNECTION_FIELD;
-    private static Object SERVER_CONNECTION;
-    private static FieldAccessor<List> CHANNEL_FUTURES_FIELD;
+    public static Class<?> SERVER_CONNECTION_CLAZZ;
+    public static FieldAccessor<?> SERVER_CONNECTION_FIELD;
+    public static Object SERVER_CONNECTION;
+    public static FieldAccessor<List> CHANNEL_FUTURES_FIELD;
 
     public static Object getChannelFuture() {
         return CHANNEL_FUTURES_FIELD.get(SERVER_CONNECTION).get(0);
