@@ -1,46 +1,211 @@
-<p align="center">
-  <img width="50%" height="50%" src="https://i.imgur.com/I1nYfFf.png">
-  <br>
-  <a><img alt="Server Version" src="https://img.shields.io/badge/Server%20Version-1.7.10%201.16.4-blue"></a>
-  <a><img alt="Api Type" src="https://img.shields.io/badge/API-Bukkit-blue"></a>
-  <a><img alt="Authors" src="https://img.shields.io/badge/Authors-Ghast-blue"></a>
-  <a><img alt="Issues" src="https://img.shields.io/github/issues/artemisac/Artemis-Packet-API"></a>
-  <a><img alt="Forks" src="https://img.shields.io/github/forks/artemisac/Artemis-Packet-API"></a>
-  <a><img alt="Stars" src="https://img.shields.io/github/stars/artemisac/Artemis-Packet-API"></a>
-</p>
+## Download
+Download the latest stable release on Spigot: https://www.spigotmc.org/resources/atlas-custom-packet-listening-numerous-utils-block-boundingboxes-1-7-1-13.66845/
 
-This is a simplistic yet extremely efficient way to handle packets. Instead of relying on directly calling NMS packet via
-reflections, this reads them the proper way. It allows for a quite noticeable performance boost and a whole lot more control.
+## Description
+#### What is Atlas?
+Atlas is an all-in-one and cohesive API for developers who want to improve their Bukkit plugins or anti-cheats.
 
-This project was created for Artemis Anticheat, which can be seen @ https://artemis.ac. 
+#### What does it include?
 
-### Reasoning
-When working on the Artemis project, the use of external libraries was against our ideal. We wanted to be as independent as one could be. 
-However, as our tests percevered, we noticed a pattern: Packets were always an issue. Bottlenecking, wrong version, syntax errors... We were
-always subject to a variety of issues related to packets and reflections. So we engineered a new packet api which would not require a single reflection
-call in the handling process. This would noticeably improve performance and would extremely facilitate the process.
+* An advanced and seemless custom packet-sniffing system, with individual packet-wrappers.
+* Custom event system, running asynchronously so servers using your plugin will not experience any slowdowns on the main-thread.
+* Enough math utilities to make you forget what you learned in math class.
+* Many useful methods for doing little things like sending a colored message to console.
+* The most accurate and light, public hitbox-grabbing system.
+* Numerous reflection methods and utilities, including grabbers for NMS.
 
-### Status
-Near completed. The following needs to be done: 
-- ~~Finish all NMS injectors~~
-- Finish all packet wrappers, especially outbound
-- ~~Handle SetProtocol packet properly~~
-- ~~Add API to add external calls, similar to bukkit~~
-- Document everything
-- ~~Finish ChannelInjector hook to make sure it hooks before the correct pipeline handler~~
-- Add some protection and timeout packet exploits
-- Add some useful commands
+#### JavaDocs
+https://funkemunky.github.io/Atlas/
 
-### Credits
-I'd like to credit 2-3 authors which's work made this possible. 
+#### Using Code from This Repo
+I'm aware that more people use Atlas as a means of learning rather than as an API, and therefore many people take parts of this repository and put it into their own projects. I have no problem with this. However, if you are using code from this repository in a **closed source** project, I would like ***easily-readable credit*** on any official distribution page for your project/product. Thanks!
 
-**[FormallyMyles](https://github.com/FormallyMyles)** - I'd like to thank you for open sourcing ViaVersion and making an extremely clear and well though system. 
-My way of handling the structure of ByteBuf is extremely similar to yours. It's really clean in my opinion. Thank you
+## Custom Event System
 
-**[ElevatedDev](https://github.com/ElevatedDev)** - Thank you Elevated for giving me tips for here and there. The use of labels and some specific things are
-all down to your work. I truly appreciate the help.
+#### Creating an event
+```java
+package cc.funkemunky.anticheat.api.event;
 
-# License
-All rights reserved - Ghast Holdings LLC
+import cc.funkemunky.api.events.AtlasEvent;
+import cc.funkemunky.api.events.Cancellable;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-For any support concern, open an issue. If you'd like to see more fancy stuff, contact me on discord @ Ghast#0001
+
+public class TickEvent extends AtlasEvent implements Cancellable {
+    private int currentTick;
+
+    public TickEvent(int currentTick) {
+        this.currentTick = currentTick;
+    }
+
+    public int getCurrentTick() {
+        return currentTick;
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return false;
+    }
+
+    @Override
+    public void setCancelled(boolean b) {
+
+    }
+}
+
+```
+
+### Calling an event
+```java
+new BukkitRunnable() {
+            public void run() {
+                TickEvent tickEvent = new TickEvent(currentTicks++);
+
+                Atlas.getInstance().getEventManager().callEvent(tickEvent);
+            }
+        }.runTaskTimerAsynchronously(this, 1L, 1L);
+```
+
+### Example Listener
+```java
+package cc.funkemunky.anticheat.impl.listeners;
+
+import cc.funkemunky.anticheat.Rock;
+import cc.funkemunky.anticheat.api.data.PlayerData;
+import cc.funkemunky.anticheat.api.event.TickEvent;
+import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.events.AtlasListener;
+import cc.funkemunky.api.events.Listen;
+import cc.funkemunky.api.utils.Init;
+
+@Init
+public class FunkeListeners implements AtlasListener {
+
+    @Listen
+    public void onTickEvent(TickEvent event) {
+        Atlas.getInstance().executeTask(() -> Rock.getInstance().getDataManager().getDataObjects().keySet().forEach(key -> {
+            PlayerData data = Rock.getInstance().getDataManager().getDataObjects().get(key);
+
+            data.getActionProcessor().update(data);
+        }));
+    }
+}
+```
+
+### Registering a Listener
+```java
+public void onEnable() {
+        Atlas.getInstance().getEventManager().registerListeners(new FunkeListeners(), this);
+}
+```
+
+## Custom Packet System
+
+### Sending a packet
+```java
+TinyProtocolHandler.sendPacket(e.getPlayer(), new WrappedOutKeepAlivePacket(233 + e.getPlayer().getEntityId() + 935));
+```
+
+### Listening for Packets
+
+#### Client Packets
+```java
+@Listen
+    public void onEvent(PacketRecieveEvent e) {
+        if(e.getType().equals(Packet.Client.ENTITY_ACTION)) {
+            WrappedInEntityActionPacket packet = new WrappedInEntityActionPacket(e.getPacket(), e.getPlayer());
+
+            switch(packet.getAction()) {
+                case START_SNEAKING:
+                    data.skiderino.sneak = true;
+                    break;
+                case STOP_SNEAKING:
+                    data.skiderino.sneak = false;
+                    break;
+                case START_SPRINTING:
+                    data.skiderino.sprint = true;
+                    break;
+                case STOP_SPRINTING:
+                    data.skiderino.sprint = false;
+                    break;
+            }
+        }
+    }
+```
+
+#### Server Packets
+```java
+ @Listen
+    public void onPacketSend(PacketSendEvent e) {
+        PlayerData data = Fiona.getInstance().getDataManager().getPlayerData(e.getPlayer());
+
+        if (data != null) {
+            switch (e.getType()) {
+                case Packet.Server.KEEP_ALIVE:
+                    data.lastServerKeepAlive = System.currentTimeMillis();
+                    break;
+                case Packet.Server.ENTITY_METADATA:
+                    WrappedOutEntityMetadata wrapper = new WrappedOutEntityMetadata(e.getPacket(), e.getPlayer());
+
+                    if(wrapper.getObjects().size() > 0) {
+                        if(wrapper.getObjects().get(0).getObject() instanceof Byte && (data.isUsingItem = ((Byte) wrapper.getObjects().get(0).getObject()) % 0x5 == 1)) {
+                            data.lastUseItem.reset();
+                        }
+                    }
+                break;
+			}
+        }
+    }
+```
+
+## Collision Hit-Boxes
+
+### Getting a specific block hit-box
+```java
+@EventHandler(priority = EventPriority.HIGHEST)
+    public void onEvent(PlayerInteractEvent event) {
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (event.getItem() != null
+                    && event.getItem().getType().equals(Material.BLAZE_ROD)
+                    && event.getItem().getItemMeta().getDisplayName().equalsIgnoreCase(Color.Red + "Magic Box Wand")) {
+                Block block = event.getClickedBlock();
+
+                event.getPlayer().sendMessage(block.getType().name() + "'s Data: " + block.getData());
+                for (BoundingBox box : Atlas.getInstance().getBlockBoxManager().getBlockBox().getSpecificBox(block.getLocation())) {
+                    for (float x = box.minX; x < box.maxX; x += 0.2f) {
+                        for (float y = box.minY; y < box.maxY; y += 0.2f) {
+                            for (float z = box.minZ; z < box.maxZ; z += 0.2f) {
+                                WrappedPacketPlayOutWorldParticle packet = new WrappedPacketPlayOutWorldParticle(WrappedEnumParticle.FLAME, true, x, y, z, 0f, 0f, 0f, 0f, 1, null);
+                                packet.sendPacket(event.getPlayer());
+                            }
+                        }
+                    }
+                    event.getPlayer().sendMessage(ReflectionsUtil.getVanillaBlock(event.getClickedBlock()).getClass().getSimpleName() + ": " + box.toString());
+                }
+            }
+        }
+    }
+```
+
+### Getting all collided hit-boxes
+```java
+List<BoundingBox> box = Atlas.getInstance().getBlockBoxManager().getBlockBox().getCollidingBoxes(to.getWorld(), data.boundingBox.grow(0.5f, 0.1f, 0.5f).subtract(0, 0.5f, 0, 0, 0, 0));
+
+        CollisionAssessment assessment = new CollisionAssessment(data.boundingBox, data);
+        box.forEach(bb -> assessment.assessBox(bb, to.getWorld()));
+```
+
+### Getting an entity hitbox
+```java
+MiscUtils.getEntityBoundingBox(e.getPlayer());
+```
+[Latest]: https://github.com/funkemunky/Atlas/releases "Download Latest"
+
+## Credits
+
+### TinyProtocol and Additions
+Credits to [@dmulloy2](https://github.com/dmulloy2) and [@aandk](https://github.com/aandk) for the TinyProtocol and Reflection utilities. Thanks to [@DeprecatedLuke](https://github.com/DeprecatedLuke) for his useful additions to TinyProtocol and his initial packet wrappers.
+
+### Code Profile System
+Credits to [@DeprecatedLuke](https://github.com/DeprecatedLuke) for the BaseProfiler and Profiler classes.
