@@ -4,10 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>Packet-API</artifactId>
-    <groupId>ac.artemis.packet</groupId>
-    <version>1.2.17</version>
-    <name>Artemis Packet API</name>
+    <parent>
+        <groupId>ac.artemis.packet</groupId>
+        <artifactId>parent</artifactId>
+        <version>2.0.0</version>
+    </parent>
+
+    <artifactId>spigot</artifactId>
+
+    <name>ArtemisPacketApi-spigot</name>
 
     <description>Packet api implementation for the Spigot api</description>
     <properties>
@@ -59,7 +64,7 @@
         <dependency>
             <groupId>ac.artemis.packet</groupId>
             <artifactId>api</artifactId>
-            <version>1.2.15</version>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- Netty API which's version somewhats matches NMS's one -->
@@ -74,7 +79,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.8</version>
+            <version>1.18.22</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -94,13 +99,13 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.4</version>
+            <version>3.12.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
-            <version>3.0.0</version>
+            <version>3.0.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -114,7 +119,7 @@
         <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
-            <version>4.5.0</version>
+            <version>4.6.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
