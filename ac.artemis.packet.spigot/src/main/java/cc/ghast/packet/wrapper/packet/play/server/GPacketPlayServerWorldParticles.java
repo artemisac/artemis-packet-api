@@ -17,7 +17,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @PacketLink(PacketPlayServerWorldParticles.class)
-public class GPacketPlayServerWorldParticles extends GPacket implements PacketPlayServerBed, ReadableBuffer, WriteableBuffer {
+public class GPacketPlayServerWorldParticles extends GPacket implements PacketPlayServerWorldParticles, ReadableBuffer, WriteableBuffer {
     public GPacketPlayServerWorldParticles(UUID player, ProtocolVersion version) {
         super("PacketPlayOutWorldParticles", player, version);
     }

@@ -20,6 +20,7 @@ public class GPacketPlayServerBlockChange extends GPacket implements PacketPlayS
 
     private BlockPosition position;
     private int blockId;
+
     @Override
     public void read(ProtocolByteBuf byteBuf) {
         if (version.isLegacy()) {

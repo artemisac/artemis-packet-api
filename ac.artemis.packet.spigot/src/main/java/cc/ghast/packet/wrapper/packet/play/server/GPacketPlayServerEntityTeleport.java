@@ -28,7 +28,6 @@ public class GPacketPlayServerEntityTeleport extends GPacket implements PacketPl
     private byte pitch;
     private boolean onGround;
 
-
     @Override
     public void read(ProtocolByteBuf byteBuf) {
         this.entityId = byteBuf.readVarInt();
