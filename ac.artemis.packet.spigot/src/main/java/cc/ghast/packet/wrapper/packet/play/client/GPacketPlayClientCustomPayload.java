@@ -2,6 +2,7 @@ package cc.ghast.packet.wrapper.packet.play.client;
 
 import ac.artemis.packet.protocol.ProtocolVersion;
 import ac.artemis.packet.spigot.protocol.PacketLink;
+import ac.artemis.packet.wrapper.client.PacketPlayClientCustomPayload;
 import ac.artemis.packet.wrapper.server.PacketPlayServerCustomPayload;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.nms.payload.MinecraftKey;
@@ -14,8 +15,9 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Getter
-@PacketLink(PacketPlayServerCustomPayload.class)
-public class GPacketPlayClientCustomPayload extends GPacket implements PacketPlayServerCustomPayload, ReadableBuffer {
+@PacketLink(PacketPlayClientCustomPayload.class)
+public class GPacketPlayClientCustomPayload extends GPacket implements PacketPlayClientCustomPayload, ReadableBuffer {
+
     public GPacketPlayClientCustomPayload(UUID player, ProtocolVersion version) {
         super("PacketPlayInCustomPayload", player, version);
     }
