@@ -1,6 +1,5 @@
 package cc.ghast.packet.reflections;
 
-import ac.artemis.packet.minecraft.inventory.ItemStack;
 import ac.artemis.packet.protocol.ProtocolVersion;
 import ac.artemis.packet.spigot.utils.ServerUtil;
 import cc.ghast.packet.protocol.EnumProtocol;
@@ -12,6 +11,7 @@ import ac.artemis.packet.spigot.wrappers.GPacket;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -238,7 +238,7 @@ public class ReflectUtil {
     private static FieldAccessor<?> GET_HANDLE_ITEM;
 
     public static Object getCompoundTagFromItem(ItemStack stack) {
-        Object nms = GET_HANDLE_ITEM.get(stack.v());
+        Object nms = GET_HANDLE_ITEM.get(stack);
         return GET_NBT_TAG_FROM_ITEMSTACK_METHOD.invoke(stack);
     }
 
