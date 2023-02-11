@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public enum Dimension {
     NETHER(-1),
-    OVERWORLD(0),
-    END(1);
+    NORMAL(0),
+    THE_END(1);
 
     private final int id;
 

@@ -41,9 +41,6 @@ public class ChannelListener implements Listener {
     @EventHandler
     public void onLeave(PlayerQuitEvent e) {
         this.injector.uninjectPlayer(e.getPlayer().getUniqueId());
-        Bukkit.getConsoleSender().sendMessage(Chat.translate("&r[&bPacket&r] &aSuccessfully &cdisinjected&r from player &r" + e.getPlayer().getName()));
+        Bukkit.getConsoleSender().sendMessage(Chat.translate("&r[&bPacket&r] &aSuccessfully &cejected&r from player &r" + e.getPlayer().getName()));
     }
-
-
-
 }
