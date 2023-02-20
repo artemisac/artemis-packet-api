@@ -1,6 +1,5 @@
 package cc.ghast.packet.wrapper.packet.play.client;
 
-import ac.artemis.packet.minecraft.inventory.ItemStack;
 import ac.artemis.packet.protocol.ProtocolVersion;
 import ac.artemis.packet.spigot.protocol.PacketLink;
 import ac.artemis.packet.spigot.utils.ServerUtil;
@@ -14,6 +13,7 @@ import cc.ghast.packet.wrapper.mc.PlayerEnums;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import ac.artemis.packet.spigot.wrappers.GPacket;
 import lombok.Getter;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
 import java.util.Optional;

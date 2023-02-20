@@ -1,6 +1,5 @@
 package cc.ghast.packet.reflections;
 
-import ac.artemis.packet.minecraft.inventory.ItemStack;
 import ac.artemis.packet.protocol.ProtocolVersion;
 import ac.artemis.packet.spigot.utils.ServerUtil;
 import cc.ghast.packet.protocol.EnumProtocol;
@@ -12,6 +11,7 @@ import ac.artemis.packet.spigot.wrappers.GPacket;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -238,7 +238,6 @@ public class ReflectUtil {
     private static FieldAccessor<?> GET_HANDLE_ITEM;
 
     public static Object getCompoundTagFromItem(ItemStack stack) {
-        Object nms = GET_HANDLE_ITEM.get(stack.v());
         return GET_NBT_TAG_FROM_ITEMSTACK_METHOD.invoke(stack);
     }
 
@@ -247,7 +246,7 @@ public class ReflectUtil {
     private static MethodInvoker SET_DATA_METHOD;
     private static MethodInvoker AS_BUKKIT_COPY_METHOD;
 
-    public static ItemStack getItemFromWrapper(WrappedItem item){
+    public static org.bukkit.inventory.ItemStack getItemFromWrapper(WrappedItem item){
         Object id = GET_ITEM_FROM_ID_METHOD.invoke(null, item.getId());
         Object nmsItem;
 
@@ -261,7 +260,7 @@ public class ReflectUtil {
         } catch (Exception e) {
             // ignored
         }
-        return (ItemStack) AS_BUKKIT_COPY_METHOD.invoke(null, nmsItem);
+        return (org.bukkit.inventory.ItemStack) AS_BUKKIT_COPY_METHOD.invoke(null, nmsItem);
     }
 
     /*

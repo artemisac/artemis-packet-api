@@ -1,6 +1,5 @@
 package cc.ghast.packet.buffer;
 
-import ac.artemis.packet.minecraft.inventory.ItemStack;
 import ac.artemis.packet.protocol.ProtocolVersion;
 import cc.ghast.packet.buffer.types.Converters;
 import cc.ghast.packet.exceptions.InvalidByteBufStructureException;
@@ -12,6 +11,7 @@ import cc.ghast.packet.wrapper.bukkit.BlockPosition;
 import com.github.steveice10.opennbt.tag.builtin.CompoundTag;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -71,7 +71,7 @@ public class ProtocolByteBuf {
         Converters.UUID.write(byteBuf, uuid);
     }
 
-    public ItemStack readItem() {
+    public org.bukkit.inventory.ItemStack readItem() {
         try {
             return Converters.ITEM_STACK.read(byteBuf, version);
         } catch (IOException e) {
