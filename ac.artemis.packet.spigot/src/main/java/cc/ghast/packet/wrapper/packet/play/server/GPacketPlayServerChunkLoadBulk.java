@@ -53,6 +53,8 @@ public class GPacketPlayServerChunkLoadBulk extends GPacket implements PacketPla
         this.z = new int[columns];
         this.biomeData = new byte[columns][];
 
+        this.columnData = new ColumnDataWrapper[columns];
+
         ChunkDataWrapper[] data = new ChunkDataWrapper[columns];
 
         for (int column = 0; column < columns; column++) {
