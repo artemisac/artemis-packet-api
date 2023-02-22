@@ -271,12 +271,14 @@ public class ReflectUtil {
     private static Class<?> NMS_PLAYER_CLAZZ;
     private static MethodInvoker GET_HANDLE_METHOD;
     private static FieldAccessor<Integer> PING_FIELD;
+    private static MethodInvoker MODERN_PING;
 
     public static int getPing(Player player) {
         Object nmsPlayer = GET_HANDLE_METHOD.invoke(player);
-        return PING_FIELD.get(nmsPlayer);
-    }
 
+        return Reflection.NEW_NMS ? (int) MODERN_PING.invoke(player) :
+                PING_FIELD.get(nmsPlayer);
+    }
 
     @SneakyThrows
     public static void init() {
@@ -285,52 +287,57 @@ public class ReflectUtil {
         MINECRAFT_SERVER_FIELD = Reflection.getField(CRAFT_SERVER_CLAZZ, MINECRAFT_SERVER_CLAZZ, 0);
         MINECRAFT_SERVER = MINECRAFT_SERVER_FIELD.get(Bukkit.getServer());
 
-        SERVER_CONNECTION_CLAZZ = Reflection.getMinecraftClass("ServerConnection");
+        SERVER_CONNECTION_CLAZZ = Reflection.getMinecraftClass(Reflection.NEW_NMS ? "network.ServerConnection" : "ServerConnection");
         SERVER_CONNECTION_FIELD = Reflection.getField(MINECRAFT_SERVER_CLAZZ, SERVER_CONNECTION_CLAZZ, 0);
         SERVER_CONNECTION = SERVER_CONNECTION_FIELD.get(MINECRAFT_SERVER);
         CHANNEL_FUTURES_FIELD = Reflection.getField(SERVER_CONNECTION_CLAZZ, List.class, 0);
 
-        NETWORK_MANAGER_CLAZZ = Reflection.getMinecraftClass("NetworkManager");
+        NETWORK_MANAGER_CLAZZ = Reflection.NEW_NMS ? Reflection.getMinecraftClass("NetworkManager", "network") :
+                Reflection.getMinecraftClass("NetworkManager");
         NETWORK_MANAGERS_FIELD = Reflection.getField(SERVER_CONNECTION_CLAZZ, List.class, 1);
 
         try {
             CHANNEL_FIELD = Reflection.getField(NETWORK_MANAGER_CLAZZ, "channel", 0);
-        } catch (Exception e) {
-
-        }
+        } catch (Exception e) {}
 
         ADDRESS_FIELD = Reflection.getField(NETWORK_MANAGER_CLAZZ, SocketAddress.class, 0);
 
-        ENUM_PROTOCOL_CLAZZ = Reflection.getMinecraftClass("EnumProtocol");
+        ENUM_PROTOCOL_CLAZZ = Reflection.NEW_NMS ? Reflection.getMinecraftClass("EnumProtocol", "network") :
+                Reflection.getMinecraftClass("EnumProtocol");
         ENUM_PROTOCOLS = ENUM_PROTOCOL_CLAZZ.getEnumConstants();
         PACKET_MAP_FIELD = Reflection.getField(ENUM_PROTOCOL_CLAZZ, Map.class, 1);
 
         try {
-            ENUM_DIRECTION_CLAZZ = Reflection.getMinecraftClass("EnumProtocolDirection");
+            ENUM_DIRECTION_CLAZZ = Reflection.NEW_NMS ? Reflection.getMinecraftClass("protocol.EnumProtocolDirection", "network") :
+            Reflection.getMinecraftClass("EnumProtocolDirection");
             DIRECTIONS = ENUM_DIRECTION_CLAZZ.getEnumConstants();
-        } catch (Exception e) {
+        } catch (Exception e) {}
 
-        }
-
-        NBT_READ_LIMITER_CLAZZ = Reflection.getMinecraftClass("NBTReadLimiter");
+        NBT_READ_LIMITER_CLAZZ = Reflection.NEW_NMS ? Reflection.getMinecraftClass("NBTReadLimiter", "nbt") :
+                Reflection.getMinecraftClass("NBTReadLimiter");
         NBT_READ_LIMITER_CONSTRUCTOR = Reflection.getConstructor(NBT_READ_LIMITER_CLAZZ, long.class);
-        NBT_TOOLS_CLAZZ = Reflection.getMinecraftClass("NBTCompressedStreamTools");
-        NBT_COMPOUND_CLAZZ = Reflection.getMinecraftClass("NBTTagCompound");
+        NBT_TOOLS_CLAZZ = Reflection.NEW_NMS ? Reflection.getMinecraftClass("NBTCompressedStreamTools", "nbt") :
+                Reflection.getMinecraftClass("NBTCompressedStreamTools");
+        NBT_COMPOUND_CLAZZ = Reflection.NEW_NMS ? Reflection.getMinecraftClass("NBTTagCompound", "nbt") :
+                Reflection.getMinecraftClass("NBTTagCompound");
         NBT_COMPOUND_READ_FROM_BYTEBUF = Reflection.getMethod(NBT_TOOLS_CLAZZ, NBT_COMPOUND_CLAZZ,
                 0, DataInput.class, NBT_READ_LIMITER_CLAZZ);
 
         WRITE_NBT_COMPOUND_TO_BYTEBUF = Reflection.getMethod(NBT_TOOLS_CLAZZ, void.class,
                 0, NBT_COMPOUND_CLAZZ, DataOutput.class);
         CRAFT_ITEM_CLAZZ = Reflection.getCraftBukkitClass("inventory.CraftItemStack");
-        ITEM_NMS_CLAZZ = Reflection.getMinecraftClass("ItemStack");
-        ITEM_TYPE_CLAZZ = Reflection.getMinecraftClass("Item");
+        ITEM_NMS_CLAZZ = Reflection.NEW_NMS ? Reflection.getMinecraftClass("item.ItemStack", "world") :
+                Reflection.getMinecraftClass("ItemStack");
+        ITEM_TYPE_CLAZZ = Reflection.NEW_NMS ? Reflection.getMinecraftClass("item.Item", "world") :
+                Reflection.getMinecraftClass("Item");
         GET_NBT_TAG_FROM_ITEMSTACK_METHOD = Reflection.getMethod(ITEM_NMS_CLAZZ, "getTag");
         GET_HANDLE_ITEM = Reflection.getField(CRAFT_ITEM_CLAZZ, "handle", ITEM_NMS_CLAZZ);
         GET_ITEM_FROM_ID_METHOD = Reflection.getMethod(ITEM_TYPE_CLAZZ, "getById", int.class);
 
         if (ServerUtil.getGameVersion().isAbove(ProtocolVersion.V1_14)) {
             ITEM_NMS_CONSTRUCTOR = Reflection.getConstructor(ITEM_NMS_CLAZZ,
-                    Reflection.getMinecraftClass("IMaterial"), int.class);
+                    Reflection.NEW_NMS ? Reflection.getMinecraftClass("level.IMaterial", "world") :
+                            Reflection.getMinecraftClass("IMaterial"), int.class);
         } else {
             ITEM_NMS_CONSTRUCTOR = Reflection.getConstructor(ITEM_NMS_CLAZZ, ITEM_TYPE_CLAZZ, int.class, int.class);
         }
@@ -339,9 +346,11 @@ public class ReflectUtil {
         AS_BUKKIT_COPY_METHOD = Reflection.getMethod(CRAFT_ITEM_CLAZZ, "asBukkitCopy", ITEM_NMS_CLAZZ);
 
         CRAFT_PLAYER_CLAZZ = Reflection.getCraftBukkitClass("entity.CraftPlayer");
-        NMS_PLAYER_CLAZZ = Reflection.getMinecraftClass("EntityPlayer");
+        NMS_PLAYER_CLAZZ = Reflection.NEW_NMS ? Reflection.getMinecraftClass("level.EntityPlayer") :
+                Reflection.getMinecraftClass("EntityPlayer");
         GET_HANDLE_METHOD = Reflection.getMethod(CRAFT_PLAYER_CLAZZ, "getHandle");
         PING_FIELD = Reflection.getField(NMS_PLAYER_CLAZZ, "ping", int.class);
+        MODERN_PING = Reflection.getMethod(Reflection.OBC_PREFIX + ".entity.CraftPlayer", "getPing");
     }
     static {
         init();

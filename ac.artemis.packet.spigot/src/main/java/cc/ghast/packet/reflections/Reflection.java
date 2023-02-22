@@ -16,9 +16,12 @@ import java.util.regex.Pattern;
  */
 public final class Reflection {
     // Deduce the net.minecraft.server.v* package
-    public static String OBC_PREFIX = Bukkit.getServer().getClass().getPackage().getName();
-    public static String NMS_PREFIX = OBC_PREFIX.replace("org.bukkit.craftbukkit", "net.minecraft.server");
-    public static String VERSION = OBC_PREFIX.replace("org.bukkit.craftbukkit", "").replace(".", "");
+    public static final String OBC_PREFIX = Bukkit.getServer().getClass().getPackage().getName();
+    public static final String VERSION = OBC_PREFIX.replace("org.bukkit.craftbukkit", "").replace(".", "");
+    private static final int version = Integer.parseInt(VERSION.split("_")[1]);
+    public static final boolean NEW_NMS = version >= 17;
+    public static final String NMS_PREFIX = NEW_NMS ? "net.minecraft.server" :
+            OBC_PREFIX.replace("org.bukkit.craftbukkit", "net.minecraft.server");
 
     // Variable replacement
     private static Pattern MATCH_VARIABLE = Pattern.compile("\\{([^\\}]+)\\}");
@@ -381,6 +384,10 @@ public final class Reflection {
      */
     public static Class<?> getMinecraftClass(String name) {
         return getCanonicalClass(NMS_PREFIX + "." + name);
+    }
+
+    public static Class<?> getMinecraftClass(String name, String minecraftPackage) {
+        return getCanonicalClass("net.minecraft." + minecraftPackage + "." + name);
     }
 
     /**

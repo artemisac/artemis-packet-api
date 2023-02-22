@@ -3,6 +3,7 @@ package cc.ghast.packet.listener;
 import ac.artemis.packet.spigot.utils.ServerUtil;
 import cc.ghast.packet.PacketManager;
 import cc.ghast.packet.listener.injector.InjectorFactory;
+import cc.ghast.packet.reflections.ReflectUtil;
 import cc.ghast.packet.utils.Chat;
 import cc.ghast.packet.listener.injector.Injector;
 import lombok.Getter;
@@ -36,6 +37,8 @@ public class ChannelListener implements Listener {
     @EventHandler
     public void onLogin(PlayerJoinEvent e) {
         //this.injector.injectPlayer(e.getPlayer().getUniqueId());
+        ReflectUtil.init();
+        ReflectUtil.getPing(e.getPlayer());
     }
 
     @EventHandler
