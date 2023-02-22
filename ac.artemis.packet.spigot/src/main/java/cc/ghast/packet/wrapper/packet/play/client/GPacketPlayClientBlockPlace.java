@@ -36,8 +36,6 @@ public class GPacketPlayClientBlockPlace extends GPacket implements PacketPlayCl
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-        System.out.println("Got old packet");
-
         final boolean legacy = gameVersion.isOrBelow(ProtocolVersion.V1_8_9);
         int direction;
 

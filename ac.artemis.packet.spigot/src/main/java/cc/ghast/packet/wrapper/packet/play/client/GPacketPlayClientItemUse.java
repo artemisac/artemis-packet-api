@@ -37,7 +37,6 @@ public class GPacketPlayClientItemUse extends GPacket implements PacketPlayClien
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-        System.out.println("got this packet");
         int direction = 255;
 
         // Lolz this is empty
@@ -85,9 +84,6 @@ public class GPacketPlayClientItemUse extends GPacket implements PacketPlayClien
         } else {
             this.direction = Optional.of(EnumDirection.values()[direction]);
         }
-
-        System.out.println(vector);
-        System.out.println(position);
     }
 
 }
