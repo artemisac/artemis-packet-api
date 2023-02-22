@@ -30,15 +30,17 @@ public class GPacketPlayClientBlockPlace extends GPacket implements PacketPlayCl
     @Deprecated
     private int directionId;
     private Optional<ItemStack> item;
-    private BlockPosition position;
-    private Vector3D vector;
+    private Optional<BlockPosition> position;
+    private Optional<Vector3D> vector;
     private PlayerEnums.Hand hand;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
+        System.out.println("Got old packet");
 
         final boolean legacy = gameVersion.isOrBelow(ProtocolVersion.V1_8_9);
-        final int direction;
+        int direction;
+
         if (legacy) {
 
             // 1.6.4 - 1.7.10 version range
@@ -47,13 +49,13 @@ public class GPacketPlayClientBlockPlace extends GPacket implements PacketPlayCl
                 int x = byteBuf.readInt();
                 int y = byteBuf.readByte();
                 int z = byteBuf.readInt();
-                this.position = new BlockPosition(x, y, z);
+                this.position = Optional.of(new BlockPosition(x, y, z));
             }
 
             // 1.8 - 1.8.8 version range
             else if (version.isBelow(ProtocolVersion.V1_9)) {
                 // Position
-                this.position = Converters.LOCATION_LONG.read(byteBuf.getByteBuf(), version);
+                this.position = Optional.of(Converters.LOCATION_LONG.read(byteBuf.getByteBuf(), version));
             }
 
             // Direction
@@ -69,15 +71,23 @@ public class GPacketPlayClientBlockPlace extends GPacket implements PacketPlayCl
             }
             this.hand = PlayerEnums.Hand.MAIN_HAND;
         } else {
-            this.position = byteBuf.readBlockPositionFromLong();
-            // Direction
-            direction = byteBuf.readVarInt();
-
-            this.directionId = direction;
+            try {
+                this.position = Optional.of(byteBuf.readBlockPositionFromLong());
+            } catch (Exception ignore) {
+                this.position = Optional.empty();
+            }
 
             this.hand = PlayerEnums.Hand.values()[byteBuf.readVarInt()];
 
             this.item = Optional.empty();
+
+            direction = 255;
+
+            try {
+                // Direction
+                direction = byteBuf.readVarInt();
+
+            } catch (Exception ignore) {}
         }
 
         if (direction == 255) {
@@ -86,9 +96,14 @@ public class GPacketPlayClientBlockPlace extends GPacket implements PacketPlayCl
             this.direction = Optional.of(EnumDirection.values()[direction]);
         }
 
-        float x = (float) byteBuf.readUnsignedByte() / 16.0F;
-        float y = (float) byteBuf.readUnsignedByte() / 16.0F;
-        float z = (float) byteBuf.readUnsignedByte() / 16.0F;
-        this.vector = new Vector3D(x, y, z);
+        try {
+            float x = (float) byteBuf.readUnsignedByte() / 16.0F;
+            float y = (float) byteBuf.readUnsignedByte() / 16.0F;
+            float z = (float) byteBuf.readUnsignedByte() / 16.0F;
+            this.vector = Optional.of(new Vector3D(x, y, z));
+        } catch (Exception ignore) {
+            this.vector = Optional.empty();
+        }
+
     }
 }

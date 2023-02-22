@@ -12,6 +12,7 @@ import lombok.Getter;
 import org.bukkit.Difficulty;
 import org.bukkit.WorldType;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Getter
@@ -24,8 +25,8 @@ public class GPacketPlayServerLogin extends GPacket implements PacketPlayServerL
     private int entityId;
     private GameMode gamemode;
     private boolean hardcoreMode;
-    private Dimension dimension;
-    private Difficulty difficulty;
+    private Optional<Dimension> dimension;
+    private Optional<Difficulty> difficulty;
     private int maxPlayers;
     private WorldType worldLevelType;
     private boolean reducedDebugInfo;
@@ -43,10 +44,19 @@ public class GPacketPlayServerLogin extends GPacket implements PacketPlayServerL
         this.gamemode = GameMode.getById(i);
 
         // Dimension
-        this.dimension = Dimension.values()[byteBuf.readByte() + 1];
+        if(version.isOrAbove(ProtocolVersion.V1_16)) {
+            // TODO: Add NBT Codec reader to handle dimension on 1.16
+            this.dimension = Optional.empty();
+        } else {
+            this.dimension = Optional.of(Dimension.values()[byteBuf.readByte() + 1]);
+        }
 
         // Difficulty
-        this.difficulty = Difficulty.values()[byteBuf.readUnsignedByte()];
+        if(version.isOrAbove(ProtocolVersion.V1_16)) {
+            this.difficulty = Optional.empty();
+        } else {
+            this.difficulty = Optional.of(Difficulty.values()[byteBuf.readUnsignedByte()]);
+        }
 
         // Max Players
         this.maxPlayers = byteBuf.readUnsignedByte();
@@ -55,7 +65,6 @@ public class GPacketPlayServerLogin extends GPacket implements PacketPlayServerL
         this.worldLevelType = WorldType.getByName(byteBuf.readStringBuf(16));
         if (this.worldLevelType == null) {
             this.worldLevelType = WorldType.NORMAL;
-
         }
 
         if (version.isOrAbove(ProtocolVersion.V1_8)) {

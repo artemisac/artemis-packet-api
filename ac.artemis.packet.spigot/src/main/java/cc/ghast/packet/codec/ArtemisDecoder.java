@@ -1,6 +1,5 @@
 package cc.ghast.packet.codec;
 
-import ac.artemis.packet.PacketGenerator;
 import ac.artemis.packet.protocol.ProtocolDirection;
 import ac.artemis.packet.protocol.ProtocolState;
 import ac.artemis.packet.protocol.ProtocolVersion;
@@ -13,9 +12,6 @@ import cc.ghast.packet.utils.Chat;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
 import cc.ghast.packet.wrapper.packet.login.GPacketLoginServerSuccess;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
-import cc.ghast.packet.protocol.EnumProtocol;
-import cc.ghast.packet.protocol.EnumProtocolCurrent;
-import cc.ghast.packet.protocol.EnumProtocolLegacy;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.wrapper.packet.handshake.GPacketHandshakeClientSetProtocol;
@@ -197,7 +193,6 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                 return false;
             }
 
-
             if (packet != null) {
                 if (packet instanceof ReadableBuffer) {
                     ReadableBuffer buffer = (ReadableBuffer) packet;
@@ -222,7 +217,6 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                 if (packet instanceof GPacketHandshakeClientSetProtocol){
                     handleHandshake((GPacketHandshakeClientSetProtocol) packet);
                 }
-
                 else if (packet instanceof GPacketLoginServerSuccess) {
                     handleLoginSuccess((GPacketLoginServerSuccess) packet);
                 }

@@ -25,19 +25,15 @@ public class LongLocationConverter extends BufConverter<BlockPosition> {
     public BlockPosition read(MutableByteBuf buffer, ProtocolVersion version, Object... args) {
         long position = buffer.readLong();
 
-        int x, y, z;
+        int x = (int) (position >> 38), y, z;
 
-        if (version.isAbove(ProtocolVersion.V1_14)) {
-            x = (int) (position >> 38);
-            y = (int) (position & 0xFFF);
-            z = (int) ((position << 26 >> 38));
+        if (version.isOrAbove(ProtocolVersion.V1_14)) {
+            y = (int) (position << 52 >> 52);
+            z = (int) (position << 26 >> 38);
         } else {
-            x = (int) (position >> 38);
             y = (int) ((position >> 26) & 0xFFF);
             z = (int) (position << 38 >> 38);
         }
-
-
 
         return new BlockPosition(x, y, z);
     }

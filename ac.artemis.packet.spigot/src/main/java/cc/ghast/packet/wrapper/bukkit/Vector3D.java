@@ -7,4 +7,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Vector3D {
     private final float x, y, z;
+
+    @Override
+    public String toString() {
+        return "Vector3D{" +
+                "x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                '}';
+    }
 }

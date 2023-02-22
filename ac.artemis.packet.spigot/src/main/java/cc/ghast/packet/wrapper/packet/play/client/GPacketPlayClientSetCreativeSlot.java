@@ -9,6 +9,7 @@ import ac.artemis.packet.spigot.wrappers.GPacket;
 import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Getter
@@ -19,11 +20,16 @@ public class GPacketPlayClientSetCreativeSlot extends GPacket implements PacketP
     }
 
     private int slot;
-    private ItemStack item;
+    private Optional<ItemStack> item;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
         this.slot = byteBuf.readShort();
-        this.item = byteBuf.readItem();
+        // TODO: This has a type of slot data of newer versions
+        try {
+            this.item = Optional.of(byteBuf.readItem());
+        } catch (Exception ignore) {
+            this.item = Optional.empty();
+        }
     }
 }

@@ -2,8 +2,10 @@ package cc.ghast.packet.wrapper.bukkit;
 
 import cc.ghast.packet.nms.MathHelper;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class BlockPosition {
     public static final int c = 1 + MathHelper.c(MathHelper.b(30000000));
     public static final int d = BlockPosition.c;
@@ -23,5 +25,12 @@ public class BlockPosition {
         this.z = z;
     }
 
-
+    @Override
+    public String toString() {
+        return "BlockPosition{" +
+                "x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                '}';
+    }
 }
