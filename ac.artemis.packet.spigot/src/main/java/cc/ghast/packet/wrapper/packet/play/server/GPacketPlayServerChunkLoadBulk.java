@@ -65,11 +65,13 @@ public class GPacketPlayServerChunkLoadBulk extends GPacket implements PacketPla
             int chunks = Integer.bitCount(mask);
             int length = (chunks * ((4096 * 2) + 2048)) + (skylight ? chunks * 2048 : 0);
 
-            byte[] dat = byteBuf.readBytes(length).array();
+            byte[] dat = new byte[length];
 
             data[column] = new ChunkDataWrapper(mask, true, skylight, dat);
+        }
 
-            //---
+        for (int column = 0; column < columns; column++) {
+            data[column].setData(byteBuf.readBytes(data[column].getData().length).array());
 
             Dimension dimension = Dimension.valueOf(getPlayer().getWorld().getEnvironment().toString());
 
