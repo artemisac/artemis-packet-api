@@ -25,12 +25,18 @@ public class GPacketPlayServerChunkLoadBulk extends GPacket implements PacketPla
         super("PacketPlayOutMapChunkBulk", player, version);
     }
 
+    private int columns;
+
     private int[] x;
     private int[] z;
 
-    private byte[][] biomeData;
+    private int[] mask;
 
-    private ColumnDataWrapper[] columnData;
+    private int[] chunks;
+
+    private byte[][] data;
+
+    private boolean skylight;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
@@ -51,11 +57,16 @@ public class GPacketPlayServerChunkLoadBulk extends GPacket implements PacketPla
 
         this.x = new int[columns];
         this.z = new int[columns];
-        this.biomeData = new byte[columns][];
 
-        this.columnData = new ColumnDataWrapper[columns];
+        this.columns = columns;
+        this.skylight = skylight;
 
         ChunkDataWrapper[] data = new ChunkDataWrapper[columns];
+
+        this.chunks = new int[columns];
+        this.mask = new int[columns];
+
+        this.data = new byte[columns][];
 
         for (int column = 0; column < columns; column++) {
             this.x[column] = byteBuf.readInt();
@@ -67,20 +78,19 @@ public class GPacketPlayServerChunkLoadBulk extends GPacket implements PacketPla
 
             byte[] dat = new byte[length];
 
+            this.mask[column] = mask;
+            this.chunks[column] = chunks;
+
             data[column] = new ChunkDataWrapper(mask, true, skylight, dat);
         }
 
         for (int column = 0; column < columns; column++) {
             data[column].setData(byteBuf.readBytes(data[column].getData().length).array());
 
-            Dimension dimension = Dimension.valueOf(getPlayer().getWorld().getEnvironment().toString());
+            this.data[column] = data[column].getData();
 
-            ColumnDataWrapper wrapper = new ColumnDataWrapper(dimension, data[column].getData(), data[column].getMask());
-
-            // todo: chunk reader implementation
-
-            columnData[column] = wrapper;
-            biomeData[column] = byteBuf.readBytes(256).array();
+//            Dimension dimension = Dimension.valueOf(getPlayer().getWorld().getEnvironment().toString());
+//            ColumnDataWrapper wrapper = new ColumnDataWrapper(dimension, data[column].getData(), data[column].getMask());
         }
     }
 }
