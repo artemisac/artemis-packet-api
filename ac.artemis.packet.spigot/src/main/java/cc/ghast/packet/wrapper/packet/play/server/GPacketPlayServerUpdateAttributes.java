@@ -26,37 +26,40 @@ public class GPacketPlayServerUpdateAttributes extends GPacket implements Packet
 
     @Override
     public void read(final ProtocolByteBuf byteBuf) {
-        this.entityId = version.isLegacy()
-                ? byteBuf.readInt()
-                : byteBuf.readVarInt();
-
-        this.attributes = new ArrayList<>();
-
-        final int max = byteBuf.readInt();
-
-        for (int i = 0; i < max; ++i) {
-            final String name;
-
-            if (version.isAbove(ProtocolVersion.V1_14)) {
-                name = byteBuf.readMinecraftKey().getKey();
-            } else {
-                name = byteBuf.readStringBuf(64);
-            }
-
-            final double base = byteBuf.readDouble();
-
-            final List<Modifier> list = new ArrayList<>();
-            final int maxModifiers = version.isBelow(ProtocolVersion.V1_8)
-                    ? byteBuf.readShort()
+        // TODO: Fix this on 1.17
+        if(version.isBelow(ProtocolVersion.V_1_17)) {
+            this.entityId = version.isLegacy()
+                    ? byteBuf.readInt()
                     : byteBuf.readVarInt();
 
-            for (int j = 0; j < maxModifiers; ++j) {
-                final UUID uuid = byteBuf.readUUID();
-                list.add(new Modifier(uuid, "Unknown synced attribute modifier",
-                        byteBuf.readDouble(), byteBuf.readByte()));
-            }
+            this.attributes = new ArrayList<>();
 
-            this.attributes.add(new Snapshot(name, base, list));
+            final int max = byteBuf.readInt();
+
+            for (int i = 0; i < max; ++i) {
+                final String name;
+
+                if (version.isAbove(ProtocolVersion.V1_14)) {
+                    name = byteBuf.readMinecraftKey().getKey();
+                } else {
+                    name = byteBuf.readStringBuf(64);
+                }
+
+                final double base = byteBuf.readDouble();
+
+                final List<Modifier> list = new ArrayList<>();
+                final int maxModifiers = version.isBelow(ProtocolVersion.V1_8)
+                        ? byteBuf.readShort()
+                        : byteBuf.readVarInt();
+
+                for (int j = 0; j < maxModifiers; ++j) {
+                    final UUID uuid = byteBuf.readUUID();
+                    list.add(new Modifier(uuid, "Unknown synced attribute modifier",
+                            byteBuf.readDouble(), byteBuf.readByte()));
+                }
+
+                this.attributes.add(new Snapshot(name, base, list));
+            }
         }
     }
 

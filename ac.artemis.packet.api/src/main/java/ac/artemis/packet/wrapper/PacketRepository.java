@@ -88,7 +88,7 @@ public class PacketRepository {
         repository.put(CLIENT_PLAY + 48, PacketPlayClientWindowHorse.class);
         repository.put(CLIENT_PLAY + 49, PacketPlayClientBlockDig.class);
         repository.put(CLIENT_PLAY + 50, PacketPlayClientItemUse.class);
-
+        repository.put(CLIENT_PLAY + 51, PacketPlayClientPong.class);
 
         // Client bound status
         repository.put(CLIENT_STATUS + 1, PacketStatusClientPing.class);
@@ -201,6 +201,22 @@ public class PacketRepository {
         repository.put(SERVER_PLAY + 97, PacketPlayServerEntityAttach.class);
         repository.put(SERVER_PLAY + 98, PacketPlayServerEntityEffect.class);
         repository.put(SERVER_PLAY + 99, PacketPlayServerWindowHorse.class);
+        repository.put(SERVER_PLAY + 100, PacketPlayServerAddVibrationSignal.class);
+        repository.put(SERVER_PLAY + 101, PacketPlayServerClearTitles.class);
+        repository.put(SERVER_PLAY + 102, PacketPlayServerPing.class);
+        repository.put(SERVER_PLAY + 103, PacketPlayServerPlayerCombatEnd.class);
+        repository.put(SERVER_PLAY + 104, PacketPlayServerPlayerCombatEnter.class);
+        repository.put(SERVER_PLAY + 105, PacketPlayServerPlayerCombatKill.class);
+        repository.put(SERVER_PLAY + 106, PacketPlayServerInitializeBorder.class);
+        repository.put(SERVER_PLAY + 107, PacketPlayServerSetActionBarText.class);
+        repository.put(SERVER_PLAY + 108, PacketPlayServerSetBorderCenter.class);
+        repository.put(SERVER_PLAY + 109, PacketPlayServerSetBorderLerpSize.class);
+        repository.put(SERVER_PLAY + 110, PacketPlayServerSetBorderSize.class);
+        repository.put(SERVER_PLAY + 111, PacketPlayServerSetBorderWarningDelay.class);
+        repository.put(SERVER_PLAY + 112, PacketPlayServerSetBorderWarningDistance.class);
+        repository.put(SERVER_PLAY + 113, PacketPlayServerSetSubtitleText.class);
+        repository.put(SERVER_PLAY + 114, PacketPlayServerSetTitleText.class);
+        repository.put(SERVER_PLAY + 115, PacketPlayServerSetTitlesAnimation.class);
 
         repository.put(SERVER_STATUS + 1, PacketStatusServerInfo.class);
         repository.put(SERVER_STATUS + 2, PacketStatusServerPong.class);

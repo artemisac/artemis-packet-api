@@ -349,8 +349,12 @@ public class ReflectUtil {
         NMS_PLAYER_CLAZZ = Reflection.NEW_NMS ? Reflection.getMinecraftClass("level.EntityPlayer") :
                 Reflection.getMinecraftClass("EntityPlayer");
         GET_HANDLE_METHOD = Reflection.getMethod(CRAFT_PLAYER_CLAZZ, "getHandle");
-        PING_FIELD = Reflection.getField(NMS_PLAYER_CLAZZ, "ping", int.class);
-        MODERN_PING = Reflection.getMethod(Reflection.OBC_PREFIX + ".entity.CraftPlayer", "getPing");
+
+        if(Reflection.NEW_NMS) {
+            MODERN_PING = Reflection.getMethod(Reflection.OBC_PREFIX + ".entity.CraftPlayer", "getPing");
+        } else {
+            PING_FIELD = Reflection.getField(NMS_PLAYER_CLAZZ, "ping", int.class);
+        }
     }
     static {
         init();
