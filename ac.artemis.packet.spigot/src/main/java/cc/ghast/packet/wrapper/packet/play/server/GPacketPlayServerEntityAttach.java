@@ -16,13 +16,14 @@ import java.util.UUID;
 @Getter
 @PacketLink(PacketPlayServerEntityAttach.class)
 public class GPacketPlayServerEntityAttach extends GPacket implements PacketPlayServerEntityAttach, ReadableBuffer {
-    public GPacketPlayServerEntityAttach(UUID player, ProtocolVersion version) {
-        super("PacketPlayOutAttachEntity", player, version);
-    }
 
     private int entityId;
     private int vehicleId;
     private boolean leash;
+
+    public GPacketPlayServerEntityAttach(UUID player, ProtocolVersion version) {
+        super("PacketPlayOutAttachEntity", player, version);
+    }
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {

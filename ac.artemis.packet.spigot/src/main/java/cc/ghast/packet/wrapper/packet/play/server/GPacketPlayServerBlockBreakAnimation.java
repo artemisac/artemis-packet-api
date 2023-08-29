@@ -14,13 +14,14 @@ import java.util.UUID;
 @Getter
 @PacketLink(PacketPlayServerBlockBreakAnimation.class)
 public class GPacketPlayServerBlockBreakAnimation extends GPacket implements PacketPlayServerBlockBreakAnimation, ReadableBuffer {
-    public GPacketPlayServerBlockBreakAnimation(UUID player, ProtocolVersion version) {
-        super("PacketPlayOutBlockBreakAnimation", player, version);
-    }
 
     private int entityId;
     private BlockPosition position;
     private int destroyStage;
+
+    public GPacketPlayServerBlockBreakAnimation(UUID player, ProtocolVersion version) {
+        super("PacketPlayOutBlockBreakAnimation", player, version);
+    }
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {

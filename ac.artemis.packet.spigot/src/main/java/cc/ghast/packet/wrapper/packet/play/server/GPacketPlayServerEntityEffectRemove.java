@@ -13,12 +13,12 @@ import java.util.UUID;
 @Getter
 @PacketLink(PacketPlayServerEntityEffectRemove.class)
 public class GPacketPlayServerEntityEffectRemove extends GPacket implements PacketPlayServerEntityEffectRemove, ReadableBuffer {
+
+    private int entityId, effectId;
+
     public GPacketPlayServerEntityEffectRemove(UUID player, ProtocolVersion version) {
         super("PacketPlayOutRemoveEntityEffect", player, version);
     }
-
-    private int entityId;
-    private int effectId;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
