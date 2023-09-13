@@ -11,12 +11,17 @@ import java.util.UUID;
 
 @PacketLink(PacketPlayServerEntityHeadRotation.class)
 public class GPacketPlayServerEntityHeadRotation extends GPacket implements PacketPlayServerEntityHeadRotation, ReadableBuffer {
+
+    private int entityId;
+    private byte headYaw;
+
     public GPacketPlayServerEntityHeadRotation(UUID player, ProtocolVersion version) {
         super("PacketPlayOutEntityHeadRotation", player, version);
     }
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
-
+        this.entityId = byteBuf.readVarInt();
+        this.headYaw = byteBuf.readByte();
     }
 }

@@ -1,24 +1,20 @@
 package cc.ghast.packet.codec;
 
-import ac.artemis.packet.PacketGenerator;
 import ac.artemis.packet.protocol.ProtocolDirection;
 import ac.artemis.packet.protocol.ProtocolState;
 import ac.artemis.packet.protocol.ProtocolVersion;
 import ac.artemis.packet.spigot.utils.ServerUtil;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.PacketManager;
+import cc.ghast.packet.buffer.ProtocolByteBuf;
 import cc.ghast.packet.buffer.types.Converters;
 import cc.ghast.packet.exceptions.IncompatiblePipelineException;
 import cc.ghast.packet.profile.ArtemisProfile;
 import cc.ghast.packet.utils.Chat;
 import cc.ghast.packet.wrapper.netty.MutableByteBuf;
-import cc.ghast.packet.wrapper.packet.login.GPacketLoginServerSuccess;
-import cc.ghast.packet.buffer.ProtocolByteBuf;
-import cc.ghast.packet.protocol.EnumProtocol;
-import cc.ghast.packet.protocol.EnumProtocolCurrent;
-import cc.ghast.packet.protocol.EnumProtocolLegacy;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
-import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.wrapper.packet.handshake.GPacketHandshakeClientSetProtocol;
+import cc.ghast.packet.wrapper.packet.login.GPacketLoginServerSuccess;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
@@ -91,7 +87,8 @@ public class ArtemisDecoder extends ChannelDuplexHandler {
                 final boolean cancelled = buffer.isReadable() && decode(MutableByteBuf.translate(buffer));
 
                 // Nullify if the packet was cancelled
-                buffer.readerIndex(readIndex);
+                if (!cancelled) buffer.readerIndex(readIndex);
+                else ((ByteBuf) msg).clear();
             } catch (Exception e){
                 System.out.println("[!] Error on player of version " + profile.getVersion());
                 e.printStackTrace();

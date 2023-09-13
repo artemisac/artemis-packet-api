@@ -16,9 +16,6 @@ import java.util.UUID;
 @Setter
 @PacketLink(PacketPlayServerEntityTeleport.class)
 public class GPacketPlayServerEntityTeleport extends GPacket implements PacketPlayServerEntityTeleport, ReadableBuffer, WriteableBuffer {
-    public GPacketPlayServerEntityTeleport(UUID player, ProtocolVersion version) {
-        super("PacketPlayOutEntityTeleport", player, version);
-    }
 
     private int entityId;
     private int x;
@@ -28,6 +25,9 @@ public class GPacketPlayServerEntityTeleport extends GPacket implements PacketPl
     private byte pitch;
     private boolean onGround;
 
+    public GPacketPlayServerEntityTeleport(UUID player, ProtocolVersion version) {
+        super("PacketPlayOutEntityTeleport", player, version);
+    }
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {

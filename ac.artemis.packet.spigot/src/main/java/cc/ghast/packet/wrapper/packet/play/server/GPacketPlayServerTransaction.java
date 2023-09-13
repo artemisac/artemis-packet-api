@@ -2,9 +2,9 @@ package cc.ghast.packet.wrapper.packet.play.server;
 
 import ac.artemis.packet.protocol.ProtocolVersion;
 import ac.artemis.packet.spigot.protocol.PacketLink;
+import ac.artemis.packet.spigot.wrappers.GPacket;
 import ac.artemis.packet.wrapper.server.PacketPlayServerTransaction;
 import cc.ghast.packet.buffer.ProtocolByteBuf;
-import ac.artemis.packet.spigot.wrappers.GPacket;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.WriteableBuffer;
 import lombok.Getter;
@@ -14,6 +14,11 @@ import java.util.UUID;
 @Getter
 @PacketLink(PacketPlayServerTransaction.class)
 public class GPacketPlayServerTransaction extends GPacket implements PacketPlayServerTransaction, ReadableBuffer, WriteableBuffer {
+
+    private byte windowId;
+    private short actionNumber;
+    private boolean accepted;
+
     public GPacketPlayServerTransaction(UUID player, ProtocolVersion version) {
         super("PacketPlayOutTransaction", player, version);
     }
@@ -31,10 +36,6 @@ public class GPacketPlayServerTransaction extends GPacket implements PacketPlayS
         this.actionNumber = actionNumber;
         this.accepted = accepted;
     }
-
-    private byte windowId;
-    private short actionNumber;
-    private boolean accepted;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {

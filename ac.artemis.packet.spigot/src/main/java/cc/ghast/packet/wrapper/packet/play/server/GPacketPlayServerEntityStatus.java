@@ -13,12 +13,13 @@ import java.util.UUID;
 @Getter
 @PacketLink(PacketPlayServerEntityStatus.class)
 public class GPacketPlayServerEntityStatus extends GPacket implements PacketPlayServerEntityStatus, ReadableBuffer {
-    public GPacketPlayServerEntityStatus(UUID player, ProtocolVersion version) {
-        super("PacketPlayOutEntityStatus", player, version);
-    }
 
     private int entityId;
     private byte logicOpcode;
+
+    public GPacketPlayServerEntityStatus(UUID player, ProtocolVersion version) {
+        super("PacketPlayOutEntityStatus", player, version);
+    }
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {

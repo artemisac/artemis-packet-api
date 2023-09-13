@@ -56,9 +56,15 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>net.md-5</groupId>
+            <artifactId>bungeecord-chat</artifactId>
+            <version>1.16-R0.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>ac.artemis.packet</groupId>
             <artifactId>api</artifactId>
-            <version>2.0.0</version>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- Netty API which's version somewhats matches NMS's one -->

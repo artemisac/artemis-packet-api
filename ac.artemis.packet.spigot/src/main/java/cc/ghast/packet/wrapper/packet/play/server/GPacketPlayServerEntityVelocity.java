@@ -2,11 +2,10 @@ package cc.ghast.packet.wrapper.packet.play.server;
 
 import ac.artemis.packet.protocol.ProtocolVersion;
 import ac.artemis.packet.spigot.protocol.PacketLink;
-import ac.artemis.packet.spigot.utils.ServerUtil;
-import ac.artemis.packet.wrapper.server.PacketPlayServerEntityVelocity;
-import cc.ghast.packet.nms.MathHelper;
-import cc.ghast.packet.buffer.ProtocolByteBuf;
 import ac.artemis.packet.spigot.wrappers.GPacket;
+import ac.artemis.packet.wrapper.server.PacketPlayServerEntityVelocity;
+import cc.ghast.packet.buffer.ProtocolByteBuf;
+import cc.ghast.packet.nms.MathHelper;
 import cc.ghast.packet.wrapper.packet.ReadableBuffer;
 import cc.ghast.packet.wrapper.packet.WriteableBuffer;
 import lombok.Getter;
@@ -16,6 +15,13 @@ import java.util.UUID;
 @Getter
 @PacketLink(PacketPlayServerEntityVelocity.class)
 public class GPacketPlayServerEntityVelocity extends GPacket implements PacketPlayServerEntityVelocity, ReadableBuffer, WriteableBuffer {
+
+    private int entityId;
+
+    private short x;
+    private short y;
+    private short z;
+
     public GPacketPlayServerEntityVelocity(UUID player, ProtocolVersion version) {
         super("PacketPlayOutEntityVelocity", player, version);
     }
@@ -35,11 +41,6 @@ public class GPacketPlayServerEntityVelocity extends GPacket implements PacketPl
         this.y = (short) MathHelper.floor(y / 8000.D);
         this.z = (short) MathHelper.floor(z / 8000.D);
     }
-
-    private int entityId;
-    private short x;
-    private short y;
-    private short z;
 
     @Override
     public void read(ProtocolByteBuf byteBuf) {
